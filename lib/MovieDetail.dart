@@ -10,7 +10,7 @@ import 'package:movie_griller/Gradients.dart';
 import 'package:movie_griller/cast_cell.dart';
 import 'package:movie_griller/similar_movie_cell.dart';
 Future<Map> getMovieDetail(var id) async{
-  var url = "https://api.themoviedb.org/3/movie/$id?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&append_to_response=credits,images,similar";
+  var url = "https://api.themoviedb.org/3/movie/$id?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&append_to_response=credits,similar";
   http.Response response = await http.get(url);
   
       return json.decode(response.body);
@@ -18,9 +18,11 @@ Future<Map> getMovieDetail(var id) async{
   
   
 }
+
 class MovieDetail extends StatelessWidget {
   final movie_id;
   var movie;
+  var rand= Random();
   final image_url = 'https://image.tmdb.org/t/p/w500';
   MovieDetail(this.movie_id);
   String getGenres(var genre){
@@ -33,6 +35,7 @@ class MovieDetail extends StatelessWidget {
     answer = answer.substring(0,answer.length-1);
     return answer;
   }
+  
   @override
   Widget build(BuildContext context) {
     // SystemChrome.setEnabledSystemUIOverlays([]);

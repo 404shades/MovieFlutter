@@ -4,13 +4,19 @@ import 'package:movie_griller/Gradients.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:movie_griller/TopRatedMoviesCell.dart';
 import 'package:movie_griller/movies_list.dart';
 
 void main(){
   runApp(new HomeApp());
 }
 Future<Map> getJson() async{
-  var url = "https://api.themoviedb.org/3/movie/popular?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f";
+  var url = "https://api.themoviedb.org/3/movie/upcoming?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f";
+  http.Response response = await http.get(url);
+  return json.decode(response.body);
+}
+Future<Map> getTopRatedMovies() async{
+  var url = "https://api.themoviedb.org/3/movie/top_rated?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f";
   http.Response response = await http.get(url);
   return json.decode(response.body);
 }
@@ -82,6 +88,7 @@ class FrontScreen extends StatefulWidget {
 
 class _FrontScreenState extends State<FrontScreen> {
   var movies;
+  var top_rated_movies;
     void getData() async{
       var data = await getJson();
       setState(() {
@@ -267,6 +274,59 @@ class _FrontScreenState extends State<FrontScreen> {
                       )
                     ),
                    
+                  ],
+                ),
+              ),
+              new Container(
+                
+                margin: const EdgeInsets.only(left: 20.0),
+                height: 280.0,
+                width: MediaQuery.of(context).size.width-40,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new Text("Top Rated Movies",style: 
+                    TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'google',
+                      fontSize: 26.0,
+                      fontWeight: FontWeight.w700
+                    )),
+                    new Container(
+                    margin: const EdgeInsets.only(top:3.0,bottom: 14.0),
+                    width: (MediaQuery.of(context).size.width-40)/1.5,
+                    height: 3.0,
+                    decoration: BoxDecoration(
+                      gradient: pinkRedGradient,
+                      borderRadius: BorderRadius.circular(14.0)
+                    ),
+                  ),
+                    new Expanded(
+                      child: new FutureBuilder(
+                        future: getTopRatedMovies(),
+                        builder: (context,snapshot){
+                          if(!snapshot.hasData){
+                            return Center(
+                              child: new CircularProgressIndicator(
+                                backgroundColor: Colors.black,
+                              ),
+                            );
+                          }
+                          top_rated_movies = snapshot.data;
+                          
+                          return new ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: top_rated_movies['results'].length,
+                            itemBuilder: (context,i){
+                              return Container(
+                                padding: const EdgeInsets.only(right: 17.0),
+                                child: new TopRatedMovieCellHome(top_rated_movies['results'][i])
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    )
                   ],
                 ),
               )
