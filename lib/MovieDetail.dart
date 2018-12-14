@@ -2,13 +2,18 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'package:http/http.dart' as http;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:movie_griller/Gradients.dart';
+import 'package:movie_griller/Loader.dart';
 import 'package:movie_griller/cast_cell.dart';
 import 'package:movie_griller/similar_movie_cell.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 Future<Map> getMovieDetail(var id) async{
   var url = "https://api.themoviedb.org/3/movie/$id?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&append_to_response=credits,similar";
   http.Response response = await http.get(url);
@@ -44,7 +49,12 @@ class MovieDetail extends StatelessWidget {
         future: getMovieDetail(movie_id),
         builder: (context,snapshot){
           if(!snapshot.hasData){
-            return Text("Loading");
+            return Center(
+              child: SpinKitPumpingHeart(
+                color: Colors.black,
+                size: 86.0,
+              ),
+            );
           }
           movie = snapshot.data;
           return new Stack(
@@ -126,10 +136,15 @@ class MovieDetail extends StatelessWidget {
                                     ],
                                   ),
                                   
+                                  new Row(children: <Widget>[
+                                  
+                                  new Icon(FontAwesomeIcons.imdb,color: Colors.yellow,),
+                                  new Padding(padding: const EdgeInsets.only(right: 4.0),),
                                   new Text("${movie['vote_average'].toString()}/10",style: TextStyle(color:Colors.white,
                                   fontFamily: 'google',
                                   fontWeight: FontWeight.bold
                                   ),)
+                                  ],)
                                 ],
                               ),
                             ),

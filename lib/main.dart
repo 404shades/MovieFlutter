@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie_griller/Gradients.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:movie_griller/SearchResults.dart';
+
 import 'package:movie_griller/TopRatedMoviesCell.dart';
+import 'package:movie_griller/TopRatedTVShowCell.dart';
+import 'package:movie_griller/Trailers.dart';
 import 'package:movie_griller/movies_list.dart';
 
 void main(){
@@ -20,7 +25,25 @@ Future<Map> getTopRatedMovies() async{
   http.Response response = await http.get(url);
   return json.decode(response.body);
 }
+Future<Map> getTopRatedTVShows() async{
+  var url = "https://api.themoviedb.org/3/tv/top_rated?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f";
+  http.Response response = await http.get(url);
+  return json.decode(response.body);
+}
+Future<Map> getNowPlayingMovies() async{
+  var url = 'https://api.themoviedb.org/3/movie/now_playing?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f';
+  http.Response response = await http.get(url);
+  return json.decode(response.body);
+}
 
+Future<Map> fetchMovies(int pageNumber,String query) async{
+    // TODO: implement fetchMovies
+    http.Response response = await http.get(
+      'https://api.themoviedb.org/3/search/multi?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&language=en-US&query=$query&page=$pageNumber'
+    );
+    return json.decode(response.body);
+
+  }
 class RoundedIconButton extends StatelessWidget {
   final IconData iconData;
   final Color color;
@@ -30,12 +53,12 @@ class RoundedIconButton extends StatelessWidget {
     this.iconData,
     this.color,
     this.onPressed
-  }):size = 90.0;
+  }):size = 50.0;
   RoundedIconButton.small({
     this.iconData,
     this.color,
     this.onPressed
-  }):size = 70.0;
+  }):size = 30.0;
   RoundedIconButton({
     this.iconData,
     this.color,
@@ -77,6 +100,11 @@ class HomeApp extends StatelessWidget {
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
       home: new FrontScreen(),
+      theme: new ThemeData(
+        primaryColor: Colors.black,
+        accentColor: Colors.black,
+        bottomAppBarColor: Color(0xFFF6F7FB)
+      ),
     );
   }
 }
@@ -89,59 +117,78 @@ class FrontScreen extends StatefulWidget {
 class _FrontScreenState extends State<FrontScreen> {
   var movies;
   var top_rated_movies;
-    void getData() async{
-      var data = await getJson();
-      setState(() {
-              movies = data['results'];
-            });
-    }
-    Widget _buildBottomNavigation(){
-      return Container(
-        alignment: Alignment.center,
-        margin: const EdgeInsets.all(14.0),
-        padding: const EdgeInsets.all(16.0),
-        height: 55.0,
+  var top_rated_tv_shows;
+  var now_playing;
+  TextEditingController textEditingController = TextEditingController();
+    // Widget _buildBottomNavigation(){
+    //   return Container(
+    //     alignment: Alignment.center,
+    //     margin: const EdgeInsets.all(14.0),
+    //     padding: const EdgeInsets.all(16.0),
+    //     height: 55.0,
         
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            new BoxShadow(
-              blurRadius: 10.0,
-              color: Colors.black38,
-              offset: Offset(0.0, 10.0)
-            ),
+    //     decoration: BoxDecoration(
+    //       color: Colors.white,
+    //       boxShadow: [
+    //         new BoxShadow(
+    //           blurRadius: 10.0,
+    //           color: Colors.black38,
+    //           offset: Offset(0.0, 10.0)
+    //         ),
             
-          ],
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(10.0)
-        ),
-        child: new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              new RoundedIconButton.large(
-                iconData: Icons.movie,
-                color: Colors.green,
-              ),
-              new RoundedIconButton.large(
-                iconData: Icons.home,
-                color: Colors.pink,
-              ),
-              new RoundedIconButton(
-                iconData: Icons.tv,
-                color: Colors.cyan,
-              )
-            ],
-        ),
-      );
-    }
+    //       ],
+    //       shape: BoxShape.rectangle,
+    //       borderRadius: BorderRadius.circular(10.0)
+    //     ),
+    //     child: new Row(
+    //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //         children: <Widget>[
+    //           new RoundedIconButton.large(
+    //             iconData: Icons.movie,
+    //             color: Colors.green,
+    //           ),
+    //           new RoundedIconButton.large(
+    //             iconData: Icons.home,
+    //             color: Colors.pink,
+    //           ),
+    //           new RoundedIconButton(
+    //             iconData: Icons.tv,
+    //             color: Colors.cyan,
+    //           )
+    //         ],
+    //     ),
+    //   );
+    // }
   @override
   Widget build(BuildContext context) {
-    getData();
+    
     SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton.extended(
+        icon: const Icon(Icons.home),
+        label: Text("Home")
+        ,
+        onPressed: (){},
+        backgroundColor: Colors.black87,
+      ),
       backgroundColor: Color(0xFFF6F7FB),
-      bottomNavigationBar: _buildBottomNavigation(),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.white,
+        elevation: 12.0,
+        
+        
+        child: new Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            IconButton(icon: Icon(Icons.movie,color: Colors.blue,),onPressed: (){},),
+            IconButton(icon: Icon(Icons.tv,color: Colors.red,),onPressed: (){},)
+            
+          ],
+        ),
+      ),
       // body: new Stack(
       //   fit: StackFit.expand,
       //   children: <Widget>[
@@ -225,26 +272,39 @@ class _FrontScreenState extends State<FrontScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             new Container(
-                              height: 50.0,
-                              width: MediaQuery.of(context).size.width-125,
+                              alignment: Alignment.center,
+                              height:60.0,
+                              width: MediaQuery.of(context).size.width-95,
                               child: new Card(
 
                               elevation: 18.0,
                               shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10.0)),
                               color: Colors.white,
                               child: new TextFormField(
-
+                                  controller: textEditingController,
+                                  style: TextStyle(
+                                    fontFamily: 'google',
+                                    color: Colors.black
+                                  ),
+                                  
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
+
                                   hintText: "Search for any Movie, TV Show..",
                                   contentPadding: const EdgeInsets.all(13.0) ,
                                   hintStyle: TextStyle(
                                     fontFamily: 'google',
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w800,
-
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.grey
                                   ),
-                                  suffixIcon: Icon(Icons.search)
+                                  suffixIcon: IconButton(
+                                    icon: Icon(Icons.search),
+                                    onPressed: (){
+                                      
+                                      showSearch(context: context,delegate: MovieSearch(),query: textEditingController.text);
+                                    },
+                                  )
                                   
                                 ),
 
@@ -255,19 +315,28 @@ class _FrontScreenState extends State<FrontScreen> {
                             new SizedBox(
                               height: 13.0,
                             ),
-                            new Expanded(
+                            new FutureBuilder(
+                              future: getJson(),
+                              builder: (context,snapshot){
+                                if(!snapshot.hasData){
+                                  return Center(child: CircularProgressIndicator(),);
+                                }
+                                movies = snapshot.data;
+                                return new Expanded(
 
                               child: new ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: movies==null?0:movies.length,
+                                itemCount: movies['results'].length,
                                 // shrinkWrap: true,
                                 itemBuilder: (context,i){
                                   return new Container(
                                     padding: const EdgeInsets.only(right: 12.0,bottom: 13.0),
-                                    child: new TopRatedMovieCell(movies,i)
+                                    child: new TopRatedMovieCell(movies['results'],i)
                                   );
                                 },
                               ),
+                            );
+                              },
                             )
                           ],
                         )
@@ -280,7 +349,7 @@ class _FrontScreenState extends State<FrontScreen> {
               new Container(
                 
                 margin: const EdgeInsets.only(left: 20.0),
-                height: 280.0,
+                height: 310.0,
                 width: MediaQuery.of(context).size.width-40,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -329,11 +398,204 @@ class _FrontScreenState extends State<FrontScreen> {
                     )
                   ],
                 ),
+              ),
+
+          new SizedBox(height: 12.0,),
+          new Container(
+              margin: const EdgeInsets.only(left: 20.0,right: 20.0),
+              height: 320.0,
+              width: MediaQuery.of(context).size.width-40,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  new Text("Now Playing Movies",style: 
+                    TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'google',
+                      fontSize: 26.0,
+                      fontWeight: FontWeight.w700
+                    )),
+                    new Container(
+                    margin: const EdgeInsets.only(top:3.0,bottom: 14.0),
+                    width: (MediaQuery.of(context).size.width-40)/1.5,
+                    height: 3.0,
+                    decoration: BoxDecoration(
+                      gradient: pinkRedGradient,
+                      borderRadius: BorderRadius.circular(14.0)
+                    ),
+                  ),
+                  new Expanded(
+                    child: new FutureBuilder(
+                      future: getNowPlayingMovies(),
+                      builder: (context,snapshot){
+                        if(!snapshot.hasData){
+                          return new Center(child: CircularProgressIndicator(),);
+                        }
+                        now_playing = snapshot.data['results'];
+                        return new PageView.builder(
+                      itemCount: now_playing.length,
+                      itemBuilder: (context,index){
+                        return NowPlayingCell(now_playing[index]);
+                      },
+                    );
+                      },
+                    )
+                  )
+                ],
+              ),
+          ),
+          new SizedBox(height: 24.0,),
+            new Container(
+                
+                margin: const EdgeInsets.only(left: 20.0),
+                height: 310.0,
+                width: MediaQuery.of(context).size.width-40,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new Text("Top Rated TV Shows",style: 
+                    TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'google',
+                      fontSize: 26.0,
+                      fontWeight: FontWeight.w700
+                    )),
+                    new Container(
+                    margin: const EdgeInsets.only(top:3.0,bottom: 14.0),
+                    width: (MediaQuery.of(context).size.width-40)/1.5,
+                    height: 3.0,
+                    decoration: BoxDecoration(
+                      gradient: pinkRedGradient,
+                      borderRadius: BorderRadius.circular(14.0)
+                    ),
+                  ),
+                    new Expanded(
+                      child: new FutureBuilder(
+                        future: getTopRatedTVShows(),
+                        builder: (context,snapshot){
+                          if(!snapshot.hasData){
+                            return Center(
+                              child: new CircularProgressIndicator(
+                                backgroundColor: Colors.black,
+                              ),
+                            );
+                          }
+                          top_rated_tv_shows = snapshot.data;
+                          
+                          return new ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: top_rated_tv_shows['results'].length,
+                            itemBuilder: (context,i){
+                              return Container(
+                                padding: const EdgeInsets.only(right: 17.0),
+                                child: new TopRatedTvShowCell(top_rated_tv_shows['results'][i])
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                ),
               )
+
+
             ],
           )
         ],
       )
     );
   }
+}
+
+
+class MovieSearch extends SearchDelegate<String>{
+
+  
+  
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    // TODO: implement buildActions
+    return [IconButton(icon: Icon(Icons.clear),onPressed: (){
+      query="";
+    })];
+    
+
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    // TODO: implement buildLeading
+    return IconButton(
+      icon: AnimatedIcon(
+        icon: AnimatedIcons.menu_arrow,
+        progress: transitionAnimation
+      ),
+      onPressed: (){
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // TODO: implement buildResults
+    var searchResults;
+    return new FutureBuilder(
+      future: fetchMovies(1, query),
+      builder: (context,snapshot){
+        if(!snapshot.hasData){
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+
+        }
+        searchResults = snapshot.data['results'];
+        return Container(
+          child: OrientationBuilder(
+            builder: (context,orientation){
+              return GridView.builder(
+          padding: EdgeInsets.only(top: 5.0,right: 5.0,bottom: 15.0),
+          
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount:orientation==Orientation.landscape?5:3,
+            childAspectRatio: 0.50
+          ),
+          itemCount: query.isEmpty?0:searchResults.length,
+          itemBuilder: (context,index){
+            print('length YEE ${searchResults.length}');
+            var mediaType = searchResults[index]['media_type'];
+            var profile_path;
+            var title;
+            if(mediaType=='tv'){
+              profile_path = searchResults[index]['poster_path'];
+              title = searchResults[index]['name'];
+            }
+            else if(mediaType=='movie'){
+              profile_path = searchResults[index]['poster_path'];
+              title = searchResults[index]['title'];
+            }
+            else{
+              profile_path = searchResults[index]['profile_path'];
+              title = searchResults[index]['name'];
+            }
+            var backdrop_path = searchResults[index]['backdrop_path'];
+            var id = searchResults[index]['id'];
+            print(searchResults.length);
+            return SearchResults(poster_image: profile_path,title: title,type: mediaType,id: id,);
+          },
+        );
+            },
+          )
+        );
+      },
+    );
+  }
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // TODO: implement buildSuggestions
+
+    return Text("LOADING");
+
+}
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_griller/CastDetail.dart';
 class CastCell extends StatelessWidget {
   final image_url = 'https://image.tmdb.org/t/p/w500';
   final cast;
@@ -8,8 +9,14 @@ class CastCell extends StatelessWidget {
     print(cast['profile_path']);
     
     return GestureDetector(
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return new CastDetail(cast['id']);
+        }));
+      },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
         alignment: Alignment.topCenter,
@@ -44,12 +51,19 @@ class CastCell extends StatelessWidget {
           ):null,
         ),
       ),
-      new Text(cast['name'].toString().split(" ")[0],style:TextStyle(
+      new Container(
+        alignment: Alignment.center,
+        
+        width: 100.0,
+        child: new Text(cast['name'].toString(),style:TextStyle(
         color:Colors.white,
         fontFamily: 'google',
         fontWeight:FontWeight.w600,
         fontSize: 20.0
-      ))
+      ),
+      textAlign: TextAlign.center,
+      maxLines: 2,),
+      )
         ],
       )
     );
