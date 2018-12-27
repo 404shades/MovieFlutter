@@ -35,7 +35,7 @@ class MovieDetail extends StatelessWidget {
     print(genre.length.toString() + "kikkakak");
     int le = min(genre.length,2);
     for(int i=0;i<le;i++){
-        answer = answer + genre[i]['name']+ "/";
+        answer = answer + genre[i]['name']+ "|";
     }
     answer = answer.substring(0,answer.length-1);
     return answer;
@@ -49,12 +49,12 @@ class MovieDetail extends StatelessWidget {
         future: getMovieDetail(movie_id),
         builder: (context,snapshot){
           if(!snapshot.hasData){
-            return Center(
-              child: SpinKitPumpingHeart(
-                color: Colors.black,
-                size: 86.0,
-              ),
-            );
+              return Center(
+                child: SpinKitPumpingHeart(
+                  color: Colors.black,
+                  size: 86.0,
+                ),
+              );
           }
           movie = snapshot.data;
           return new Stack(
@@ -221,6 +221,7 @@ class MovieDetail extends StatelessWidget {
                       children: <Widget>[
                         new Expanded(
                           child: new ListView.builder(
+                            physics: BouncingScrollPhysics(),
                             itemCount: movie['credits']['cast'].length,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context,i){
@@ -258,12 +259,13 @@ class MovieDetail extends StatelessWidget {
                       children: <Widget>[
                         new Expanded(
                           child: new ListView.builder(
+                            physics: BouncingScrollPhysics(),
                             itemCount: movie['similar']['results'].length,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context,i){
                               return Container(
                                 padding: const EdgeInsets.only(right: 12.0),
-                                child: new SimilarCell(movie['similar']['results'][i]),
+                                child: new SimilarCell(movie['similar']['results'][i],'movie'),
                               );
                             },
                           ),

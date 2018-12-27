@@ -227,6 +227,7 @@ class _FrontScreenState extends State<FrontScreen> {
       //   ],
       // ),
       body: new ListView(
+        
         children: <Widget>[
           new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -275,42 +276,31 @@ class _FrontScreenState extends State<FrontScreen> {
                               alignment: Alignment.center,
                               height:60.0,
                               width: MediaQuery.of(context).size.width-95,
-                              child: new Card(
+                              child: GestureDetector(
+                                onTap:()=>showSearch(context: context,delegate: MovieSearch()),
+                                child: new Card(
 
                               elevation: 18.0,
                               shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10.0)),
                               color: Colors.white,
-                              child: new TextFormField(
-                                  controller: textEditingController,
-                                  style: TextStyle(
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    //new Padding(padding: const EdgeInsets.only(left: 14.0)),
+                                    new Text("Search for any Movie or TV Show..",style: TextStyle(
                                     fontFamily: 'google',
-                                    color: Colors.black
-                                  ),
-                                  
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-
-                                  hintText: "Search for any Movie, TV Show..",
-                                  contentPadding: const EdgeInsets.all(13.0) ,
-                                  hintStyle: TextStyle(
-                                    fontFamily: 'google',
-                                    fontSize: 15.0,
+                                    fontSize: 16.0,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.grey
                                   ),
-                                  suffixIcon: IconButton(
-                                    icon: Icon(Icons.search),
-                                    onPressed: (){
-                                      
-                                      showSearch(context: context,delegate: MovieSearch(),query: textEditingController.text);
-                                    },
-                                  )
-                                  
+                                    ),
+                                    new Icon(Icons.search)
+                                  ],
                                 ),
-
-
-                              ),
+                              )
                             ),
+                              )
                             ),
                             new SizedBox(
                               height: 13.0,
@@ -325,6 +315,7 @@ class _FrontScreenState extends State<FrontScreen> {
                                 return new Expanded(
 
                               child: new ListView.builder(
+                                physics: BouncingScrollPhysics(),
                                 scrollDirection: Axis.horizontal,
                                 itemCount: movies['results'].length,
                                 // shrinkWrap: true,
@@ -385,6 +376,7 @@ class _FrontScreenState extends State<FrontScreen> {
                           
                           return new ListView.builder(
                             scrollDirection: Axis.horizontal,
+                            physics: BouncingScrollPhysics(),
                             itemCount: top_rated_movies['results'].length,
                             itemBuilder: (context,i){
                               return Container(
@@ -433,6 +425,7 @@ class _FrontScreenState extends State<FrontScreen> {
                         }
                         now_playing = snapshot.data['results'];
                         return new PageView.builder(
+                          physics: BouncingScrollPhysics(),
                       itemCount: now_playing.length,
                       itemBuilder: (context,index){
                         return NowPlayingCell(now_playing[index]);
@@ -483,6 +476,7 @@ class _FrontScreenState extends State<FrontScreen> {
                           top_rated_tv_shows = snapshot.data;
                           
                           return new ListView.builder(
+                            physics: BouncingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
                             itemCount: top_rated_tv_shows['results'].length,
                             itemBuilder: (context,i){
@@ -595,7 +589,7 @@ class MovieSearch extends SearchDelegate<String>{
   Widget buildSuggestions(BuildContext context) {
     // TODO: implement buildSuggestions
 
-    return Text("LOADING");
+    return Center(child: Icon(Icons.sentiment_neutral,size: 24.0,),);
 
 }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_griller/tv_detail.dart';
 class TopRatedTvShowCell extends StatelessWidget {
   final top_rated_cell;
   final image_url =   'https://image.tmdb.org/t/p/w500';
@@ -6,6 +7,9 @@ class TopRatedTvShowCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: ()=>Navigator.push(context, new MaterialPageRoute(
+        fullscreenDialog: true,builder: (context)=>TVDetail(tv_id: top_rated_cell['id'],)
+      )),
       child: Column(
         children: <Widget>[
           new Container(

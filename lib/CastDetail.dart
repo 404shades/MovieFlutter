@@ -136,6 +136,7 @@ class CastDetail extends StatelessWidget {
                       children: <Widget>[
                         new Expanded(
                     child: new ListView.builder(
+                      physics: BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       itemCount: casting['images']['profiles'].length,
                       itemBuilder: (context,index){
@@ -173,12 +174,13 @@ class CastDetail extends StatelessWidget {
                       children: <Widget>[
                         new Expanded(
                     child: new ListView.builder(
+                      physics: BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       itemCount: casting['images']['profiles'].length,
                       itemBuilder: (context,index){
                         return Container(
                           padding: EdgeInsets.only(right: 12.0),
-                          child: new SimilarCell(casting['credits']['cast'][index]),
+                          child: new SimilarCell(casting['credits']['cast'][index],'movie'),
                         );
                       },
                     ),

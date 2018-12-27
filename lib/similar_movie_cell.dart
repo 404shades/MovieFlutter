@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:movie_griller/MovieDetail.dart';
+import 'package:movie_griller/tv_detail.dart';
 class SimilarCell extends StatelessWidget {
   final similar_movies;
+  final type;
   final image_url = 'https://image.tmdb.org/t/p/w500';
-  SimilarCell(this.similar_movies);
+  SimilarCell(this.similar_movies,this.type);
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -11,8 +13,10 @@ class SimilarCell extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute(
           
           builder: (context){
-
+            if(type=='movie'){
             return new MovieDetail(similar_movies['id']);
+            }
+            return new TVDetail(tv_id:similar_movies['id']);
           }
         ));
       },
