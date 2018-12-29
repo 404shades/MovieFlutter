@@ -29,8 +29,10 @@ class CastCell extends StatelessWidget {
 
             image: DecorationImage(
               image: NetworkImage(image_url+cast['profile_path']),
-              fit: BoxFit.cover
+              fit: BoxFit.cover,
+              
             ),
+            
             
             border: Border.all(color: Colors.white),
 

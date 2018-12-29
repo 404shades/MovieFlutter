@@ -5,7 +5,9 @@ import 'package:movie_griller/Gradients.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:movie_griller/Movies_Section_Page.dart';
 import 'package:movie_griller/SearchResults.dart';
+import 'package:movie_griller/TV_Section_Page.dart';
 
 import 'package:movie_griller/TopRatedMoviesCell.dart';
 import 'package:movie_griller/TopRatedTVShowCell.dart';
@@ -26,7 +28,7 @@ Future<Map> getTopRatedMovies() async{
   return json.decode(response.body);
 }
 Future<Map> getTopRatedTVShows() async{
-  var url = "https://api.themoviedb.org/3/tv/top_rated?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f";
+  var url = "https://api.themoviedb.org/3/tv/popular?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f";
   http.Response response = await http.get(url);
   return json.decode(response.body);
 }
@@ -183,8 +185,18 @@ class _FrontScreenState extends State<FrontScreen> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            IconButton(icon: Icon(Icons.movie,color: Colors.blue,),onPressed: (){},),
-            IconButton(icon: Icon(Icons.tv,color: Colors.red,),onPressed: (){},)
+            IconButton(icon: Icon(Icons.movie,color: Colors.blue,),onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (context)=>new MoviesSectionPage()
+              ));
+            },),
+            IconButton(icon: Icon(Icons.tv,color: Colors.red,),onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (context)=>new TVSectionPage()
+              ));
+            },)
             
           ],
         ),
@@ -446,7 +458,7 @@ class _FrontScreenState extends State<FrontScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    new Text("Top Rated TV Shows",style: 
+                    new Text("Popular TV Shows",style: 
                     TextStyle(
                       color: Colors.black,
                       fontFamily: 'google',

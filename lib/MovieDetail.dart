@@ -69,6 +69,7 @@ class MovieDetail extends StatelessWidget {
             ),
           ),
           new SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Container(
               margin: EdgeInsets.all(20.0),
               child: new Column(

@@ -3,6 +3,7 @@ import 'package:movie_griller/CastDetail.dart';
 import 'dart:ui' as ui;
 
 import 'package:movie_griller/MovieDetail.dart';
+import 'package:movie_griller/tv_detail.dart';
 class SearchResults extends StatelessWidget {
   final image_url =   'https://image.tmdb.org/t/p/w500';
   final poster_image;
@@ -14,7 +15,7 @@ class SearchResults extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-       Navigator.pushReplacement(context, MaterialPageRoute(
+       Navigator.push(context, MaterialPageRoute(
          builder: (context){
            if(type=='movie'){
              return new MovieDetail(id);
@@ -23,7 +24,7 @@ class SearchResults extends StatelessWidget {
              return new CastDetail(id);
            }
            else{
-             return null;
+             return new TVDetail(tv_id: id,);
            }
          }
        ));
