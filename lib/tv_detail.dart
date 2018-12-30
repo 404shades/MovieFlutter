@@ -10,9 +10,10 @@ import 'package:http/http.dart' as http;
 import 'package:movie_griller/Gradients.dart';
 import 'package:movie_griller/cast_cell.dart';
 import 'package:movie_griller/similar_movie_cell.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Future<Map> getTvDetails(var id) async{
-  var url = 'https://api.themoviedb.org/3/tv/$id?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&language=en-US&append_to_response=images,credits,similar';
+  var url = 'https://api.themoviedb.org/3/tv/$id?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&language=en-US&append_to_response=images,credits,similar,videos';
   http.Response response = await http.get(url);
   return json.decode(response.body);
 }
@@ -31,16 +32,57 @@ class TVDetail extends StatelessWidget {
     answer = answer.substring(0,answer.length-1);
     return answer;
   }
-    @override
+
+  _launchURLTrailer(var videos) async{
+    
+    if(videos.length!=0){
+      String key;
+      for(int i=videos.length-1;i>=0;i--){
+        if(videos[i]['type']=='Trailer'){
+          key = videos[i]['key'];
+          break;
+        }
+        continue;
+      }
+      String url = "https://www.youtube.com/watch?v=$key";
+      if(await canLaunch(url)){
+        await launch(url);
+      }
+      else{
+        throw 'Could Not launch url';
+      }
+    }
+    
+  }
+  
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+       floatingActionButton: FloatingActionButton.extended(
+        icon: Icon(FontAwesomeIcons.youtube),
+        onPressed: (){
+          if(tv_show!=null){
+            _launchURLTrailer(tv_show['videos']['results']);
+          }
+          else{
+            return null;
+          }
+        },
+        label: Text("Trailer",style: TextStyle(
+          fontFamily: 'google',
+          
+        ),),
+
+        backgroundColor: Colors.transparent.withOpacity(0.8),
+        
+      ),
       body: FutureBuilder(
         future: getTvDetails(tv_id),
         builder: (context,snapshot){
           if(!snapshot.hasData){
             return Center(
-              child: SpinKitPumpingHeart(
-                color: Colors.black,
+              child: SpinKitHourGlass(
+                color:Colors.black,
                 size: 86.0,
               ),
             );

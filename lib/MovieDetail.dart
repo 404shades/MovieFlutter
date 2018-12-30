@@ -13,9 +13,10 @@ import 'package:movie_griller/Loader.dart';
 import 'package:movie_griller/cast_cell.dart';
 import 'package:movie_griller/similar_movie_cell.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Future<Map> getMovieDetail(var id) async{
-  var url = "https://api.themoviedb.org/3/movie/$id?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&append_to_response=credits,similar";
+  var url = "https://api.themoviedb.org/3/movie/$id?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&append_to_response=credits,similar,videos";
   http.Response response = await http.get(url);
   
       return json.decode(response.body);
@@ -23,6 +24,9 @@ Future<Map> getMovieDetail(var id) async{
   
   
 }
+// _launchURL() async{
+//   const url = "https://"
+// }
 
 class MovieDetail extends StatelessWidget {
   final movie_id;
@@ -40,17 +44,55 @@ class MovieDetail extends StatelessWidget {
     answer = answer.substring(0,answer.length-1);
     return answer;
   }
-  
+  _launchURLTrailer(var videos) async{
+    
+    if(videos.length!=0){
+      String key;
+      for(int i=videos.length-1;i>=0;i--){
+        if(videos[i]['type']=='Trailer'){
+          key = videos[i]['key'];
+          break;
+        }
+        continue;
+      }
+      String url = "https://www.youtube.com/watch?v=$key";
+      if(await canLaunch(url)){
+        await launch(url);
+      }
+      else{
+        throw 'Could Not launch url';
+      }
+    }
+    
+  }
   @override
   Widget build(BuildContext context) {
     // SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        icon: Icon(FontAwesomeIcons.youtube),
+        onPressed: (){
+          if(movie!=null){
+            _launchURLTrailer(movie['videos']['results']);
+          }
+          else{
+            return null;
+          }
+        },
+        label: Text("Trailer",style: TextStyle(
+          fontFamily: 'google',
+          
+        ),),
+
+        backgroundColor: Colors.transparent.withOpacity(0.8),
+        
+      ),
       body: new FutureBuilder(
         future: getMovieDetail(movie_id),
         builder: (context,snapshot){
           if(!snapshot.hasData){
               return Center(
-                child: SpinKitPumpingHeart(
+                child: SpinKitHourGlass(
                   color: Colors.black,
                   size: 86.0,
                 ),
@@ -101,6 +143,7 @@ class MovieDetail extends StatelessWidget {
                         ]
                       ),
                     ),
+                    
                     new Positioned(
                       left: 0.0,
                       right: 0.0,
@@ -183,6 +226,13 @@ class MovieDetail extends StatelessWidget {
                     fontWeight: FontWeight.w800,
                     fontSize: 26.0
                   ),),
+                  new Text(movie['tagline'],style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'google',
+                    fontWeight: FontWeight.w300,
+                    fontSize: 18.0
+                  ),),
+                  new SizedBox(height: 4.0,),
                   new Container(
                     margin: const EdgeInsets.only(top:3.0,bottom: 14.0),
                     width: (MediaQuery.of(context).size.width-40)/2,

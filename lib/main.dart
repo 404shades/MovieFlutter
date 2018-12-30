@@ -299,15 +299,18 @@ class _FrontScreenState extends State<FrontScreen> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
-                                    //new Padding(padding: const EdgeInsets.only(left: 14.0)),
-                                    new Text("Search for any Movie or TV Show..",style: TextStyle(
-                                    fontFamily: 'google',
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.grey
+                                    new Padding(padding: const EdgeInsets.only(left: 14.0)),
+                                    Expanded(
+                                                                          child: new Text("Search for any Movie or TV Show..",style: TextStyle(
+                                      fontFamily: 'google',
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.grey
                                   ),
+                                      ),
                                     ),
-                                    new Icon(Icons.search)
+                                    new Icon(Icons.search),
+                                    new Padding(padding: const EdgeInsets.only(right: 10.0),)
                                   ],
                                 ),
                               )

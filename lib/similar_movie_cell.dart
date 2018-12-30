@@ -34,6 +34,13 @@ class SimilarCell extends StatelessWidget {
                   image: NetworkImage(image_url+similar_movies['poster_path']),
                   fit: BoxFit.cover
                 ),
+                boxShadow: [
+                new BoxShadow(
+                  color: Colors.black,
+                  blurRadius: 2.0,
+                  offset: Offset(1.0, 3.0)
+                )
+              ]
 
               ),
             ),

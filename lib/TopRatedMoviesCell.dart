@@ -45,8 +45,11 @@ class TopRatedMovieCellHome extends StatelessWidget {
         
         child: new Text(top_rated_cell['title'],style: TextStyle(
           fontFamily: 'google',
-          fontWeight: FontWeight.w400
-        ),),
+          fontWeight: FontWeight.w400,
+          
+        ),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,),
       )
         ],
       )
