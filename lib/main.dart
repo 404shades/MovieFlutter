@@ -289,7 +289,7 @@ class _FrontScreenState extends State<FrontScreen> {
                               alignment: Alignment.center,
                               height:60.0,
                               width: MediaQuery.of(context).size.width-95,
-                              child: GestureDetector(
+                              child: InkWell(
                                 onTap:()=>showSearch(context: context,delegate: MovieSearch()),
                                 child: new Card(
 

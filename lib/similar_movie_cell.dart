@@ -8,7 +8,7 @@ class SimilarCell extends StatelessWidget {
   SimilarCell(this.similar_movies,this.type);
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(
           

@@ -8,7 +8,7 @@ class CastCell extends StatelessWidget {
   Widget build(BuildContext context) {
     print(cast['profile_path']);
     
-    return GestureDetector(
+    return InkWell(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(builder: (context){
           return new CastDetail(cast['id']);

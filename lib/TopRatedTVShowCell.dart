@@ -6,7 +6,7 @@ class TopRatedTvShowCell extends StatelessWidget {
   TopRatedTvShowCell(this.top_rated_cell);
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: ()=>Navigator.push(context, new MaterialPageRoute(
         fullscreenDialog: true,builder: (context)=>TVDetail(tv_id: top_rated_cell['id'],)
       )),

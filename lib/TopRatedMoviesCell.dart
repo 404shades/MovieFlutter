@@ -6,7 +6,7 @@ class TopRatedMovieCellHome extends StatelessWidget {
   TopRatedMovieCellHome(this.top_rated_cell);
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: (){
         Navigator.push(context, new MaterialPageRoute(
           fullscreenDialog: true,

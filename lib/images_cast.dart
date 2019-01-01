@@ -5,7 +5,7 @@ class ImagesOfCast extends StatelessWidget {
   ImagesOfCast(this.image_cast);
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       child: new Container(
           alignment: Alignment.center,
           

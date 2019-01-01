@@ -10,7 +10,7 @@ class TopRatedMovieCell extends StatelessWidget {
   TopRatedMovieCell(this.movie,this.i);
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap:(){
         Navigator.of(context).push(new MaterialPageRoute(builder: (context){
           return new MovieDetail(movie[i]['id']);

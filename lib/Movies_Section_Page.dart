@@ -227,7 +227,7 @@ class GenreSection extends AnimatedWidget {
   @override
   Widget build(BuildContext context) {
     final Animation<double> animation = listenable;
-    return GestureDetector(
+    return InkWell(
       onTap: (){
         Navigator.of(context).push(MaterialPageRoute(
           fullscreenDialog: true,

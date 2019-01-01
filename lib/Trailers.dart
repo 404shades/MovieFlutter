@@ -8,7 +8,8 @@ class NowPlayingCell extends StatelessWidget {
   NowPlayingCell(this.now_movie);
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
+      
       onTap: (){
         Navigator.push(context, MaterialPageRoute(
           

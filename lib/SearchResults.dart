@@ -13,7 +13,7 @@ class SearchResults extends StatelessWidget {
   SearchResults({this.poster_image,this.title,this.type,this.id});
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: (){
        Navigator.push(context, MaterialPageRoute(
          builder: (context){
