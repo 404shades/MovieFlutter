@@ -59,6 +59,7 @@ var upcoming;
         label: Text("Home")
         ,
         onPressed: (){},
+       
         backgroundColor: Colors.black87,
       ),
       backgroundColor: Color(0xFFF6F7FB),
@@ -230,7 +231,7 @@ class GenreSection extends AnimatedWidget {
       onTap: (){
         Navigator.of(context).push(MaterialPageRoute(
           fullscreenDialog: true,
-          builder: (context)=>GenreMovies(genreId: genreID,genretype: 'movie',),
+          builder: (_)=>GenreMovies(genreId: genreID,genretype: 'movie',title: title,image: image,),
         ));
       },
           child: Container(
@@ -260,18 +261,21 @@ class GenreSection extends AnimatedWidget {
                 new Positioned(
                   top: 45.0,
                   left: 25.0,
-                  child: Text(title,style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'google',
-                    fontSize: 17.0,
-                    fontWeight: FontWeight.w700
-                  ),),
+                  child: Hero(
+                    tag:genreID.toString(),
+                                      child: Text(title,style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'google',
+                        fontSize: 17.0,
+                        fontWeight: FontWeight.w700
+                      ),),
+                  ),
                 ),
                 new Positioned(
                   bottom: 0.0,
                   right: animation.value,
                   top: 0.0,
-                  child: Image.asset("assets/images/$image.png",),
+                  child: Hero(tag:title,child: Image.asset("assets/images/$image.png",)),
                 )
           ],
         ),

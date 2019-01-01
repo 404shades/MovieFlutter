@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_griller/SearchResults.dart';
 Future<Map> getGenreMovies(var id) async{
@@ -18,28 +19,58 @@ class GenreMovies extends StatelessWidget {
   final genreId;
   var  _genreResults;
   final genretype;
-  GenreMovies({this.genreId,this.genretype});
+  final title;
+  final image;
+  GenreMovies({this.genreId,this.genretype,this.title,this.image});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
           body: SingleChildScrollView(
+            padding: const EdgeInsets.all(0.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            new SizedBox(height: 10.0,),
+            Row(
+              
+              children: <Widget>[
+
+                Padding(padding: EdgeInsets.only(left: 10.0)),
+                IconButton(icon: Icon(FontAwesomeIcons.arrowLeft),onPressed: ()=>Navigator.pop(context),),
+                Expanded(
+                                  child: Hero(
+                                    tag: genreId.toString(),
+                                                                      child: Text(title,style: TextStyle(
+                      fontFamily: 'google',
+                      fontSize: 37.0,
+                      color: Colors.blueGrey.shade800,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.4
+
+                    ),),
+                                  ),
+                ),
+                  genretype=='movie'? Container(height: 50.0,width:50.0,child: Hero(tag:title,child: Image.asset("assets/images/$image.png",))):Container(),
+                  Padding(padding: const EdgeInsets.only(right: 10.0),)
+              ],
+            ),
             FutureBuilder(
               future: genretype=='movie'?getGenreMovies(genreId):getGenreTV(genreId),
               builder: (context,snapshot){
                 if(!snapshot.hasData){
-                  return Center(child: CircularProgressIndicator(backgroundColor: Colors.black,),);
+                  return Container(height: MediaQuery.of(context).size.height,child: Center(child: CircularProgressIndicator(backgroundColor: Colors.black,),));
                 }
                 _genreResults = snapshot.data['results'];
                 return Container(
-                  height:MediaQuery.of(context).size.height,
-                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height,
+                  
                   
                   child: OrientationBuilder(
                     builder: (context,orientation){
                       return GridView.builder(
-                        padding: EdgeInsets.only(top: 5.0,right: 5.0,bottom: 15.0),
+                        physics: BouncingScrollPhysics(),
+                        padding: EdgeInsets.only(top: 2.0,right: 5.0,bottom: 80.0),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: orientation==Orientation.landscape?5:3,
                           childAspectRatio: 0.50

@@ -91,7 +91,7 @@ class TVGenre extends StatelessWidget {
       onTap:  (){
         Navigator.of(context).push(MaterialPageRoute(
           fullscreenDialog: true,
-          builder: (context)=>GenreMovies(genreId: genreID,genretype: 'tv',),
+          builder: (context)=>GenreMovies(genreId: genreID,genretype: 'tv',title: title,),
         ));
       },
           child: Container(
@@ -132,12 +132,15 @@ class TVGenre extends StatelessWidget {
             //   ),
             // )
             // ,
-            new Positioned(bottom: 10.0,left: 20.0,child: Text(
-              title,style: TextStyle(
-                color: Colors.white,
-                fontSize: 52.0,
-                fontFamily: 'google',
-                fontWeight: FontWeight.bold
+            new Positioned(bottom: 10.0,left: 20.0,child: Hero(
+              tag: genreID.toString(),
+                          child: Text(
+                title,style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 52.0,
+                  fontFamily: 'google',
+                  fontWeight: FontWeight.bold
+                ),
               ),
             ),),
            
