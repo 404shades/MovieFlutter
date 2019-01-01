@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart'; 
@@ -9,8 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'dart:convert';
 
-import 'package:movie_griller/Gradients.dart';
-import 'package:movie_griller/Loader.dart';
+
 import 'package:movie_griller/images_cast.dart';
 import 'package:movie_griller/similar_movie_cell.dart';
 

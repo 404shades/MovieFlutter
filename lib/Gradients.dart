@@ -81,3 +81,17 @@ var thodaSexyGradient = new LinearGradient(
   end: Alignment.topRight,
   stops: [0.0,1.0]
 );
+var skyBlueGradient = new LinearGradient(
+  colors: [const Color(0xFF15EDED),const Color(0xFF029CF5)],
+  tileMode: TileMode.clamp,
+  begin: Alignment.bottomLeft,
+  end: Alignment.topRight,
+  stops: [0.0,1.0]
+);
+var blackSexyGradient = new LinearGradient(
+  colors: [const Color(0xFF90203F),const Color(0xFF537895)],
+  tileMode: TileMode.clamp,
+  begin: Alignment.bottomLeft,
+  end: Alignment.topRight,
+  stops: [0.0,1.0]
+);

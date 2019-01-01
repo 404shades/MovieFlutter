@@ -46,6 +46,11 @@ flutter:
    - assets/images/romance.png
    - assets/images/horror.png
    - assets/images/comedy.png
+   - assets/images/comedyTV.png
+   - assets/images/animationTV.png
+   - assets/images/crimeTV.png
+   - assets/images/sciTV.png
+   - assets/images/drama.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

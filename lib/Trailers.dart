@@ -22,17 +22,13 @@ class NowPlayingCell extends StatelessWidget {
         
         
         
-        elevation: 1.0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
+        elevation: 3.0,
+        
         child: Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.all(0.0),
           margin: const EdgeInsets.all(0.0),
-          decoration: BoxDecoration(
-            
-            borderRadius: BorderRadius.circular(14.0)
-
-          ),
+          
           
           child: Stack(
             fit: StackFit.expand,
@@ -41,12 +37,12 @@ class NowPlayingCell extends StatelessWidget {
               new Container(
                 
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14.0),
+                  borderRadius: BorderRadius.circular(0.0),
                   image: DecorationImage(image: NetworkImage(image_url+now_movie['backdrop_path']),fit:BoxFit.cover)
                 ),
               ):new Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14.0),
+                  borderRadius: BorderRadius.circular(0.0),
                   color: Colors.white
                 ),
               ),
@@ -55,7 +51,7 @@ class NowPlayingCell extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.06),
-                      borderRadius: BorderRadius.circular(14.0)
+                      
                     ),
                   ),
                   

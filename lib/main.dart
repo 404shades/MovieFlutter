@@ -121,6 +121,7 @@ class _FrontScreenState extends State<FrontScreen> {
   var top_rated_movies;
   var top_rated_tv_shows;
   var now_playing;
+  PageController _controller = PageController();
   TextEditingController textEditingController = TextEditingController();
     // Widget _buildBottomNavigation(){
     //   return Container(
@@ -415,13 +416,21 @@ class _FrontScreenState extends State<FrontScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  new Text("Now Playing Movies",style: 
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: new Text("Now Playing Movies",style: 
                     TextStyle(
                       color: Colors.black,
                       fontFamily: 'google',
                       fontSize: 26.0,
                       fontWeight: FontWeight.w700
                     )),
+                      ),
+                      new IconButton(icon:Icon(FontAwesomeIcons.chevronCircleLeft,),onPressed: ()=>_controller.previousPage(curve: Curves.bounceOut,duration: Duration(milliseconds: 1200)),)
+                      ,new IconButton(icon:Icon(FontAwesomeIcons.chevronCircleRight,),onPressed: ()=>_controller.nextPage(curve: Curves.bounceOut,duration: Duration(milliseconds: 1200)),)
+                    ],
+                  ),
                     new Container(
                     margin: const EdgeInsets.only(top:3.0,bottom: 14.0),
                     width: (MediaQuery.of(context).size.width-40)/1.5,
@@ -440,6 +449,7 @@ class _FrontScreenState extends State<FrontScreen> {
                         }
                         now_playing = snapshot.data['results'];
                         return new PageView.builder(
+                          controller: _controller,
                           physics: BouncingScrollPhysics(),
                       itemCount: now_playing.length,
                       itemBuilder: (context,index){
