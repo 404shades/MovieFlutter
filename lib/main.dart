@@ -202,7 +202,18 @@ class _FrontScreenState extends State<FrontScreen> {
                               future: getJson(),
                               builder: (context,snapshot){
                                 if(!snapshot.hasData){
-                                  return Center(child: CircularProgressIndicator(),);
+                                  return Center(child: SpinKitThreeBounce(
+                                    size: 24.0,
+                                    itemBuilder: (_,index){
+                                      
+                                      return DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          gradient: blackBlueGradient,
+                                          shape:BoxShape.circle
+                                        ),
+                                      );
+                                    },
+                                  ));
                                 }
                                 movies = snapshot.data;
                                 return new Expanded(
@@ -260,9 +271,18 @@ class _FrontScreenState extends State<FrontScreen> {
                         builder: (context,snapshot){
                           if(!snapshot.hasData){
                             return Center(
-                              child: new CircularProgressIndicator(
-                                backgroundColor: Colors.black,
-                              ),
+                              child: SpinKitThreeBounce(
+                              size: 24.0,
+                                    itemBuilder: (_,index){
+                                      
+                                      return DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          gradient: blackBlueGradient,
+                                          shape:BoxShape.circle,
+                                        ),
+                                      );
+                                    },
+                                  )
                             );
                           }
                           top_rated_movies = snapshot.data;
@@ -322,7 +342,18 @@ class _FrontScreenState extends State<FrontScreen> {
                       future: getNowPlayingMovies(),
                       builder: (context,snapshot){
                         if(!snapshot.hasData){
-                          return new Center(child: CircularProgressIndicator(),);
+                          return new Center(child: SpinKitThreeBounce(
+                              size: 24.0,
+                                    itemBuilder: (_,index){
+                                      
+                                      return DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          gradient: blackBlueGradient,
+                                          shape:BoxShape.circle,
+                                        ),
+                                      );
+                                    },
+                                  ));
                         }
                         now_playing = snapshot.data['results'];
                         return new PageView.builder(
@@ -370,9 +401,18 @@ class _FrontScreenState extends State<FrontScreen> {
                         builder: (context,snapshot){
                           if(!snapshot.hasData){
                             return Center(
-                              child: new CircularProgressIndicator(
-                                backgroundColor: Colors.black,
-                              ),
+                            child: SpinKitThreeBounce(
+                              size: 24.0,
+                                    itemBuilder: (_,index){
+                                      
+                                      return DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          gradient: blackBlueGradient,
+                                          shape:BoxShape.circle,
+                                        ),
+                                      );
+                                    },
+                                  )
                             );
                           }
                           top_rated_tv_shows = snapshot.data;
@@ -441,9 +481,10 @@ class MovieSearch extends SearchDelegate<String>{
       future: fetchMovies(1, query),
       builder: (context,snapshot){
         if(!snapshot.hasData){
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return SpinKitPouringHourglass(
+                  size: 85.0,
+                  color: Colors.blueGrey.shade800,
+                );
 
         }
         searchResults = snapshot.data['results'];

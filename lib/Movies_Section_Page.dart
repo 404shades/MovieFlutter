@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:movie_griller/GenreMovies.dart';
 import 'package:movie_griller/Gradients.dart';
 import 'package:http/http.dart' as http;
@@ -156,7 +157,18 @@ var upcoming;
                        future: getNowPlayingMovies(),
                         builder: (context,snapshot){
                           if(!snapshot.hasData){
-                            return Center(child: CircularProgressIndicator(backgroundColor: Colors.black,),);
+                            return Center(child: SpinKitThreeBounce(
+                              size: 24.0,
+                                    itemBuilder: (_,index){
+                                      
+                                      return DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          gradient: blackBlueGradient,
+                                          shape:BoxShape.circle,
+                                        ),
+                                      );
+                                    },
+                                  ));
                           }
                           movies=snapshot.data['results'];
                           return ListView.builder(
@@ -193,7 +205,18 @@ var upcoming;
                        future: getUpcomingMovies(),
                         builder: (context,snapshot){
                           if(!snapshot.hasData){
-                            return Center(child: CircularProgressIndicator(backgroundColor: Colors.black,),);
+                            return Center(child: SpinKitThreeBounce(
+                              size: 24.0,
+                                    itemBuilder: (_,index){
+                                      
+                                      return DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          gradient: blackBlueGradient,
+                                          shape:BoxShape.circle,
+                                        ),
+                                      );
+                                    },
+                                  ));
                           }
                           upcoming=snapshot.data['results'];
                           return ListView.builder(

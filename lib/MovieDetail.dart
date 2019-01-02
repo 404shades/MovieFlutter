@@ -92,10 +92,10 @@ class MovieDetail extends StatelessWidget {
         builder: (context,snapshot){
           if(!snapshot.hasData){
               return Center(
-                child: SpinKitHourGlass(
-                  color: Colors.black,
-                  size: 86.0,
-                ),
+                child: SpinKitPouringHourglass(
+                  size: 85.0,
+                  color: Colors.blueGrey.shade800,
+                )
               );
           }
           movie = snapshot.data;

@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_griller/SearchResults.dart';
@@ -59,7 +60,10 @@ class GenreMovies extends StatelessWidget {
               future: genretype=='movie'?getGenreMovies(genreId):getGenreTV(genreId),
               builder: (context,snapshot){
                 if(!snapshot.hasData){
-                  return Container(height: MediaQuery.of(context).size.height,child: Center(child: CircularProgressIndicator(backgroundColor: Colors.black,),));
+                  return Container(height: MediaQuery.of(context).size.height,child: Center(child: SpinKitPouringHourglass(
+                  size: 85.0,
+                  color: Colors.blueGrey.shade800,
+                )));
                 }
                 _genreResults = snapshot.data['results'];
                 return Container(
