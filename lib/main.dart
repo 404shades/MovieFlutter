@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:movie_griller/Movies_Section_Page.dart';
 import 'package:movie_griller/SearchResults.dart';
 import 'package:movie_griller/TV_Section_Page.dart';
-
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:movie_griller/TopRatedMoviesCell.dart';
 import 'package:movie_griller/TopRatedTVShowCell.dart';
 import 'package:movie_griller/Trailers.dart';
@@ -39,67 +39,19 @@ Future<Map> getNowPlayingMovies() async{
 }
 
 Future<Map> fetchMovies(int pageNumber,String query) async{
-    // TODO: implement fetchMovies
+    
     http.Response response = await http.get(
       'https://api.themoviedb.org/3/search/multi?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&language=en-US&query=$query&page=$pageNumber'
     );
     return json.decode(response.body);
 
   }
-class RoundedIconButton extends StatelessWidget {
-  final IconData iconData;
-  final Color color;
-  final double size;
-  final VoidCallback onPressed;
-  RoundedIconButton.large({
-    this.iconData,
-    this.color,
-    this.onPressed
-  }):size = 50.0;
-  RoundedIconButton.small({
-    this.iconData,
-    this.color,
-    this.onPressed
-  }):size = 30.0;
-  RoundedIconButton({
-    this.iconData,
-    this.color,
-    this.onPressed,
-    this.size
-  });
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-        
-      decoration: new BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.white,
-        boxShadow: [
-          new BoxShadow(
-            color: const Color(0x11000000),
-            blurRadius: 10.0
-          )
-        ]
-      ),
-      child: new RawMaterialButton(
-        shape: new CircleBorder(),
-        elevation: 10.0,
-        child: new Icon(
-          iconData,
-          color: color,
 
-        ),
-        onPressed: onPressed,
-      ),
-    );
-  }
-}
 class HomeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
+      title: 'Movie Fun',
       debugShowCheckedModeBanner: false,
       home: new FrontScreen(),
       theme: new ThemeData(
@@ -123,45 +75,6 @@ class _FrontScreenState extends State<FrontScreen> {
   var now_playing;
   PageController _controller = PageController();
   TextEditingController textEditingController = TextEditingController();
-    // Widget _buildBottomNavigation(){
-    //   return Container(
-    //     alignment: Alignment.center,
-    //     margin: const EdgeInsets.all(14.0),
-    //     padding: const EdgeInsets.all(16.0),
-    //     height: 55.0,
-        
-    //     decoration: BoxDecoration(
-    //       color: Colors.white,
-    //       boxShadow: [
-    //         new BoxShadow(
-    //           blurRadius: 10.0,
-    //           color: Colors.black38,
-    //           offset: Offset(0.0, 10.0)
-    //         ),
-            
-    //       ],
-    //       shape: BoxShape.rectangle,
-    //       borderRadius: BorderRadius.circular(10.0)
-    //     ),
-    //     child: new Row(
-    //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    //         children: <Widget>[
-    //           new RoundedIconButton.large(
-    //             iconData: Icons.movie,
-    //             color: Colors.green,
-    //           ),
-    //           new RoundedIconButton.large(
-    //             iconData: Icons.home,
-    //             color: Colors.pink,
-    //           ),
-    //           new RoundedIconButton(
-    //             iconData: Icons.tv,
-    //             color: Colors.cyan,
-    //           )
-    //         ],
-    //     ),
-    //   );
-    // }
   @override
   Widget build(BuildContext context) {
     
@@ -173,7 +86,7 @@ class _FrontScreenState extends State<FrontScreen> {
         icon: const Icon(Icons.home),
         label: Text("Home")
         ,
-        onPressed: (){},
+        onPressed: ()=>null,
         backgroundColor: Colors.black87,
       ),
       backgroundColor: Color(0xFFF6F7FB),
@@ -202,43 +115,7 @@ class _FrontScreenState extends State<FrontScreen> {
           ],
         ),
       ),
-      // body: new Stack(
-      //   fit: StackFit.expand,
-      //   children: <Widget>[
-      //     new Positioned(
-      //       left: -110.0,
-      //       top: -25.0,
-      //       child: new Container(
-      //         height: 280.0,
-      //         width: 380.0,
-      //         decoration: BoxDecoration(
-      //           gradient: bluePinkGradient,
-               
-      //           shape: BoxShape.circle,
-                
-      //         ),
-      //       ),
-      //     ),
-      //     new Positioned(
-      //       top: 58.0,
-      //       left: 35.0,
-      //       child: new Flex(
-      //         direction: Axis.vertical,
-      //         children: <Widget>[
-      //           new Expanded(
-              
-      //         child: new ListView.builder(
-      //         itemCount: 10,
-      //         itemBuilder: (context, i){
-      //           return new Text("data");
-      //         },
-      //       ),
-      //       )
-      //         ],
-      //       )
-      //     )
-      //   ],
-      // ),
+     
       body: new ListView(
         
         children: <Widget>[
@@ -304,7 +181,7 @@ class _FrontScreenState extends State<FrontScreen> {
                                     Expanded(
                                                                           child: new Text("Search for any Movie or TV Show..",style: TextStyle(
                                       fontFamily: 'google',
-                                      fontSize: 16.0,
+                                      
                                       fontWeight: FontWeight.w600,
                                       color: Colors.grey
                                   ),
@@ -333,7 +210,7 @@ class _FrontScreenState extends State<FrontScreen> {
                               child: new ListView.builder(
                                 physics: BouncingScrollPhysics(),
                                 scrollDirection: Axis.horizontal,
-                                itemCount: movies['results'].length,
+                                itemCount: movies==null?0:movies['results'].length,
                                 // shrinkWrap: true,
                                 itemBuilder: (context,i){
                                   return new Container(
@@ -517,8 +394,8 @@ class _FrontScreenState extends State<FrontScreen> {
                   ],
                 ),
               )
-
-
+,
+              new SizedBox(height: 24.0,)
             ],
           )
         ],
@@ -534,7 +411,7 @@ class MovieSearch extends SearchDelegate<String>{
   
   @override
   List<Widget> buildActions(BuildContext context) {
-    // TODO: implement buildActions
+   
     return [IconButton(icon: Icon(Icons.clear),onPressed: (){
       query="";
     })];
@@ -544,7 +421,7 @@ class MovieSearch extends SearchDelegate<String>{
 
   @override
   Widget buildLeading(BuildContext context) {
-    // TODO: implement buildLeading
+    
     return IconButton(
       icon: AnimatedIcon(
         icon: AnimatedIcons.menu_arrow,
@@ -558,7 +435,7 @@ class MovieSearch extends SearchDelegate<String>{
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
+    
     var searchResults;
     return new FutureBuilder(
       future: fetchMovies(1, query),
@@ -574,6 +451,7 @@ class MovieSearch extends SearchDelegate<String>{
           child: OrientationBuilder(
             builder: (context,orientation){
               return GridView.builder(
+                physics: BouncingScrollPhysics(),
           padding: EdgeInsets.only(top: 5.0,right: 5.0,bottom: 15.0),
           
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -584,24 +462,24 @@ class MovieSearch extends SearchDelegate<String>{
           itemBuilder: (context,index){
             print('length YEE ${searchResults.length}');
             var mediaType = searchResults[index]['media_type'];
-            var profile_path;
+            var _profilePath;
             var title;
             if(mediaType=='tv'){
-              profile_path = searchResults[index]['poster_path'];
+              _profilePath = searchResults[index]['poster_path'];
               title = searchResults[index]['name'];
             }
             else if(mediaType=='movie'){
-              profile_path = searchResults[index]['poster_path'];
+              _profilePath = searchResults[index]['poster_path'];
               title = searchResults[index]['title'];
             }
             else{
-              profile_path = searchResults[index]['profile_path'];
+              _profilePath = searchResults[index]['profile_path'];
               title = searchResults[index]['name'];
             }
-            var backdrop_path = searchResults[index]['backdrop_path'];
+            
             var id = searchResults[index]['id'];
             print(searchResults.length);
-            return SearchResults(poster_image: profile_path,title: title,type: mediaType,id: id,);
+            return SearchResults(poster_image: _profilePath,title: title,type: mediaType,id: id,);
           },
         );
             },
@@ -612,9 +490,9 @@ class MovieSearch extends SearchDelegate<String>{
   }
   @override
   Widget buildSuggestions(BuildContext context) {
-    // TODO: implement buildSuggestions
+    
 
-    return Center(child: Icon(Icons.sentiment_neutral,size: 24.0,),);
+    return Center(child: Icon(FontAwesomeIcons.searchDollar,size: 54.0,),);
 
 }
 }

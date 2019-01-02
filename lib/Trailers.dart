@@ -105,69 +105,74 @@ class NowPlayingCell extends StatelessWidget {
                         child: new Text(now_movie['title'],style:TextStyle(
                           fontFamily:'google',
                           color: Colors.white,
-                          fontSize:17.0,
+                          fontSize:16.0,
                           fontWeight:FontWeight.bold,
                           
-                        )),
+                        ),maxLines: 2,overflow: TextOverflow.ellipsis,),
                       ),
                       new Expanded(
                         child: new Container(
                         alignment: Alignment.center,
-                        child: new Center(
-                          
-                          child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                                new Container(
-                                  alignment: Alignment.center,
-                                  height: 22.0,
-                                  padding: const EdgeInsets.only(left:14.0,right: 14.0),
-                                  decoration: BoxDecoration(
-                                    gradient: pinkRedGradient,
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    boxShadow: [
-                                      new BoxShadow(
-                                        color: Colors.black26,
-                                        blurRadius: 3.0,
-                                        offset: Offset(1.0, 1.8)
-                                      )
-                                    ]
+                        child: FittedBox(
+                          alignment: Alignment.center,
+                          fit: BoxFit.cover,
+                                                  child: new Center(
+                            
+                            child: new Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                  new Container(
+                                    alignment: Alignment.center,
+                                    height: 22.0,
+                                    padding: const EdgeInsets.only(left:14.0,right: 14.0),
+                                    decoration: BoxDecoration(
+                                      gradient: pinkRedGradient,
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      boxShadow: [
+                                        new BoxShadow(
+                                          color: Colors.black26,
+                                          blurRadius: 3.0,
+                                          offset: Offset(1.0, 1.8)
+                                        )
+                                      ]
+                                    ),
+                                    child: new Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: <Widget>[
+                                        Text(now_movie['vote_average'].toString(),style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'google',
+                                      fontWeight: FontWeight.bold
+                                    ),),
+                                    new Icon(Icons.star_border,color: Colors.white,size: 15.0,)
+                                      ],
+                                    )
                                   ),
-                                  child: new Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: <Widget>[
-                                      Text(now_movie['vote_average'].toString(),style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'google',
-                                    fontWeight: FontWeight.bold
-                                  ),),
-                                  new Icon(Icons.star_border,color: Colors.white,size: 15.0,)
-                                    ],
-                                  )
-                                ),
-                                new Container(
-                                  alignment: Alignment.center,
-                                  height: 22.0,
-                                  
-                                  padding: const EdgeInsets.only(left:14.0,right: 14.0),
-                                  decoration: BoxDecoration(
-                                    gradient: bluePinkGradient,
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    boxShadow: [
-                                      new BoxShadow(
-                                        color: Colors.black26,
-                                        blurRadius: 3.0,
-                                        offset: Offset(1.0, 1.8)
-                                      )
-                                    ]
+                                  SizedBox(width: 8.0,),
+                                  new Container(
+                                    alignment: Alignment.center,
+                                    height: 22.0,
+                                    
+                                    padding: const EdgeInsets.only(left:14.0,right: 14.0),
+                                    decoration: BoxDecoration(
+                                      gradient: bluePinkGradient,
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      boxShadow: [
+                                        new BoxShadow(
+                                          color: Colors.black26,
+                                          blurRadius: 3.0,
+                                          offset: Offset(1.0, 1.8)
+                                        )
+                                      ]
+                                    ),
+                                    child:Text(now_movie['release_date'].toString(),style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'google',
+                                      fontWeight: FontWeight.bold
+                                    ),),
                                   ),
-                                  child:Text(now_movie['release_date'].toString(),style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'google',
-                                    fontWeight: FontWeight.bold
-                                  ),),
-                                ),
-                            ],
+                              ],
+                            ),
                           ),
                         )
                       ),

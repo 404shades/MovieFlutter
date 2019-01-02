@@ -25,8 +25,8 @@ class TopRatedMovieCell extends StatelessWidget {
         
         image: new DecorationImage(
           image: new NetworkImage(
-              'https://image.tmdb.org/t/p/w500' + movie[i]['backdrop_path'].toString()
-              
+              movie[i]['backdrop_path']!=null?'https://image.tmdb.org/t/p/w500' + movie[i]['backdrop_path'].toString()
+              :'https://steamuserimages-a.akamaihd.net/ugc/923674725906155229/34FAED61D4A23B8BF8771089530E209B6C0A0E75/'
           ),
           fit: BoxFit.cover,
           

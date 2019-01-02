@@ -106,31 +106,37 @@ var upcoming;
                     color: const Color(0xFFF6356F)
                   ),),
                 ),
-                Text('4O4 Shades',style: TextStyle(
-                  fontFamily: 'google',
-                  fontSize: 17.0
-                ),)
+                // Text('4O4 Shades',style: TextStyle(
+                //   fontFamily: 'google',
+                //   fontSize: 17.0
+                // ),)
               ],
             ),
             new SizedBox(
               height: 18.0,
             ),
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                GenreSection(gradient: redSexyGradient,image: 'action',title: 'ACTION',color: const Color(0xFFF6356F).withOpacity(0.8),animation: animation,genreID: 28,),
-                GenreSection(gradient: violetSexyGradient,image: 'comedy',title: 'COMEDY',color: const Color(0xFF52A7EA).withOpacity(0.8),animation: animation,genreID: 35,)
-              ],
+            FittedBox(
+              
+                          child: new Row(
+                
+                children: <Widget>[
+                  GenreSection(gradient: redSexyGradient,image: 'action',title: 'ACTION',color: const Color(0xFFF6356F).withOpacity(0.8),animation: animation,genreID: 28,),
+                  SizedBox(width: 28.0,),GenreSection(gradient: violetSexyGradient,image: 'comedy',title: 'COMEDY',color: const Color(0xFF52A7EA).withOpacity(0.8),animation: animation,genreID: 35,)
+                ],
+              ),
             ),
             SizedBox(
               height: 18.0,
             ),
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                GenreSection(gradient: greenSexyGradient,image: 'horror',title: 'HORROR',color: const Color(0xFF92D000).withOpacity(0.8),animation: animation,genreID: 27,),
-                GenreSection(gradient: orangeSexyGradient,image: 'romance',title: 'ROMANCE',color: const Color(0xFFFF9B30).withOpacity(0.8),animation: animation,genreID: 10749,)
-              ],
+            FittedBox(
+              
+                          child: new Row(
+                
+                children: <Widget>[
+                  GenreSection(gradient: greenSexyGradient,image: 'horror',title: 'HORROR',color: const Color(0xFF92D000).withOpacity(0.8),animation: animation,genreID: 27,),
+                  SizedBox(width: 28.0,),GenreSection(gradient: orangeSexyGradient,image: 'romance',title: 'ROMANCE',color: const Color(0xFFFF9B30).withOpacity(0.8),animation: animation,genreID: 10749,)
+                ],
+              ),
             ),
             SizedBox(height: 18.0,),
             Container(

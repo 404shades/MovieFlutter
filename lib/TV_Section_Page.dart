@@ -137,7 +137,7 @@ class TVGenre extends StatelessWidget {
                           child: Text(
                 title,style: TextStyle(
                   color: Colors.white,
-                  fontSize: 52.0,
+                  fontSize: 45.0,
                   fontFamily: 'google',
                   fontWeight: FontWeight.bold
                 ),
