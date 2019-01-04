@@ -33,7 +33,7 @@ Future<Map> getTopRatedTVShows() async{
   return json.decode(response.body);
 }
 Future<Map> getNowPlayingMovies() async{
-  var url = 'https://api.themoviedb.org/3/movie/now_playing?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f';
+  var url = 'https://api.themoviedb.org/3/trending/all/day?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f';
   http.Response response = await http.get(url);
   return json.decode(response.body);
 }
@@ -198,7 +198,7 @@ class _FrontScreenState extends State<FrontScreen> {
                             new SizedBox(
                               height: 13.0,
                             ),
-                            new FutureBuilder(
+                            new FutureBuilder<Map>(
                               future: getJson(),
                               builder: (context,snapshot){
                                 if(!snapshot.hasData){
@@ -316,7 +316,7 @@ class _FrontScreenState extends State<FrontScreen> {
                   Row(
                     children: <Widget>[
                       Expanded(
-                        child: new Text("Now Playing Movies",style: 
+                        child: new Text("Trending Today",style: 
                     TextStyle(
                       color: Colors.black,
                       fontFamily: 'google',
@@ -361,7 +361,49 @@ class _FrontScreenState extends State<FrontScreen> {
                           physics: BouncingScrollPhysics(),
                       itemCount: now_playing.length,
                       itemBuilder: (context,index){
-                        return NowPlayingCell(now_playing[index]);
+                        var profilePath;
+                        var backdropPath;
+                        var title;
+                        var ratings;
+                        var releaseDate;
+                        var id;
+                        if(now_playing[index].containsKey("title")){
+                            profilePath = now_playing[index]['poster_path'];
+                            backdropPath = now_playing[index]['backdrop_path'];
+                            title = now_playing[index]['title'];
+                            ratings = now_playing[index]['vote_average'];
+                            releaseDate = now_playing[index]['release_date'];
+                            id = now_playing[index]['id'];
+                            return NowPlayingCell(poster_path: profilePath,backdrop_path: backdropPath,name: title
+                            ,id: id,ratings: ratings,release_date: releaseDate,media_type: 'movie',
+                            );
+                        }
+                        else if(now_playing[index].containsKey("name")){
+                          if(now_playing[index].containsKey("profile_path")){
+                            profilePath = now_playing[index]['profile_path'];
+                            backdropPath= "";
+                            title = now_playing[index]['name'];
+                            ratings = now_playing[index]['popularity'];
+                            releaseDate = now_playing[index]['date_of_birth'];
+                            id = now_playing[index]['id'];
+                            return NowPlayingCell(poster_path: profilePath,backdrop_path: backdropPath,
+                            name: title,ratings: ratings,release_date: releaseDate,id: id,media_type: 'person',
+                            );
+                          }
+                          else{
+                          profilePath = now_playing[index]['poster_path'];
+                          backdropPath = now_playing[index]['backdrop_path'];
+                          title = now_playing[index]['name'];
+                          ratings = now_playing[index]['vote_average'];
+                          releaseDate = now_playing[index]['first_air_date'];
+                          id = now_playing[index]['id'];
+                          return NowPlayingCell(poster_path: profilePath,backdrop_path: backdropPath,
+                          name: title,id: id,ratings: ratings,release_date: releaseDate,media_type: 'tv',
+                          );
+                          }
+                        }
+                        return null;
+                        
                       },
                     );
                       },
@@ -481,9 +523,16 @@ class MovieSearch extends SearchDelegate<String>{
       future: fetchMovies(1, query),
       builder: (context,snapshot){
         if(!snapshot.hasData){
-          return SpinKitPouringHourglass(
+          return SpinKitCubeGrid(
                   size: 85.0,
-                  color: Colors.blueGrey.shade800,
+                  
+                  itemBuilder: (context,index){
+                    return DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: blackBlueGradient
+                          ),
+                    );
+                  },
                 );
 
         }
@@ -501,7 +550,7 @@ class MovieSearch extends SearchDelegate<String>{
           ),
           itemCount: query.isEmpty?0:searchResults.length,
           itemBuilder: (context,index){
-            print('length YEE ${searchResults.length}');
+            
             var mediaType = searchResults[index]['media_type'];
             var _profilePath;
             var title;
@@ -519,7 +568,7 @@ class MovieSearch extends SearchDelegate<String>{
             }
             
             var id = searchResults[index]['id'];
-            print(searchResults.length);
+            
             return SearchResults(poster_image: _profilePath,title: title,type: mediaType,id: id,);
           },
         );

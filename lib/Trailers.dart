@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:movie_griller/CastDetail.dart';
 import 'package:movie_griller/Gradients.dart';
 import 'package:movie_griller/MovieDetail.dart';
 import 'dart:ui' as ui;
+
+import 'package:movie_griller/tv_detail.dart';
 class NowPlayingCell extends StatelessWidget {
-  final now_movie;
+  final poster_path;
+  final backdrop_path;
+  final release_date;
+  final ratings;
+  final id;
+  final name;
+  final media_type;
   final image_url = 'https://image.tmdb.org/t/p/w500';
-  NowPlayingCell(this.now_movie);
+
+  NowPlayingCell({this.poster_path,this.backdrop_path,this.release_date,this.ratings,this.id,this.name,this.media_type});
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -15,7 +25,15 @@ class NowPlayingCell extends StatelessWidget {
           
           builder: (context){
 
-            return new MovieDetail(now_movie['id']);
+            if(media_type=='movie'){
+              return MovieDetail(id);
+            }
+            else if(media_type=='tv'){
+              return TVDetail(tv_id: id,);
+            }
+            else{
+              return CastDetail(id);
+            }
           }
         ));
       },
@@ -34,12 +52,12 @@ class NowPlayingCell extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: <Widget>[
-              now_movie['backdrop_path'].toString().isNotEmpty?
+             backdrop_path.toString().isNotEmpty?
               new Container(
                 
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(0.0),
-                  image: DecorationImage(image: NetworkImage(image_url+now_movie['backdrop_path']),fit:BoxFit.cover)
+                  image: DecorationImage(image: NetworkImage(image_url+backdrop_path),fit:BoxFit.cover)
                 ),
               ):new Container(
                 decoration: BoxDecoration(
@@ -51,7 +69,7 @@ class NowPlayingCell extends StatelessWidget {
                   filter: new ui.ImageFilter.blur(sigmaX: 4.0,sigmaY: 4.0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.06),
+                      color: Colors.black.withOpacity(0.0),
                       
                     ),
                   ),
@@ -80,7 +98,7 @@ class NowPlayingCell extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14.0),
                         image: DecorationImage(
-                          image: NetworkImage(image_url + now_movie['poster_path']),
+                          image: NetworkImage(image_url + poster_path),
                           fit: BoxFit.cover
                         ),
                         boxShadow: [
@@ -102,7 +120,7 @@ class NowPlayingCell extends StatelessWidget {
                         alignment: Alignment.center,
                         
                         margin: const EdgeInsets.only(top: 16.0,right: 17.0,bottom: 12.0),
-                        child: new Text(now_movie['title'],style:TextStyle(
+                        child: new Text(name,style:TextStyle(
                           fontFamily:'google',
                           color: Colors.white,
                           fontSize:16.0,
@@ -139,7 +157,7 @@ class NowPlayingCell extends StatelessWidget {
                                     child: new Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: <Widget>[
-                                        Text(now_movie['vote_average'].toString(),style: TextStyle(
+                                        Text(ratings.toString(),style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: 'google',
                                       fontWeight: FontWeight.bold
@@ -165,7 +183,7 @@ class NowPlayingCell extends StatelessWidget {
                                         )
                                       ]
                                     ),
-                                    child:Text(now_movie['release_date'].toString(),style: TextStyle(
+                                    child:Text(release_date.toString(),style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: 'google',
                                       fontWeight: FontWeight.bold

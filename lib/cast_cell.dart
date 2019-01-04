@@ -6,7 +6,7 @@ class CastCell extends StatelessWidget {
   CastCell(this.cast);
   @override
   Widget build(BuildContext context) {
-    print(cast['profile_path']);
+   
     
     return InkWell(
       onTap: (){

@@ -24,7 +24,7 @@ class TVDetail extends StatelessWidget {
   TVDetail({this.tv_id});
   String getGenres(var genre){
     String answer = "";
-    print(genre.length.toString() + "kikkakak");
+    
     int le = min(genre.length,2);
     for(int i=0;i<le;i++){
         answer = answer + genre[i]['name']+ "|";
@@ -81,9 +81,16 @@ class TVDetail extends StatelessWidget {
         builder: (context,snapshot){
           if(!snapshot.hasData){
             return Center(
-              child: SpinKitPouringHourglass(
+              child: SpinKitCubeGrid(
                   size: 85.0,
-                  color: Colors.blueGrey.shade800,
+                  
+                  itemBuilder: (context,index){
+                    return DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: blackBlueGradient
+                          ),
+                    );
+                  },
                 )); 
           }
           tv_show = snapshot.data;

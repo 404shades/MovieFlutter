@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_griller/Gradients.dart';
 import 'package:movie_griller/SearchResults.dart';
 Future<Map> getGenreMovies(var id) async{
   var url = 'https://api.themoviedb.org/3/discover/movie?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=$id';
@@ -60,9 +61,16 @@ class GenreMovies extends StatelessWidget {
               future: genretype=='movie'?getGenreMovies(genreId):getGenreTV(genreId),
               builder: (context,snapshot){
                 if(!snapshot.hasData){
-                  return Container(height: MediaQuery.of(context).size.height,child: Center(child: SpinKitPouringHourglass(
+                  return Container(height: MediaQuery.of(context).size.height,child: Center(child: SpinKitCubeGrid(
                   size: 85.0,
-                  color: Colors.blueGrey.shade800,
+                  
+                  itemBuilder: (context,index){
+                    return DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: blackBlueGradient
+                          ),
+                    );
+                  },
                 )));
                 }
                 _genreResults = snapshot.data['results'];

@@ -2,9 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart'; 
 import 'dart:ui' as ui;
+import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:movie_griller/Gradients.dart';
 
 import 'dart:convert';
 
@@ -26,16 +28,23 @@ class CastDetail extends StatelessWidget {
   CastDetail(this.cast_id);
   @override
   Widget build(BuildContext context) {
-    print("Shahah $cast_id");
+    print(cast_id);
     return Scaffold(
       body: new FutureBuilder(
         future: getCastDetails(cast_id),
         builder: (context,snapshot){
           if(!snapshot.hasData){
             return Center(
-              child: SpinKitPouringHourglass(
+              child: SpinKitCubeGrid(
                   size: 85.0,
-                  color: Colors.blueGrey.shade800,
+                  
+                  itemBuilder: (context,index){
+                    return DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: blackBlueGradient
+                          ),
+                    );
+                  },
                 )
             );
           }
@@ -111,7 +120,7 @@ class CastDetail extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
                                       Icon(FontAwesomeIcons.heart,color: Colors.red,size: 20.0,),
-                                      Text(casting['popularity'].toString().substring(0,4),style: TextStyle(
+                                      Text(casting['popularity'].toString(),style: TextStyle(
                                         fontFamily: 'google',
                                         fontWeight: FontWeight.bold
                                       ),)
@@ -138,7 +147,7 @@ class CastDetail extends StatelessWidget {
                           
                           
                           new SizedBox(height: 10.0,),
-                          new Text(casting['place_of_birth'],style: TextStyle(
+                          new Text(casting['place_of_birth'].toString(),style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'google',
                             fontSize: 18.0,
