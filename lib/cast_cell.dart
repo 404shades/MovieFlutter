@@ -7,12 +7,20 @@ class CastCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
    
-    
+    String profilePath = cast['profile_path'];
     return InkWell(
+      splashColor: Colors.black,
+      
       onTap: (){
+        if(profilePath!=null){
         Navigator.push(context, MaterialPageRoute(builder: (context){
           return new CastDetail(cast['id']);
+          
         }));
+      }
+      else{
+      return null;
+      }
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -21,14 +29,14 @@ class CastCell extends StatelessWidget {
           Container(
         alignment: Alignment.topCenter,
         child: Container(
-          height: 88.0,
-          width: 88.0,
+          height: 90.0,
+          width: 90.0,
 
-          decoration: cast['profile_path']!=null?BoxDecoration(
+          decoration: profilePath!=null?BoxDecoration(
             shape: BoxShape.circle,
 
             image: DecorationImage(
-              image: NetworkImage(image_url+cast['profile_path']),
+              image: NetworkImage(image_url+profilePath),
               fit: BoxFit.cover,
               
             ),
@@ -40,7 +48,7 @@ class CastCell extends StatelessWidget {
             shape: BoxShape.circle,
             color: Colors.black.withOpacity(0.6)
           ),
-          child: cast['profile_path']==null?Center(child: Text(cast['name'][0],
+          child: profilePath==null?Center(child: Text(cast['name'][0],
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'google',

@@ -23,6 +23,7 @@ dependencies:
   flutter_spinkit:
   http:
   url_launcher: ^4.0.3
+  cached_network_image: ^0.5.1
 
 dev_dependencies:
   flutter_test:

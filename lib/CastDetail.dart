@@ -15,7 +15,7 @@ import 'package:movie_griller/images_cast.dart';
 import 'package:movie_griller/similar_movie_cell.dart';
 
 Future<Map> getCastDetails(var id) async{
-  var url = 'https://api.themoviedb.org/3/person/$id?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&append_to_response=images,credits';
+  var url = 'https://api.themoviedb.org/3/person/$id?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&append_to_response=images,combined_credits';
   http.Response response = await http.get(url);
   return json.decode(response.body);
 }
@@ -116,15 +116,17 @@ class CastDetail extends StatelessWidget {
                                       shape: BoxShape.circle,
                                       color: Colors.white.withOpacity(0.97)
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: <Widget>[
-                                      Icon(FontAwesomeIcons.heart,color: Colors.red,size: 20.0,),
-                                      Text(casting['popularity'].toString(),style: TextStyle(
-                                        fontFamily: 'google',
-                                        fontWeight: FontWeight.bold
-                                      ),)
-                                    ],
+                                  child: FittedBox(
+                                                                      child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: <Widget>[
+                                        Icon(FontAwesomeIcons.solidHeart,color: Colors.red,size: 20.0,),
+                                        Text(casting['popularity'].toString(),style: TextStyle(
+                                          fontFamily: 'google',
+                                          fontWeight: FontWeight.bold
+                                        ),)
+                                      ],
+                                    ),
                                   ),
                                 )
                               ],
@@ -138,12 +140,13 @@ class CastDetail extends StatelessWidget {
                             fontSize: 30.0
                           ),),
                           new SizedBox(height: 6.0,),
+                          casting['name'].toString().split(" ").length>=2?
                           new Text(casting['name'].toString().split(" ").sublist(1).join(" "),style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'google',
                             fontWeight: FontWeight.w500,
                             fontSize: 27.0
-                          ),),
+                          ),):SizedBox(height: 0.0,),
                           
                           
                           new SizedBox(height: 10.0,),
@@ -210,11 +213,11 @@ class CastDetail extends StatelessWidget {
                     child: new ListView.builder(
                       physics: BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
-                      itemCount: casting['credits']['cast'].length,
+                      itemCount: casting['combined_credits']['cast'].length,
                       itemBuilder: (context,index){
                         return Container(
                           padding: EdgeInsets.only(right: 12.0),
-                          child: new SimilarCell(casting['credits']['cast'][index],'movie'),
+                          child: new SimilarCell(casting['combined_credits']['cast'][index],casting['combined_credits']['cast'][index]['media_type']),
                         );
                       },
                     ),

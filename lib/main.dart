@@ -523,17 +523,19 @@ class MovieSearch extends SearchDelegate<String>{
       future: fetchMovies(1, query),
       builder: (context,snapshot){
         if(!snapshot.hasData){
-          return SpinKitCubeGrid(
-                  size: 85.0,
-                  
-                  itemBuilder: (context,index){
-                    return DecoratedBox(
-                          decoration: BoxDecoration(
-                            gradient: blackBlueGradient
-                          ),
-                    );
-                  },
-                );
+          return Center(
+                      child: SpinKitCubeGrid(
+                    size: 85.0,
+                    
+                    itemBuilder: (context,index){
+                      return DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: blackBlueGradient
+                            ),
+                      );
+                    },
+                  ),
+          );
 
         }
         searchResults = snapshot.data['results'];
