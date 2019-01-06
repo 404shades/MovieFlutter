@@ -46,12 +46,17 @@ Future<Map> fetchMovies(int pageNumber,String query) async{
     return json.decode(response.body);
 
   }
+  Future<Map> getTVAiringToday() async{
+  var url = "https://api.themoviedb.org/3/tv/airing_today?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f";
+  http.Response response = await http.get(url);
+  return json.decode(response.body);
+}
 
 class HomeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Movie Fun',
+      title: 'The Movienator',
       debugShowCheckedModeBanner: false,
       home: new FrontScreen(),
       theme: new ThemeData(
@@ -324,8 +329,8 @@ class _FrontScreenState extends State<FrontScreen> {
                       fontWeight: FontWeight.w700
                     )),
                       ),
-                      new IconButton(icon:Icon(FontAwesomeIcons.chevronCircleLeft,),onPressed: ()=>_controller.previousPage(curve: Curves.bounceOut,duration: Duration(milliseconds: 1200)),)
-                      ,new IconButton(icon:Icon(FontAwesomeIcons.chevronCircleRight,),onPressed: ()=>_controller.nextPage(curve: Curves.bounceOut,duration: Duration(milliseconds: 1200)),)
+                      new IconButton(icon:Icon(FontAwesomeIcons.chevronCircleLeft,),onPressed: ()=>_controller.previousPage(curve: Curves.easeIn,duration: Duration(milliseconds: 1200)),)
+                      ,new IconButton(icon:Icon(FontAwesomeIcons.chevronCircleRight,),onPressed: ()=>_controller.nextPage(curve: Curves.easeOut,duration: Duration(milliseconds: 1200)),)
                     ],
                   ),
                     new Container(
@@ -416,7 +421,7 @@ class _FrontScreenState extends State<FrontScreen> {
             new Container(
                 
                 margin: const EdgeInsets.only(left: 20.0),
-                height: 310.0,
+                height: 290.0,
                 width: MediaQuery.of(context).size.width-40,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -477,7 +482,71 @@ class _FrontScreenState extends State<FrontScreen> {
                 ),
               )
 ,
-              new SizedBox(height: 24.0,)
+              
+              new Container(
+                
+                margin: const EdgeInsets.only(left: 20.0),
+                height: 310.0,
+                width: MediaQuery.of(context).size.width-40,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new Text("TV Airing Today",style: 
+                    TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'google',
+                      fontSize: 26.0,
+                      fontWeight: FontWeight.w700
+                    )),
+                    new Container(
+                    margin: const EdgeInsets.only(top:3.0,bottom: 14.0),
+                    width: (MediaQuery.of(context).size.width-40)/1.5,
+                    height: 3.0,
+                    decoration: BoxDecoration(
+                      gradient: pinkRedGradient,
+                      borderRadius: BorderRadius.circular(14.0)
+                    ),
+                  ),
+                    new Expanded(
+                      child: new FutureBuilder(
+                        future: getTVAiringToday(),
+                        builder: (context,snapshot){
+                          if(!snapshot.hasData){
+                            return Center(
+                            child: SpinKitThreeBounce(
+                              size: 24.0,
+                                    itemBuilder: (_,index){
+                                      
+                                      return DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          gradient: blackBlueGradient,
+                                          shape:BoxShape.circle,
+                                        ),
+                                      );
+                                    },
+                                  )
+                            );
+                          }
+                          top_rated_tv_shows = snapshot.data;
+                          
+                          return new ListView.builder(
+                            physics: BouncingScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: top_rated_tv_shows['results'].length,
+                            itemBuilder: (context,i){
+                              return Container(
+                                padding: const EdgeInsets.only(right: 17.0),
+                                child: new TopRatedTvShowCell(top_rated_tv_shows['results'][i])
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(height: 24.0,)
             ],
           )
         ],

@@ -7,12 +7,12 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
-import 'package:flutter/services.dart';
+
 import 'package:movie_griller/Gradients.dart';
-import 'package:movie_griller/Loader.dart';
+
 import 'package:movie_griller/cast_cell.dart';
 import 'package:movie_griller/similar_movie_cell.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 Future<Map> getMovieDetail(var id) async{
@@ -93,7 +93,7 @@ class MovieDetail extends StatelessWidget {
           if(!snapshot.hasData){
               return Center(
                 child:SpinKitCubeGrid(
-                  size: 85.0,
+                  size: 55.0,
                   
                   itemBuilder: (context,index){
                     return DecoratedBox(

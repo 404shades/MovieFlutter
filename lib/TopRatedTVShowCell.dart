@@ -20,7 +20,9 @@ class TopRatedTvShowCell extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(11.0),
             image: DecorationImage(
-              image: NetworkImage(image_url + top_rated_cell['poster_path']),
+              image: top_rated_cell['poster_path']!=null?NetworkImage(image_url + top_rated_cell['poster_path']):
+              NetworkImage('https://steamuserimages-a.akamaihd.net/ugc/923674725906155229/34FAED61D4A23B8BF8771089530E209B6C0A0E75/')
+              ,
               fit: BoxFit.cover
             ),
             boxShadow: [

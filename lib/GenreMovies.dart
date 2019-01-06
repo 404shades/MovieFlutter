@@ -61,17 +61,17 @@ class GenreMovies extends StatelessWidget {
               future: genretype=='movie'?getGenreMovies(genreId):getGenreTV(genreId),
               builder: (context,snapshot){
                 if(!snapshot.hasData){
-                  return Container(height: MediaQuery.of(context).size.height,child: Center(child: SpinKitCubeGrid(
-                  size: 85.0,
-                  
-                  itemBuilder: (context,index){
-                    return DecoratedBox(
-                          decoration: BoxDecoration(
-                            gradient: blackBlueGradient
-                          ),
-                    );
-                  },
-                )));
+                  return Container(height: MediaQuery.of(context).size.height,child: Center(child: SpinKitCircle(
+                    size: 60.0,
+                    itemBuilder: (context,index){
+                      return DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: blackBlueGradient,
+                          shape: BoxShape.circle
+                        ),
+                      );
+                    },
+                  )));
                 }
                 _genreResults = snapshot.data['results'];
                 return Container(
