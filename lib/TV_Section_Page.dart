@@ -35,7 +35,7 @@ class TVSectionPage extends StatelessWidget {
                 builder: (context)=>new MoviesSectionPage()
               ));
             },),
-            IconButton(icon: Icon(Icons.tv,color: Colors.red,),onPressed: (){
+            IconButton(icon: Icon(Icons.live_tv,color: Colors.red,),onPressed: (){
               return null;
             },)
             
@@ -52,13 +52,15 @@ class TVSectionPage extends StatelessWidget {
             Row(
               children: <Widget>[
                 new Padding(padding: EdgeInsets.only(left: 10.0),),
-                Text("TV Series",style: TextStyle(
-                  fontFamily: 'google',
-                  fontSize:37.0,
-                  letterSpacing: 4.0,
-                  color: Colors.blueGrey.shade800,
-                  fontWeight: FontWeight.w800
-                ),)
+                SafeArea(
+                                  child: Text("TV Series",style: TextStyle(
+                    fontFamily: 'google',
+                    fontSize:37.0,
+                    letterSpacing: 4.0,
+                    color: Colors.blueGrey.shade800,
+                    fontWeight: FontWeight.w800
+                  ),),
+                )
               ],
             ),
             

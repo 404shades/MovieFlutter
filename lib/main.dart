@@ -110,7 +110,7 @@ class _FrontScreenState extends State<FrontScreen> {
                 builder: (context)=>new MoviesSectionPage()
               ));
             },),
-            IconButton(icon: Icon(Icons.tv,color: Colors.red,),onPressed: (){
+            IconButton(icon: Icon(Icons.live_tv,color: Colors.red,),onPressed: (){
               Navigator.of(context).push(MaterialPageRoute(
                 fullscreenDialog: true,
                 builder: (context)=>new TVSectionPage()
@@ -594,7 +594,7 @@ class MovieSearch extends SearchDelegate<String>{
         if(!snapshot.hasData){
           return Center(
                       child: SpinKitCubeGrid(
-                    size: 85.0,
+                    size: 55.0,
                     
                     itemBuilder: (context,index){
                       return DecoratedBox(
@@ -619,7 +619,7 @@ class MovieSearch extends SearchDelegate<String>{
             crossAxisCount:orientation==Orientation.landscape?5:3,
             childAspectRatio: 0.50
           ),
-          itemCount: query.isEmpty?0:searchResults.length,
+          itemCount: query.isEmpty || searchResults==null?0:searchResults.length,
           itemBuilder: (context,index){
             
             var mediaType = searchResults[index]['media_type'];

@@ -8,12 +8,16 @@ class TopRatedMovieCellHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
+        if(top_rated_cell['poster_path']!=null){
         Navigator.push(context, new MaterialPageRoute(
           fullscreenDialog: true,
             builder: (context){
               return new MovieDetail(top_rated_cell['id']);
             }
         ));
+        }else{
+          return null;
+        }
         },
       child: Column(
         children: <Widget>[
@@ -25,7 +29,7 @@ class TopRatedMovieCellHome extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14.0),
             image: DecorationImage(
-              image: NetworkImage(image_url + top_rated_cell['poster_path']),
+              image:top_rated_cell['poster_path']!=null?NetworkImage(image_url + top_rated_cell['poster_path']):NetworkImage('https://image.freepik.com/free-vector/404-error-concept-with-camel-and-cactus_23-2147736339.jpg'),
               fit: BoxFit.cover
             ),
             boxShadow: [

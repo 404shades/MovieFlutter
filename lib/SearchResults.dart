@@ -15,6 +15,7 @@ class SearchResults extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
+        if(poster_image!=null){
        Navigator.push(context, MaterialPageRoute(
          builder: (context){
            if(type=='movie'){
@@ -28,6 +29,10 @@ class SearchResults extends StatelessWidget {
            }
          }
        ));
+        }
+        else{
+          return null;
+        }
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

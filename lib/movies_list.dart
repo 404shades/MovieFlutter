@@ -12,9 +12,14 @@ class TopRatedMovieCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap:(){
+        if(movie[i]['poster_path']!=null){
         Navigator.of(context).push(new MaterialPageRoute(builder: (context){
           return new MovieDetail(movie[i]['id']);
         }));
+      }
+      else{
+        return null;
+      }
       },
       child: Container(
       height: 110.0,
@@ -26,7 +31,7 @@ class TopRatedMovieCell extends StatelessWidget {
         image: new DecorationImage(
           image: new NetworkImage(
               movie[i]['backdrop_path']!=null?'https://image.tmdb.org/t/p/w500' + movie[i]['backdrop_path'].toString()
-              :'https://steamuserimages-a.akamaihd.net/ugc/923674725906155229/34FAED61D4A23B8BF8771089530E209B6C0A0E75/'
+              :'https://www.solodev.com/core/fileparse.php/131/urlt/pixar-404.JPG'
           ),
           fit: BoxFit.cover,
           

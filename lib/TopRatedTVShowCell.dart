@@ -7,9 +7,10 @@ class TopRatedTvShowCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: ()=>Navigator.push(context, new MaterialPageRoute(
+      
+      onTap: ()=>top_rated_cell['poster_path']!=null?Navigator.push(context, new MaterialPageRoute(
         fullscreenDialog: true,builder: (context)=>TVDetail(tv_id: top_rated_cell['id'],)
-      )),
+      )):null,
       child: Column(
         children: <Widget>[
           new Container(
@@ -21,7 +22,7 @@ class TopRatedTvShowCell extends StatelessWidget {
             borderRadius: BorderRadius.circular(11.0),
             image: DecorationImage(
               image: top_rated_cell['poster_path']!=null?NetworkImage(image_url + top_rated_cell['poster_path']):
-              NetworkImage('https://steamuserimages-a.akamaihd.net/ugc/923674725906155229/34FAED61D4A23B8BF8771089530E209B6C0A0E75/')
+              NetworkImage('https://image.freepik.com/free-vector/404-error-concept-with-camel-and-cactus_23-2147736339.jpg')
               ,
               fit: BoxFit.cover
             ),

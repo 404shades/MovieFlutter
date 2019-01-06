@@ -21,6 +21,7 @@ class NowPlayingCell extends StatelessWidget {
     return InkWell(
       
       onTap: (){
+        if(poster_path!=null){
         Navigator.push(context, MaterialPageRoute(
           
           builder: (context){
@@ -36,6 +37,10 @@ class NowPlayingCell extends StatelessWidget {
             }
           }
         ));
+        }
+        else{
+          return null;
+        }
       },
       child: Card(
         
@@ -69,7 +74,7 @@ class NowPlayingCell extends StatelessWidget {
                   filter: new ui.ImageFilter.blur(sigmaX: 4.0,sigmaY: 4.0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.0),
+                      color: Colors.black.withOpacity(0.04),
                       
                     ),
                   ),
@@ -98,7 +103,7 @@ class NowPlayingCell extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14.0),
                         image: DecorationImage(
-                          image: NetworkImage(image_url + poster_path),
+                          image: poster_path!=null?NetworkImage(image_url + poster_path):NetworkImage('https://image.freepik.com/free-vector/404-error-concept-with-camel-and-cactus_23-2147736339.jpg'),
                           fit: BoxFit.cover
                         ),
                         boxShadow: [

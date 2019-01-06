@@ -10,6 +10,7 @@ class SimilarCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
+        if(similar_movies['poster_path']!=null){
         Navigator.push(context, MaterialPageRoute(
           
           builder: (context){
@@ -19,6 +20,10 @@ class SimilarCell extends StatelessWidget {
             return new TVDetail(tv_id:similar_movies['id']);
           }
         ));
+        }
+        else{
+          return null;
+        }
       },
       child: new Container(
         alignment: Alignment.center,
@@ -32,7 +37,7 @@ class SimilarCell extends StatelessWidget {
                 borderRadius: BorderRadius.circular(6.0),
                 image: DecorationImage(
                   image: similar_movies['poster_path']!=null?NetworkImage(image_url+similar_movies['poster_path'])
-                                :NetworkImage('https://steamuserimages-a.akamaihd.net/ugc/923674725906155229/34FAED61D4A23B8BF8771089530E209B6C0A0E75/'),
+                                :NetworkImage('https://image.freepik.com/free-vector/404-error-concept-with-camel-and-cactus_23-2147736339.jpg'),
                   fit: BoxFit.cover
                 ),
                 boxShadow: [

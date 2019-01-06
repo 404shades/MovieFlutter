@@ -176,16 +176,17 @@ class MovieDetail extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  new Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                  new Icon(Icons.star,color: Colors.white,),
-                                  new Icon(Icons.star,color: Colors.white,),
-                                  new Icon(Icons.star,color: Colors.white,),
-                                  new Icon(Icons.star_half,color: Colors.white,),
-                                  new Icon(Icons.star_border,color: Colors.white,),
-                                    ],
-                                  ),
+                                  // new Row(
+                                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                                  //   children: <Widget>[
+                                      
+                                  // new Icon(Icons.star,color: Colors.white,),
+                                  // new Icon(Icons.star,color: Colors.white,),
+                                  // new Icon(Icons.star,color: Colors.white,),
+                                  // new Icon(Icons.star_half,color: Colors.white,),
+                                  // new Icon(Icons.star_border,color: Colors.white,),
+                                  //   ],
+                                  // ),
                                   
                                   new Row(children: <Widget>[
                                   

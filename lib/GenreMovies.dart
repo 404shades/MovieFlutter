@@ -34,28 +34,30 @@ class GenreMovies extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             new SizedBox(height: 10.0,),
-            Row(
-              
-              children: <Widget>[
+            SafeArea(
+                          child: Row(
+                
+                children: <Widget>[
 
-                Padding(padding: EdgeInsets.only(left: 10.0)),
-                IconButton(icon: Icon(FontAwesomeIcons.arrowLeft),onPressed: ()=>Navigator.pop(context),),
-                Expanded(
-                                  child: Hero(
-                                    tag: genreId.toString(),
-                                                                      child: Text(title,style: TextStyle(
-                      fontFamily: 'google',
-                      fontSize: 37.0,
-                      color: Colors.blueGrey.shade800,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.4
+                  Padding(padding: EdgeInsets.only(left: 10.0)),
+                  IconButton(icon: Icon(FontAwesomeIcons.arrowLeft),onPressed: ()=>Navigator.pop(context),),
+                  Expanded(
+                                    child: Hero(
+                                      tag: genreId.toString(),
+                                                                        child: Text(title,style: TextStyle(
+                        fontFamily: 'google',
+                        fontSize: 37.0,
+                        color: Colors.blueGrey.shade800,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.4
 
-                    ),),
-                                  ),
-                ),
-                  genretype=='movie'? Container(height: 50.0,width:50.0,child: Hero(tag:title,child: Image.asset("assets/images/$image.png",))):Container(),
-                  Padding(padding: const EdgeInsets.only(right: 10.0),)
-              ],
+                      ),),
+                                    ),
+                  ),
+                    genretype=='movie'? Container(height: 50.0,width:50.0,child: Hero(tag:title,child: Image.asset("assets/images/$image.png",))):Container(),
+                    Padding(padding: const EdgeInsets.only(right: 10.0),)
+                ],
+              ),
             ),
             FutureBuilder(
               future: genretype=='movie'?getGenreMovies(genreId):getGenreTV(genreId),

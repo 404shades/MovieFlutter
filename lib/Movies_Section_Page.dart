@@ -23,6 +23,11 @@ Future<Map> getUpcomingMovies() async{
   http.Response response = await http.get(url);
   return json.decode(response.body);
 }
+Future<Map> getNowPlaying() async{
+  var url = 'https://api.themoviedb.org/3/movie/now_playing?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f';
+  http.Response response = await http.get(url);
+  return json.decode(response.body);
+}
 class MoviesSectionPage extends StatefulWidget{
   @override
   MoviesSectionPageState createState() {
@@ -35,7 +40,7 @@ Animation<double> animation;
 AnimationController _animationController;
 var movies;
 var upcoming;
-
+var now;
 @override
   void initState() {
     
@@ -59,7 +64,9 @@ var upcoming;
         icon: const Icon(Icons.home),
         label: Text("Home")
         ,
-        onPressed: (){},
+        onPressed: (){
+          Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));
+        },
        
         backgroundColor: Colors.black87,
       ),
@@ -74,13 +81,10 @@ var upcoming;
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             IconButton(icon: Icon(Icons.movie,color: Colors.blue,),onPressed: (){
-              Navigator.of(context).push(MaterialPageRoute(
-                fullscreenDialog: true,
-                builder: (context)=>new MoviesSectionPage()
-              ));
+              return null;
             },),
-            IconButton(icon: Icon(Icons.tv,color: Colors.red,),onPressed: (){
-              Navigator.of(context).push(MaterialPageRoute(
+            IconButton(icon: Icon(Icons.live_tv,color: Colors.red,),onPressed: (){
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
                 fullscreenDialog: true,
                 builder: (context)=>new TVSectionPage()
               ));
@@ -99,13 +103,15 @@ var upcoming;
             Row(
               children: <Widget>[
                 Expanded(
-                                  child: Text("MOVIES",style: TextStyle(
+                                  child: SafeArea(
+                                                                      child: Text("MOVIES",style: TextStyle(
                     fontSize: 37.0,
                     fontFamily: 'google',
                     fontWeight: FontWeight.w800,
                     letterSpacing: 5.0,
                     color: const Color(0xFFF6356F)
                   ),),
+                                  ),
                 ),
                 // Text('4O4 Shades',style: TextStyle(
                 //   fontFamily: 'google',
@@ -236,7 +242,54 @@ var upcoming;
                 ],
               ),
             ),
-           
+           Container(
+              height: 300.0,
+              child: Column(
+                children: <Widget>[
+                  new Text("In Theatres",style: TextStyle(
+                    color: const Color(0xFF0099CC),
+                    fontSize: 32.0,
+                    letterSpacing: 4.0,
+                    fontFamily: 'google',
+                    fontWeight: FontWeight.w600
+                  ),),
+                   SizedBox(height: 18.0,),
+                   new Expanded(
+                     child: FutureBuilder(
+                       future: getNowPlaying(),
+                        builder: (context,snapshot){
+                          if(!snapshot.hasData){
+                            return Center(child: SpinKitThreeBounce(
+                              size: 24.0,
+                                    itemBuilder: (_,index){
+                                      
+                                      return DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          gradient: blackBlueGradient,
+                                          shape:BoxShape.circle,
+                                        ),
+                                      );
+                                    },
+                                  ));
+                          }
+                          now=snapshot.data['results'];
+                          return ListView.builder(
+                            physics: BouncingScrollPhysics(),
+                            itemCount: now.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context,index){
+                              return Container(
+                                padding: const EdgeInsets.only(right: 17.0),
+                                child: new TopRatedMovieCellHome(now[index])
+                              );
+                            },
+                          );
+                        },
+                     ),
+                   )
+                ],
+              ),
+            ),
             
           ],
         ),

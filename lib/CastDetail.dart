@@ -36,7 +36,7 @@ class CastDetail extends StatelessWidget {
           if(!snapshot.hasData){
             return Center(
               child: SpinKitCubeGrid(
-                  size: 85.0,
+                  size: 55.0,
                   
                   itemBuilder: (context,index){
                     return DecoratedBox(

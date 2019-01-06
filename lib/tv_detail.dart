@@ -82,7 +82,7 @@ class TVDetail extends StatelessWidget {
           if(!snapshot.hasData){
             return Center(
               child: SpinKitCubeGrid(
-                  size: 85.0,
+                  size: 55.0,
                   
                   itemBuilder: (context,index){
                     return DecoratedBox(
@@ -157,17 +157,17 @@ class TVDetail extends StatelessWidget {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                        Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Icon(Icons.star,color: Colors.white,),
-                                            Icon(Icons.star,color: Colors.white,),
-                                            Icon(Icons.star,color: Colors.white,),
-                                            Icon(Icons.star,color: Colors.white,),
-                                            Icon(Icons.star_half,color: Colors.white,)
-                                          ],
+                                        // Row(
+                                        //   crossAxisAlignment: CrossAxisAlignment.start,
+                                        //   children: <Widget>[
+                                        //     Icon(Icons.star,color: Colors.white,),
+                                        //     Icon(Icons.star,color: Colors.white,),
+                                        //     Icon(Icons.star,color: Colors.white,),
+                                        //     Icon(Icons.star,color: Colors.white,),
+                                        //     Icon(Icons.star_half,color: Colors.white,)
+                                        //   ],
                                           
-                                        ),
+                                        // ),
                                         Row(
                                           children: <Widget>[
                                             new Icon(FontAwesomeIcons.imdb,color: Colors.yellow,),
