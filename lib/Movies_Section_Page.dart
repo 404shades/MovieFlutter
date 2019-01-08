@@ -191,7 +191,7 @@ var now;
                           movies=snapshot.data['results'];
                           return ListView.builder(
                             physics: BouncingScrollPhysics(),
-                            itemCount: movies.length,
+                            itemCount: movies?.length??0,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context,index){
                               return Container(

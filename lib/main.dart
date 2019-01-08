@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -12,7 +13,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:movie_griller/TopRatedMoviesCell.dart';
 import 'package:movie_griller/TopRatedTVShowCell.dart';
 import 'package:movie_griller/Trailers.dart';
+import 'package:launch_review/launch_review.dart';
 import 'package:movie_griller/movies_list.dart';
+import 'package:movie_griller/rohan.dart';
 
 void main(){
   runApp(new HomeApp());
@@ -80,6 +83,34 @@ class _FrontScreenState extends State<FrontScreen> {
   var now_playing;
   PageController _controller = PageController();
   TextEditingController textEditingController = TextEditingController();
+
+
+  Future<bool> _onBackPress(){
+    return showCupertinoModalPopup(
+      context: context,
+      builder: (context)=>new CupertinoActionSheet(
+        title: Text("Do you want to close the app ?"),
+        cancelButton: CupertinoActionSheetAction(
+          child: const Text("Close"),
+          isDefaultAction: true,
+          onPressed: ()=>Navigator.of(context).pop(true),
+
+        ),
+        message: Text("Please review the app on playstore"),
+        actions: <Widget>[
+            CupertinoActionSheetAction(child: Text("Review now on playstore"),onPressed: (){
+              
+              LaunchReview.launch();
+            }),
+            CupertinoActionSheetAction(child: Text("Connect with the developer"),onPressed: ()=>Navigator.of(context).push(CupertinoPageRoute(
+              maintainState: true,builder: (context)=>new UserDeveloper()
+            )),)
+
+        ],  
+      )
+    );
+  }                            
+  
   @override
   Widget build(BuildContext context) {
     
@@ -89,488 +120,495 @@ class _FrontScreenState extends State<FrontScreen> {
       statusBarIconBrightness: Brightness.light,
       systemNavigationBarDividerColor: Colors.transparent.withOpacity(0.7)
     ));
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.home),
-        label: Text("Home")
-        ,
-        onPressed: ()=>null,
-        backgroundColor: Colors.black87,
-      ),
-      backgroundColor: Color(0xFFF6F7FB),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        elevation: 12.0,
-        
-        
-        child: new Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            IconButton(icon: Icon(Icons.movie,color: Colors.blue,),onPressed: (){
-              Navigator.of(context).push(MaterialPageRoute(
-                fullscreenDialog: true,
-                builder: (context)=>new MoviesSectionPage()
-              ));
-            },),
-            IconButton(icon: Icon(Icons.live_tv,color: Colors.red,),onPressed: (){
-              Navigator.of(context).push(MaterialPageRoute(
-                fullscreenDialog: true,
-                builder: (context)=>new TVSectionPage()
-              ));
-            },)
-            
-          ],
+
+
+    return WillPopScope(
+      onWillPop: _onBackPress,
+          child: Scaffold(
+        resizeToAvoidBottomPadding: false,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton.extended(
+          icon: const Icon(Icons.home),
+          label: Text("Home")
+          ,
+          onPressed: ()=>null,
+          backgroundColor: Colors.black87,
         ),
-      ),
-     
-      body: new ListView(
-        padding: const EdgeInsets.all(0.0),
-        children: <Widget>[
-          new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
+        backgroundColor: Color(0xFFF6F7FB),
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.white,
+          elevation: 12.0,
+          
+          
+          child: new Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              new Container(
-                height: 320.0,
-                child: new Stack(
-                  fit: StackFit.expand,
-                  children: <Widget>[
-                    new Positioned(
-                      top: -65.0,
-                      left: -85.0,
-                      child: new Container(
-                        height: 320.0,
-                        width: 340.0,
-                        decoration: BoxDecoration(
-                          gradient: bluePinkGradient,
-                          shape: BoxShape.circle
-                        ),
-                      ),
-                    ),
-                     new Positioned(
-                      right: 12.0,
-                      top: 6.0,
-                      child: new Container(
-                        height: 50.0,
-                        width: 50.0,
-                        decoration: BoxDecoration(
-                          gradient: yellowOrangeGradient,
-                          shape: BoxShape.circle
-                        ),
-                      ),
-                    ),
-                    new Positioned(
-                      top: 38.0,
-                      left: 85.0,
-                      child: new Container(
-                        height: 190.0,
-                        
-                        width: MediaQuery.of(context).size.width-35,
-                        child: new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            new Container(
-                              alignment: Alignment.center,
-                              height:60.0,
-                              width: MediaQuery.of(context).size.width-95,
-                              child: InkWell(
-                                onTap:()=>showSearch(context: context,delegate: MovieSearch()),
-                                child: new Card(
-
-                              elevation: 18.0,
-                              shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10.0)),
-                              color: Colors.white,
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    new Padding(padding: const EdgeInsets.only(left: 14.0)),
-                                    Expanded(
-                                                                          child: new Text("Search for any Movie or TV Show..",style: TextStyle(
-                                      fontFamily: 'google',
-                                      
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.grey
-                                  ),
-                                      ),
-                                    ),
-                                    new Icon(Icons.search),
-                                    new Padding(padding: const EdgeInsets.only(right: 10.0),)
-                                  ],
-                                ),
-                              )
-                            ),
-                              )
-                            ),
-                            new SizedBox(
-                              height: 13.0,
-                            ),
-                            new FutureBuilder<Map>(
-                              future: getJson(),
-                              builder: (context,snapshot){
-                                if(!snapshot.hasData){
-                                  return Center(child: SpinKitThreeBounce(
-                                    size: 24.0,
-                                    itemBuilder: (_,index){
-                                      
-                                      return DecoratedBox(
-                                        decoration: BoxDecoration(
-                                          gradient: blackBlueGradient,
-                                          shape:BoxShape.circle
-                                        ),
-                                      );
-                                    },
-                                  ));
-                                }
-                                 else if(snapshot.hasError){
-            return Center(child: Text("Some error occured"),);
-          }
-                                movies = snapshot.data;
-                                return new Expanded(
-
-                              child: new ListView.builder(
-                                physics: BouncingScrollPhysics(),
-                                scrollDirection: Axis.horizontal,
-                                itemCount: movies['results']?.length??0,
-                                // shrinkWrap: true,
-                                itemBuilder: (context,i){
-                                  return new Container(
-                                    padding: const EdgeInsets.only(right: 12.0,bottom: 13.0),
-                                    child: new TopRatedMovieCell(movies['results'],i)
-                                  );
-                                },
-                              ),
-                            );
-                              },
-                            )
-                          ],
-                        )
-                      )
-                    ),
-                   
-                  ],
-                ),
-              ),
-              new Container(
-                
-                margin: const EdgeInsets.only(left: 20.0),
-                height: 310.0,
-                width: MediaQuery.of(context).size.width-40,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    new Text("Top Rated Movies",style: 
-                    TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'google',
-                      fontSize: 26.0,
-                      fontWeight: FontWeight.w700
-                    )),
-                    new Container(
-                    margin: const EdgeInsets.only(top:3.0,bottom: 14.0),
-                    width: (MediaQuery.of(context).size.width-40)/1.5,
-                    height: 3.0,
-                    decoration: BoxDecoration(
-                      gradient: pinkRedGradient,
-                      borderRadius: BorderRadius.circular(14.0)
-                    ),
-                  ),
-                    new Expanded(
-                      child: new FutureBuilder(
-                        future: getTopRatedMovies(),
-                        builder: (context,snapshot){
-                          if(!snapshot.hasData){
-                            return Center(
-                              child: SpinKitThreeBounce(
-                              size: 24.0,
-                                    itemBuilder: (_,index){
-                                      
-                                      return DecoratedBox(
-                                        decoration: BoxDecoration(
-                                          gradient: blackBlueGradient,
-                                          shape:BoxShape.circle,
-                                        ),
-                                      );
-                                    },
-                                  )
-                            );
-                          }
-                           else if(snapshot.hasError){
-            return Center(child: Text("Some error occured"),);
-          }
-                          top_rated_movies = snapshot.data;
-                          
-                          return new ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            physics: BouncingScrollPhysics(),
-                            itemCount: top_rated_movies['results']?.length,
-                            itemBuilder: (context,i){
-                              return Container(
-                                padding: const EdgeInsets.only(right: 17.0),
-                                child: new TopRatedMovieCellHome(top_rated_movies['results'][i])
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              ),
-
-          new SizedBox(height: 12.0,),
-          new Container(
-              margin: const EdgeInsets.only(left: 20.0,right: 20.0),
-              height: 320.0,
-              width: MediaQuery.of(context).size.width-40,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
+              IconButton(icon: Icon(Icons.movie,color: Colors.blue,),onPressed: (){
+                Navigator.of(context).push(CupertinoPageRoute(
+                  
+                  maintainState: true,
+                  builder: (context)=>new MoviesSectionPage()
+                ));
+              },),
+              IconButton(icon: Icon(Icons.live_tv,color: Colors.red,),onPressed: (){
+                Navigator.of(context).push(CupertinoPageRoute(
+                  
+                  builder: (context)=>new TVSectionPage(),
+                  maintainState: true
+                ));
+              },)
+              
+            ],
+          ),
+        ),
+       
+        body: new ListView(
+          padding: const EdgeInsets.all(0.0),
+          children: <Widget>[
+            new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                new Container(
+                  height: 320.0,
+                  child: new Stack(
+                    fit: StackFit.expand,
                     children: <Widget>[
-                      Expanded(
-                        child: new Text("Trending Today",style: 
-                    TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'google',
-                      fontSize: 26.0,
-                      fontWeight: FontWeight.w700
-                    )),
+                      new Positioned(
+                        top: -65.0,
+                        left: -85.0,
+                        child: new Container(
+                          height: 320.0,
+                          width: 340.0,
+                          decoration: BoxDecoration(
+                            gradient: bluePinkGradient,
+                            shape: BoxShape.circle
+                          ),
+                        ),
                       ),
-                      new IconButton(icon:Icon(FontAwesomeIcons.chevronCircleLeft,),onPressed: ()=>_controller.previousPage(curve: Curves.easeIn,duration: Duration(milliseconds: 1200)),)
-                      ,new IconButton(icon:Icon(FontAwesomeIcons.chevronCircleRight,),onPressed: ()=>_controller.nextPage(curve: Curves.easeOut,duration: Duration(milliseconds: 1200)),)
+                       new Positioned(
+                        right: 12.0,
+                        top: 6.0,
+                        child: new Container(
+                          height: 50.0,
+                          width: 50.0,
+                          decoration: BoxDecoration(
+                            gradient: yellowOrangeGradient,
+                            shape: BoxShape.circle
+                          ),
+                        ),
+                      ),
+                      new Positioned(
+                        top: 38.0,
+                        left: 85.0,
+                        child: new Container(
+                          height: 190.0,
+                          
+                          width: MediaQuery.of(context).size.width-35,
+                          child: new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              new Container(
+                                alignment: Alignment.center,
+                                height:60.0,
+                                width: MediaQuery.of(context).size.width-95,
+                                child: InkWell(
+                                  onTap:()=>showSearch(context: context,delegate: MovieSearch()),
+                                  child: new Card(
+
+                                elevation: 18.0,
+                                shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10.0)),
+                                color: Colors.white,
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      new Padding(padding: const EdgeInsets.only(left: 14.0)),
+                                      Expanded(
+                                                                            child: new Text("Search for any Movie or TV Show..",style: TextStyle(
+                                        fontFamily: 'google',
+                                        
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.grey
+                                    ),
+                                        ),
+                                      ),
+                                      new Icon(Icons.search),
+                                      new Padding(padding: const EdgeInsets.only(right: 10.0),)
+                                    ],
+                                  ),
+                                )
+                              ),
+                                )
+                              ),
+                              new SizedBox(
+                                height: 13.0,
+                              ),
+                              new FutureBuilder<Map>(
+                                future: getJson(),
+                                builder: (context,snapshot){
+                                  if(!snapshot.hasData){
+                                    return Center(child: SpinKitThreeBounce(
+                                      size: 24.0,
+                                      itemBuilder: (_,index){
+                                        
+                                        return DecoratedBox(
+                                          decoration: BoxDecoration(
+                                            gradient: blackBlueGradient,
+                                            shape:BoxShape.circle
+                                          ),
+                                        );
+                                      },
+                                    ));
+                                  }
+                                   else if(snapshot.hasError){
+              return Center(child: Text("Some error occured"),);
+            }
+                                  movies = snapshot.data;
+                                  return new Expanded(
+
+                                child: new ListView.builder(
+                                  physics: BouncingScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: movies['results']?.length??0,
+                                  // shrinkWrap: true,
+                                  itemBuilder: (context,i){
+                                    return new Container(
+                                      padding: const EdgeInsets.only(right: 12.0,bottom: 13.0),
+                                      child: new TopRatedMovieCell(movies['results'],i)
+                                    );
+                                  },
+                                ),
+                              );
+                                },
+                              )
+                            ],
+                          )
+                        )
+                      ),
+                     
                     ],
                   ),
-                    new Container(
-                    margin: const EdgeInsets.only(top:3.0,bottom: 14.0),
-                    width: (MediaQuery.of(context).size.width-40)/1.5,
-                    height: 3.0,
-                    decoration: BoxDecoration(
-                      gradient: pinkRedGradient,
-                      borderRadius: BorderRadius.circular(14.0)
+                ),
+                new Container(
+                  
+                  margin: const EdgeInsets.only(left: 20.0),
+                  height: 310.0,
+                  width: MediaQuery.of(context).size.width-40,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      new Text("Top Rated Movies",style: 
+                      TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'google',
+                        fontSize: 26.0,
+                        fontWeight: FontWeight.w700
+                      )),
+                      new Container(
+                      margin: const EdgeInsets.only(top:3.0,bottom: 14.0),
+                      width: (MediaQuery.of(context).size.width-40)/1.5,
+                      height: 3.0,
+                      decoration: BoxDecoration(
+                        gradient: pinkRedGradient,
+                        borderRadius: BorderRadius.circular(14.0)
+                      ),
                     ),
+                      new Expanded(
+                        child: new FutureBuilder(
+                          future: getTopRatedMovies(),
+                          builder: (context,snapshot){
+                            if(!snapshot.hasData){
+                              return Center(
+                                child: SpinKitThreeBounce(
+                                size: 24.0,
+                                      itemBuilder: (_,index){
+                                        
+                                        return DecoratedBox(
+                                          decoration: BoxDecoration(
+                                            gradient: blackBlueGradient,
+                                            shape:BoxShape.circle,
+                                          ),
+                                        );
+                                      },
+                                    )
+                              );
+                            }
+                             else if(snapshot.hasError){
+              return Center(child: Text("Some error occured"),);
+            }
+                            top_rated_movies = snapshot.data;
+                            
+                            return new ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              physics: BouncingScrollPhysics(),
+                              itemCount: top_rated_movies['results']?.length??0,
+                              itemBuilder: (context,i){
+                                return Container(
+                                  padding: const EdgeInsets.only(right: 17.0),
+                                  child: new TopRatedMovieCellHome(top_rated_movies['results'][i])
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      )
+                    ],
                   ),
-                  new Expanded(
-                    child: new FutureBuilder(
-                      future: getNowPlayingMovies(),
-                      builder: (context,snapshot){
-                        if(!snapshot.hasData){
-                          return new Center(child: SpinKitThreeBounce(
-                              size: 24.0,
-                                    itemBuilder: (_,index){
-                                      
-                                      return DecoratedBox(
-                                        decoration: BoxDecoration(
-                                          gradient: blackBlueGradient,
-                                          shape:BoxShape.circle,
-                                        ),
-                                      );
-                                    },
-                                  ));
-                        }
-                         else if(snapshot.hasError){
-            return Center(child: Text("Some error occured"),);
-          }
-                        now_playing = snapshot.data['results'];
-                        return new PageView.builder(
-                          controller: _controller,
-                          physics: BouncingScrollPhysics(),
-                      itemCount: now_playing?.length??0,
-                      itemBuilder: (context,index){
-                        var profilePath;
-                        var backdropPath;
-                        var title;
-                        var ratings;
-                        var releaseDate;
-                        var id;
-                        if(now_playing[index].containsKey("title")){
+                ),
+
+            new SizedBox(height: 12.0,),
+            new Container(
+                margin: const EdgeInsets.only(left: 20.0,right: 20.0),
+                height: 320.0,
+                width: MediaQuery.of(context).size.width-40,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: new Text("Trending Today",style: 
+                      TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'google',
+                        fontSize: 26.0,
+                        fontWeight: FontWeight.w700
+                      )),
+                        ),
+                        new IconButton(icon:Icon(FontAwesomeIcons.chevronCircleLeft,),onPressed: ()=>_controller.previousPage(curve: Curves.easeIn,duration: Duration(milliseconds: 1200)),)
+                        ,new IconButton(icon:Icon(FontAwesomeIcons.chevronCircleRight,),onPressed: ()=>_controller.nextPage(curve: Curves.easeOut,duration: Duration(milliseconds: 1200)),)
+                      ],
+                    ),
+                      new Container(
+                      margin: const EdgeInsets.only(top:3.0,bottom: 14.0),
+                      width: (MediaQuery.of(context).size.width-40)/1.5,
+                      height: 3.0,
+                      decoration: BoxDecoration(
+                        gradient: pinkRedGradient,
+                        borderRadius: BorderRadius.circular(14.0)
+                      ),
+                    ),
+                    new Expanded(
+                      child: new FutureBuilder(
+                        future: getNowPlayingMovies(),
+                        builder: (context,snapshot){
+                          if(!snapshot.hasData){
+                            return new Center(child: SpinKitThreeBounce(
+                                size: 24.0,
+                                      itemBuilder: (_,index){
+                                        
+                                        return DecoratedBox(
+                                          decoration: BoxDecoration(
+                                            gradient: blackBlueGradient,
+                                            shape:BoxShape.circle,
+                                          ),
+                                        );
+                                      },
+                                    ));
+                          }
+                           else if(snapshot.hasError){
+              return Center(child: Text("Some error occured"),);
+            }
+                          now_playing = snapshot.data['results'];
+                          return new PageView.builder(
+                            controller: _controller,
+                            physics: BouncingScrollPhysics(),
+                        itemCount: now_playing?.length??0,
+                        itemBuilder: (context,index){
+                          var profilePath;
+                          var backdropPath;
+                          var title;
+                          var ratings;
+                          var releaseDate;
+                          var id;
+                          if(now_playing[index].containsKey("title")){
+                              profilePath = now_playing[index]['poster_path'];
+                              backdropPath = now_playing[index]['backdrop_path'];
+                              title = now_playing[index]['title'];
+                              ratings = now_playing[index]['vote_average'];
+                              releaseDate = now_playing[index]['release_date'];
+                              id = now_playing[index]['id'];
+                              return NowPlayingCell(poster_path: profilePath,backdrop_path: backdropPath,name: title
+                              ,id: id,ratings: ratings,release_date: releaseDate,media_type: 'movie',
+                              );
+                          }
+                          else if(now_playing[index].containsKey("name")){
+                            if(now_playing[index].containsKey("profile_path")){
+                              profilePath = now_playing[index]['profile_path'];
+                              backdropPath= "";
+                              title = now_playing[index]['name'];
+                              ratings = now_playing[index]['popularity'];
+                              releaseDate = now_playing[index]['date_of_birth'];
+                              id = now_playing[index]['id'];
+                              return NowPlayingCell(poster_path: profilePath,backdrop_path: backdropPath,
+                              name: title,ratings: ratings,release_date: releaseDate,id: id,media_type: 'person',
+                              );
+                            }
+                            else{
                             profilePath = now_playing[index]['poster_path'];
                             backdropPath = now_playing[index]['backdrop_path'];
-                            title = now_playing[index]['title'];
-                            ratings = now_playing[index]['vote_average'];
-                            releaseDate = now_playing[index]['release_date'];
-                            id = now_playing[index]['id'];
-                            return NowPlayingCell(poster_path: profilePath,backdrop_path: backdropPath,name: title
-                            ,id: id,ratings: ratings,release_date: releaseDate,media_type: 'movie',
-                            );
-                        }
-                        else if(now_playing[index].containsKey("name")){
-                          if(now_playing[index].containsKey("profile_path")){
-                            profilePath = now_playing[index]['profile_path'];
-                            backdropPath= "";
                             title = now_playing[index]['name'];
-                            ratings = now_playing[index]['popularity'];
-                            releaseDate = now_playing[index]['date_of_birth'];
+                            ratings = now_playing[index]['vote_average'];
+                            releaseDate = now_playing[index]['first_air_date'];
                             id = now_playing[index]['id'];
                             return NowPlayingCell(poster_path: profilePath,backdrop_path: backdropPath,
-                            name: title,ratings: ratings,release_date: releaseDate,id: id,media_type: 'person',
+                            name: title,id: id,ratings: ratings,release_date: releaseDate,media_type: 'tv',
                             );
+                            }
                           }
-                          else{
-                          profilePath = now_playing[index]['poster_path'];
-                          backdropPath = now_playing[index]['backdrop_path'];
-                          title = now_playing[index]['name'];
-                          ratings = now_playing[index]['vote_average'];
-                          releaseDate = now_playing[index]['first_air_date'];
-                          id = now_playing[index]['id'];
-                          return NowPlayingCell(poster_path: profilePath,backdrop_path: backdropPath,
-                          name: title,id: id,ratings: ratings,release_date: releaseDate,media_type: 'tv',
-                          );
-                          }
-                        }
-                        return null;
-                        
-                      },
-                    );
-                      },
-                    )
-                  )
-                ],
-              ),
-          ),
-          new SizedBox(height: 24.0,),
-            new Container(
-                
-                margin: const EdgeInsets.only(left: 20.0),
-                height: 290.0,
-                width: MediaQuery.of(context).size.width-40,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    new Text("Popular TV Shows",style: 
-                    TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'google',
-                      fontSize: 26.0,
-                      fontWeight: FontWeight.w700
-                    )),
-                    new Container(
-                    margin: const EdgeInsets.only(top:3.0,bottom: 14.0),
-                    width: (MediaQuery.of(context).size.width-40)/1.5,
-                    height: 3.0,
-                    decoration: BoxDecoration(
-                      gradient: pinkRedGradient,
-                      borderRadius: BorderRadius.circular(14.0)
-                    ),
-                  ),
-                    new Expanded(
-                      child: new FutureBuilder(
-                        future: getTopRatedTVShows(),
-                        builder: (context,snapshot){
-                          if(!snapshot.hasData){
-                            return Center(
-                            child: SpinKitThreeBounce(
-                              size: 24.0,
-                                    itemBuilder: (_,index){
-                                      
-                                      return DecoratedBox(
-                                        decoration: BoxDecoration(
-                                          gradient: blackBlueGradient,
-                                          shape:BoxShape.circle,
-                                        ),
-                                      );
-                                    },
-                                  )
-                            );
-                          }
-                           else if(snapshot.hasError){
-            return Center(child: Text("Some error occured"),);
-          }
-                          top_rated_tv_shows = snapshot.data;
+                          return null;
                           
-                          return new ListView.builder(
-                            physics: BouncingScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: top_rated_tv_shows['results']?.length??0,
-                            itemBuilder: (context,i){
-                              return Container(
-                                padding: const EdgeInsets.only(right: 17.0),
-                                child: new TopRatedTvShowCell(top_rated_tv_shows['results'][i])
-                              );
-                            },
-                          );
                         },
-                      ),
+                      );
+                        },
+                      )
                     )
                   ],
                 ),
-              )
-,
-              
+            ),
+            new SizedBox(height: 24.0,),
               new Container(
-                
-                margin: const EdgeInsets.only(left: 20.0),
-                height: 310.0,
-                width: MediaQuery.of(context).size.width-40,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    new Text("TV Airing Today",style: 
-                    TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'google',
-                      fontSize: 26.0,
-                      fontWeight: FontWeight.w700
-                    )),
-                    new Container(
-                    margin: const EdgeInsets.only(top:3.0,bottom: 14.0),
-                    width: (MediaQuery.of(context).size.width-40)/1.5,
-                    height: 3.0,
-                    decoration: BoxDecoration(
-                      gradient: pinkRedGradient,
-                      borderRadius: BorderRadius.circular(14.0)
-                    ),
-                  ),
-                    new Expanded(
-                      child: new FutureBuilder(
-                        future: getTVAiringToday(),
-                        builder: (context,snapshot){
-                          if(!snapshot.hasData){
-                            return Center(
-                            child: SpinKitThreeBounce(
-                              size: 24.0,
-                                    itemBuilder: (_,index){
-                                      
-                                      return DecoratedBox(
-                                        decoration: BoxDecoration(
-                                          gradient: blackBlueGradient,
-                                          shape:BoxShape.circle,
-                                        ),
-                                      );
-                                    },
-                                  )
-                            );
-                          }
-                           else if(snapshot.hasError){
-            return Center(child: Text("Some error occured"),);
-          }
-                          top_rated_tv_shows = snapshot.data;
-                          
-                          return new ListView.builder(
-                            physics: BouncingScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: top_rated_tv_shows['results']?.length??0,
-                            itemBuilder: (context,i){
-                              return Container(
-                                padding: const EdgeInsets.only(right: 17.0),
-                                child: new TopRatedTvShowCell(top_rated_tv_shows['results'][i])
-                              );
-                            },
-                          );
-                        },
+                  
+                  margin: const EdgeInsets.only(left: 20.0),
+                  height: 290.0,
+                  width: MediaQuery.of(context).size.width-40,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      new Text("Popular TV Shows",style: 
+                      TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'google',
+                        fontSize: 26.0,
+                        fontWeight: FontWeight.w700
+                      )),
+                      new Container(
+                      margin: const EdgeInsets.only(top:3.0,bottom: 14.0),
+                      width: (MediaQuery.of(context).size.width-40)/1.5,
+                      height: 3.0,
+                      decoration: BoxDecoration(
+                        gradient: pinkRedGradient,
+                        borderRadius: BorderRadius.circular(14.0)
                       ),
-                    )
-                  ],
+                    ),
+                      new Expanded(
+                        child: new FutureBuilder(
+                          future: getTopRatedTVShows(),
+                          builder: (context,snapshot){
+                            if(!snapshot.hasData){
+                              return Center(
+                              child: SpinKitThreeBounce(
+                                size: 24.0,
+                                      itemBuilder: (_,index){
+                                        
+                                        return DecoratedBox(
+                                          decoration: BoxDecoration(
+                                            gradient: blackBlueGradient,
+                                            shape:BoxShape.circle,
+                                          ),
+                                        );
+                                      },
+                                    )
+                              );
+                            }
+                             else if(snapshot.hasError){
+              return Center(child: Text("Some error occured"),);
+            }
+                            top_rated_tv_shows = snapshot.data;
+                            
+                            return new ListView.builder(
+                              physics: BouncingScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: top_rated_tv_shows['results']?.length??0,
+                              itemBuilder: (context,i){
+                                return Container(
+                                  padding: const EdgeInsets.only(right: 17.0),
+                                  child: new TopRatedTvShowCell(top_rated_tv_shows['results'][i])
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                )
+,
+                
+                new Container(
+                  
+                  margin: const EdgeInsets.only(left: 20.0),
+                  height: 310.0,
+                  width: MediaQuery.of(context).size.width-40,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      new Text("TV Airing Today",style: 
+                      TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'google',
+                        fontSize: 26.0,
+                        fontWeight: FontWeight.w700
+                      )),
+                      new Container(
+                      margin: const EdgeInsets.only(top:3.0,bottom: 14.0),
+                      width: (MediaQuery.of(context).size.width-40)/1.5,
+                      height: 3.0,
+                      decoration: BoxDecoration(
+                        gradient: pinkRedGradient,
+                        borderRadius: BorderRadius.circular(14.0)
+                      ),
+                    ),
+                      new Expanded(
+                        child: new FutureBuilder(
+                          future: getTVAiringToday(),
+                          builder: (context,snapshot){
+                            if(!snapshot.hasData){
+                              return Center(
+                              child: SpinKitThreeBounce(
+                                size: 24.0,
+                                      itemBuilder: (_,index){
+                                        
+                                        return DecoratedBox(
+                                          decoration: BoxDecoration(
+                                            gradient: blackBlueGradient,
+                                            shape:BoxShape.circle,
+                                          ),
+                                        );
+                                      },
+                                    )
+                              );
+                            }
+                             else if(snapshot.hasError){
+              return Center(child: Text("Some error occured"),);
+            }
+                            top_rated_tv_shows = snapshot.data;
+                            
+                            return new ListView.builder(
+                              physics: BouncingScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: top_rated_tv_shows['results']?.length??0,
+                              itemBuilder: (context,i){
+                                return Container(
+                                  padding: const EdgeInsets.only(right: 17.0),
+                                  child: new TopRatedTvShowCell(top_rated_tv_shows['results'][i])
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 24.0,)
-            ],
-          )
-        ],
-      )
+                SizedBox(height: 24.0,)
+              ],
+            )
+          ],
+        )
+      ),
     );
   }
 }

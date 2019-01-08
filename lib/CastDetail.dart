@@ -73,67 +73,69 @@ class CastDetail extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           
-                          new Container(
-                            width: MediaQuery.of(context).size.width-40.0,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  height: 150.0,
-                                  width: 150.0,
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(color: Colors.white),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.white.withOpacity(0.8),
-                                        blurRadius: 20.0,
-                                        spreadRadius: 4.0,
-                                        offset: Offset(0.0, 2.0)
-                                      )
-                                    ]
-                                  ),
-                                  child: Container(
-                                    
-                                    margin: const EdgeInsets.all(4.0),
-                                    
+                          SafeArea(
+                                                      child: new Container(
+                              width: MediaQuery.of(context).size.width-40.0,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    height: 150.0,
+                                    width: 150.0,
                                     decoration: BoxDecoration(
+                                      color: Colors.transparent,
                                       shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                        image: NetworkImage(image_url+casting['profile_path']),
-                                        fit: BoxFit.cover,
-                                        alignment: Alignment.center,
-
-                                      )
+                                      border: Border.all(color: Colors.white),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.white.withOpacity(0.8),
+                                          blurRadius: 20.0,
+                                          spreadRadius: 4.0,
+                                          offset: Offset(0.0, 2.0)
+                                        )
+                                      ]
+                                    ),
+                                    child: Container(
+                                      
+                                      margin: const EdgeInsets.all(4.0),
+                                      
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                          image: NetworkImage(image_url+casting['profile_path']),
+                                          fit: BoxFit.cover,
+                                          alignment: Alignment.center,
+                                          
+                                        )
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(width: 14.0,),
-                                Container(
-                                  padding: const EdgeInsets.all(4.0),
-                                  height: 60.0,
-                                  width: 60.0,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white.withOpacity(0.97)
-                                  ),
-                                  child: FittedBox(
-                                                                      child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: <Widget>[
-                                        Icon(FontAwesomeIcons.solidHeart,color: Colors.red,size: 20.0,),
-                                        Text(casting['popularity'].toString(),style: TextStyle(
-                                          fontFamily: 'google',
-                                          fontWeight: FontWeight.bold
-                                        ),)
-                                      ],
+                                  SizedBox(width: 14.0,),
+                                  Container(
+                                    padding: const EdgeInsets.all(4.0),
+                                    height: 60.0,
+                                    width: 60.0,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white.withOpacity(0.97)
                                     ),
-                                  ),
-                                )
-                              ],
-                            )
+                                    child: FittedBox(
+                                                                        child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          Icon(FontAwesomeIcons.solidHeart,color: Colors.red,size: 20.0,),
+                                          Text(casting['popularity'].toString(),style: TextStyle(
+                                            fontFamily: 'google',
+                                            fontWeight: FontWeight.bold
+                                          ),)
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ),
                           ),
                           new SizedBox(height: 18.0,),
                           new Text(casting['name'].toString().split(" ")[0],style: TextStyle(
