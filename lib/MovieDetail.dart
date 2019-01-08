@@ -19,10 +19,24 @@ Future<Map> getMovieDetail(var id) async{
   var url = "https://api.themoviedb.org/3/movie/$id?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&append_to_response=credits,similar,videos";
   http.Response response = await http.get(url);
   
-      return json.decode(response.body);
+  return json.decode(response.body);
   
   
   
+}
+List<Widget> _getStars(double number){
+  double new_number = number/2;
+  int flr = new_number.toInt();
+  List<Widget> icons= new List();
+  for(int i=0;i<flr;i++){
+      icons.add(Icon(Icons.star,color: Colors.white,),);
+  }
+  double half = new_number-flr;
+  if(half>0.4){
+    icons.add(Icon(Icons.star_half,color: Colors.white,),);
+  }
+  return icons;
+
 }
 // _launchURL() async{
 //   const url = "https://"
@@ -105,6 +119,9 @@ class MovieDetail extends StatelessWidget {
                 )
               );
           }
+           else if(snapshot.hasError){
+            return Center(child: Text("Some error occured"),);
+          }
           movie = snapshot.data;
           return new Stack(
         fit: StackFit.expand,
@@ -176,17 +193,10 @@ class MovieDetail extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  // new Row(
-                                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                                  //   children: <Widget>[
-                                      
-                                  // new Icon(Icons.star,color: Colors.white,),
-                                  // new Icon(Icons.star,color: Colors.white,),
-                                  // new Icon(Icons.star,color: Colors.white,),
-                                  // new Icon(Icons.star_half,color: Colors.white,),
-                                  // new Icon(Icons.star_border,color: Colors.white,),
-                                  //   ],
-                                  // ),
+                                  new Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: _getStars(movie['vote_average'].toDouble())
+                                  ),
                                   
                                   new Row(children: <Widget>[
                                   
@@ -281,7 +291,7 @@ class MovieDetail extends StatelessWidget {
                         new Expanded(
                           child: new ListView.builder(
                             physics: BouncingScrollPhysics(),
-                            itemCount: movie['credits']['cast'].length,
+                            itemCount: movie['credits']['cast']?.length??0,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context,i){
                               return Container(
@@ -319,7 +329,7 @@ class MovieDetail extends StatelessWidget {
                         new Expanded(
                           child: new ListView.builder(
                             physics: BouncingScrollPhysics(),
-                            itemCount: movie['similar']['results'].length,
+                            itemCount: movie['similar']['results']?.length??0,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context,i){
                               return Container(

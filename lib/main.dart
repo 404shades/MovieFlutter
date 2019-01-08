@@ -83,7 +83,12 @@ class _FrontScreenState extends State<FrontScreen> {
   @override
   Widget build(BuildContext context) {
     
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.black,
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarDividerColor: Colors.transparent.withOpacity(0.7)
+    ));
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -122,7 +127,7 @@ class _FrontScreenState extends State<FrontScreen> {
       ),
      
       body: new ListView(
-        
+        padding: const EdgeInsets.all(0.0),
         children: <Widget>[
           new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -220,13 +225,16 @@ class _FrontScreenState extends State<FrontScreen> {
                                     },
                                   ));
                                 }
+                                 else if(snapshot.hasError){
+            return Center(child: Text("Some error occured"),);
+          }
                                 movies = snapshot.data;
                                 return new Expanded(
 
                               child: new ListView.builder(
                                 physics: BouncingScrollPhysics(),
                                 scrollDirection: Axis.horizontal,
-                                itemCount: movies==null?0:movies['results'].length,
+                                itemCount: movies['results']?.length??0,
                                 // shrinkWrap: true,
                                 itemBuilder: (context,i){
                                   return new Container(
@@ -290,12 +298,15 @@ class _FrontScreenState extends State<FrontScreen> {
                                   )
                             );
                           }
+                           else if(snapshot.hasError){
+            return Center(child: Text("Some error occured"),);
+          }
                           top_rated_movies = snapshot.data;
                           
                           return new ListView.builder(
                             scrollDirection: Axis.horizontal,
                             physics: BouncingScrollPhysics(),
-                            itemCount: top_rated_movies['results'].length,
+                            itemCount: top_rated_movies['results']?.length,
                             itemBuilder: (context,i){
                               return Container(
                                 padding: const EdgeInsets.only(right: 17.0),
@@ -360,11 +371,14 @@ class _FrontScreenState extends State<FrontScreen> {
                                     },
                                   ));
                         }
+                         else if(snapshot.hasError){
+            return Center(child: Text("Some error occured"),);
+          }
                         now_playing = snapshot.data['results'];
                         return new PageView.builder(
                           controller: _controller,
                           physics: BouncingScrollPhysics(),
-                      itemCount: now_playing.length,
+                      itemCount: now_playing?.length??0,
                       itemBuilder: (context,index){
                         var profilePath;
                         var backdropPath;
@@ -462,12 +476,15 @@ class _FrontScreenState extends State<FrontScreen> {
                                   )
                             );
                           }
+                           else if(snapshot.hasError){
+            return Center(child: Text("Some error occured"),);
+          }
                           top_rated_tv_shows = snapshot.data;
                           
                           return new ListView.builder(
                             physics: BouncingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
-                            itemCount: top_rated_tv_shows['results'].length,
+                            itemCount: top_rated_tv_shows['results']?.length??0,
                             itemBuilder: (context,i){
                               return Container(
                                 padding: const EdgeInsets.only(right: 17.0),
@@ -527,12 +544,15 @@ class _FrontScreenState extends State<FrontScreen> {
                                   )
                             );
                           }
+                           else if(snapshot.hasError){
+            return Center(child: Text("Some error occured"),);
+          }
                           top_rated_tv_shows = snapshot.data;
                           
                           return new ListView.builder(
                             physics: BouncingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
-                            itemCount: top_rated_tv_shows['results'].length,
+                            itemCount: top_rated_tv_shows['results']?.length??0,
                             itemBuilder: (context,i){
                               return Container(
                                 padding: const EdgeInsets.only(right: 17.0),
@@ -607,6 +627,9 @@ class MovieSearch extends SearchDelegate<String>{
           );
 
         }
+         else if(snapshot.hasError){
+            return Center(child: Text("Some error occured"),);
+          }
         searchResults = snapshot.data['results'];
         return Container(
           child: OrientationBuilder(

@@ -48,6 +48,9 @@ class CastDetail extends StatelessWidget {
                 )
             );
           }
+          else if(snapshot.hasError){
+            return Center(child: Text("Some error occured"),);
+          }
             casting = snapshot.data;
             return new Stack(
               fit: StackFit.expand,
@@ -213,7 +216,7 @@ class CastDetail extends StatelessWidget {
                     child: new ListView.builder(
                       physics: BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
-                      itemCount: casting['combined_credits']['cast'].length,
+                      itemCount: casting['combined_credits']['cast']?.length??0,
                       itemBuilder: (context,index){
                         return Container(
                           padding: EdgeInsets.only(right: 12.0),
@@ -243,7 +246,7 @@ class CastDetail extends StatelessWidget {
                     child: new ListView.builder(
                       physics: BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
-                      itemCount: casting['images']['profiles'].length,
+                      itemCount: casting['images']['profiles']?.length??0,
                       itemBuilder: (context,index){
                         return Container(
                           padding: EdgeInsets.only(right: 12.0),

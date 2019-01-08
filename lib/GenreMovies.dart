@@ -42,9 +42,7 @@ class GenreMovies extends StatelessWidget {
                   Padding(padding: EdgeInsets.only(left: 10.0)),
                   IconButton(icon: Icon(FontAwesomeIcons.arrowLeft),onPressed: ()=>Navigator.pop(context),),
                   Expanded(
-                                    child: Hero(
-                                      tag: genreId.toString(),
-                                                                        child: Text(title,style: TextStyle(
+                                    child: Text(title,style: TextStyle(
                         fontFamily: 'google',
                         fontSize: 37.0,
                         color: Colors.blueGrey.shade800,
@@ -52,7 +50,6 @@ class GenreMovies extends StatelessWidget {
                         letterSpacing: 0.4
 
                       ),),
-                                    ),
                   ),
                     genretype=='movie'? Container(height: 50.0,width:50.0,child: Hero(tag:title,child: Image.asset("assets/images/$image.png",))):Container(),
                     Padding(padding: const EdgeInsets.only(right: 10.0),)
@@ -75,6 +72,9 @@ class GenreMovies extends StatelessWidget {
                     },
                   )));
                 }
+                 else if(snapshot.hasError){
+            return Center(child: Text("Some error occured"),);
+          }
                 _genreResults = snapshot.data['results'];
                 return Container(
                   height: MediaQuery.of(context).size.height,
@@ -84,7 +84,7 @@ class GenreMovies extends StatelessWidget {
                     builder: (context,orientation){
                       return GridView.builder(
                         physics: BouncingScrollPhysics(),
-                        padding: EdgeInsets.only(top: 2.0,right: 5.0,bottom: 80.0),
+                        padding: EdgeInsets.only(top: 2.0,right: 5.0,bottom: 110.0),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: orientation==Orientation.landscape?5:3,
                           childAspectRatio: 0.50

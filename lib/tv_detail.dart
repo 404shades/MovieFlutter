@@ -11,11 +11,26 @@ import 'package:movie_griller/Gradients.dart';
 import 'package:movie_griller/cast_cell.dart';
 import 'package:movie_griller/similar_movie_cell.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:math' as math;
 
 Future<Map> getTvDetails(var id) async{
   var url = 'https://api.themoviedb.org/3/tv/$id?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&language=en-US&append_to_response=images,credits,similar,videos';
   http.Response response = await http.get(url);
   return json.decode(response.body);
+}
+List<Widget> _getStars(double number){
+  double new_number = number/2;
+  int flr = new_number.toInt();
+  List<Widget> icons= new List();
+  for(int i=0;i<flr;i++){
+      icons.add(Icon(Icons.star,color: Colors.white,),);
+  }
+  double half = new_number-flr;
+  if(half>0.4){
+    icons.add(Icon(Icons.star_half,color: Colors.white,),);
+  }
+  return icons;
+
 }
 class TVDetail extends StatelessWidget {
   final tv_id;
@@ -93,7 +108,11 @@ class TVDetail extends StatelessWidget {
                   },
                 )); 
           }
+           else if(snapshot.hasError){
+            return Center(child: Text("Some error occured"),);
+          }
           tv_show = snapshot.data;
+          List<Widget> ic = _getStars(tv_show['vote_average']?.toDouble()??0);
           return new Stack(
             fit:StackFit.expand,
             children: <Widget>[
@@ -157,17 +176,13 @@ class TVDetail extends StatelessWidget {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                        // Row(
-                                        //   crossAxisAlignment: CrossAxisAlignment.start,
-                                        //   children: <Widget>[
-                                        //     Icon(Icons.star,color: Colors.white,),
-                                        //     Icon(Icons.star,color: Colors.white,),
-                                        //     Icon(Icons.star,color: Colors.white,),
-                                        //     Icon(Icons.star,color: Colors.white,),
-                                        //     Icon(Icons.star_half,color: Colors.white,)
-                                        //   ],
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: ic
+                                           
+                                         ,
                                           
-                                        // ),
+                                        ),
                                         Row(
                                           children: <Widget>[
                                             new Icon(FontAwesomeIcons.imdb,color: Colors.yellow,),
@@ -254,7 +269,7 @@ class TVDetail extends StatelessWidget {
                       Expanded(
                         child: ListView.builder(
                           physics: BouncingScrollPhysics(),
-                          itemCount: tv_show['credits']['cast'].length,
+                          itemCount: tv_show['credits']['cast']?.length ??0,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context,i){
                             return Container(
@@ -292,7 +307,7 @@ class TVDetail extends StatelessWidget {
                         new Expanded(
                           child: new ListView.builder(
                             physics: BouncingScrollPhysics(),
-                            itemCount: tv_show['similar']['results'].length,
+                            itemCount: tv_show['similar']['results']?.length?? 0,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context,i){
                               return Container(

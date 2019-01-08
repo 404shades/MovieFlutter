@@ -54,6 +54,13 @@ var now;
       }
     });
   }
+  @override
+    void dispose() {
+      if(_animationController.status!=AnimationStatus.completed){
+        _animationController.dispose();
+      }
+      super.dispose();
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +101,7 @@ var now;
         ),
       ),
       body: SingleChildScrollView(
+        
         physics: BouncingScrollPhysics(),
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -101,6 +109,7 @@ var now;
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(
+
               children: <Widget>[
                 Expanded(
                                   child: SafeArea(
@@ -176,6 +185,9 @@ var now;
                                     },
                                   ));
                           }
+                           else if(snapshot.hasError){
+                        return Center(child: Text("Some error occured"),);
+                        }
                           movies=snapshot.data['results'];
                           return ListView.builder(
                             physics: BouncingScrollPhysics(),
@@ -224,10 +236,13 @@ var now;
                                     },
                                   ));
                           }
+                           else if(snapshot.hasError){
+                      return Center(child: Text("Some error occured"),);
+                      }
                           upcoming=snapshot.data['results'];
                           return ListView.builder(
                             physics: BouncingScrollPhysics(),
-                            itemCount: upcoming.length,
+                            itemCount: upcoming?.length??0,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context,index){
                               return Container(
@@ -272,10 +287,13 @@ var now;
                                     },
                                   ));
                           }
+                           else if(snapshot.hasError){
+            return Center(child: Text("Some error occured"),);
+          }
                           now=snapshot.data['results'];
                           return ListView.builder(
                             physics: BouncingScrollPhysics(),
-                            itemCount: now.length,
+                            itemCount: now?.length??0,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context,index){
                               return Container(
@@ -366,88 +384,3 @@ class GenreSection extends AnimatedWidget {
   }
 }
 
-class Carousel extends StatefulWidget {
-  @override
-  _CarouselState createState() => _CarouselState();
-}
-
-class _CarouselState extends State<Carousel> {
-  double viewPortFraction = 0.5;
-  PageController pageController;
-  final image_url = 'https://image.tmdb.org/t/p/w200';
-  var movies;
-  int currentPage=2;
-  double page=2.0;
-  @override
-    void initState() {
-      pageController = PageController(initialPage: currentPage,viewportFraction: viewPortFraction);
-      super.initState();
-    }
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getNowPlayingMovies(),
-      builder: (context,snapshot){
-        if(!snapshot.hasData){
-          return Center(child: CircularProgressIndicator());
-        }
-        movies = snapshot.data['results'];
-        return Container(
-          height: PAGER_HEIGHT,
-          child: NotificationListener<ScrollNotification>(
-            onNotification: (notification){
-              if(notification is ScrollUpdateNotification){
-                setState(() {
-                                  page=pageController.page;
-                                });
-              }
-              
-            },
-            child: PageView.builder(
-              onPageChanged: (pos){
-                setState(() {
-                                  currentPage=pos;
-                                });
-              },
-              physics: BouncingScrollPhysics(),
-              controller: pageController,
-              itemCount: movies==null?0:movies.length,
-              itemBuilder: (context,index){
-                final scale=max(SCALE_FRACTION,(FULL_SCALE-(index-page).abs())+viewPortFraction);
-                return movieOffer(movies[index]['poster_path'], scale);
-              },
-            ),
-          ),
-        );
-      },
-    );
-  }
-  Widget movieOffer(String image,double scale){
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        margin: EdgeInsets.only(bottom: 10.0),
-        height: PAGER_HEIGHT*scale,
-        width: PAGER_HEIGHT*scale,
-        child: Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            image: DecorationImage(
-              image: NetworkImage(image_url+image),
-              fit: BoxFit.cover
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.7),
-                blurRadius: 4.0,
-                spreadRadius: 1.0,
-                offset: Offset(2.0, 3.0)
-              )
-            ]
-          ),
-        ),
-      ),
-    );
-  }
-}

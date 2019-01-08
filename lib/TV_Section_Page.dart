@@ -134,17 +134,14 @@ class TVGenre extends StatelessWidget {
             //   ),
             // )
             // ,
-            new Positioned(bottom: 10.0,left: 20.0,child: Hero(
-              tag: genreID.toString(),
-                          child: Text(
+            new Positioned(bottom: 10.0,left: 20.0,child: Text(
                 title,style: TextStyle(
                   color: Colors.white,
                   fontSize: 45.0,
                   fontFamily: 'google',
                   fontWeight: FontWeight.bold
                 ),
-              ),
-            ),),
+              ),),
            
           ],
         ),

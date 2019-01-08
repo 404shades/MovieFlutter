@@ -36,15 +36,19 @@ class TopRatedTvShowCell extends StatelessWidget {
           ),
         ),
       ),
-      new Container(
-        alignment: Alignment.center,
-        width: 120.0,
-        margin: const EdgeInsets.only(top: 10.0),
-        
-        child: new Text(top_rated_cell['name'],style: TextStyle(
-          fontFamily: 'google',
-          fontWeight: FontWeight.w400
-        ),),
+      Flexible(
+              child: new Container(
+          alignment: Alignment.center,
+          width: 120.0,
+          margin: const EdgeInsets.only(top: 10.0),
+          
+          child: new Text(top_rated_cell['name'],style: TextStyle(
+            fontFamily: 'google',
+            fontWeight: FontWeight.w400
+          ),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,),
+        ),
       )
         ],
       )
