@@ -26,22 +26,42 @@ Future<Map> getCastDetails(var id) async{
   }
 }
 
-class CastDetail extends StatelessWidget {
+class CastDetail extends StatefulWidget {
   
-  final cast_id;
+  final _castID;
+
+  CastDetail(this._castID);
+
+  @override
+  CastDetailState createState() {
+    return new CastDetailState();
+  }
+}
+
+class CastDetailState extends State<CastDetail> {
   var casting;
-  final image_url = 'https://image.tmdb.org/t/p/w500';
-  CastDetail(this.cast_id);
+  Future<Map> _getCast;
+  final _imageURL = 'https://image.tmdb.org/t/p/w500';
+
+  @override
+    void initState() {
+      
+      super.initState();
+      _getCast = getCastDetails(widget._castID);
+    }
   @override
   Widget build(BuildContext context) {
-    print(cast_id);
+    
     return Scaffold(
       body: new FutureBuilder(
-        future: getCastDetails(cast_id),
+        future: _getCast,
         builder: (context,snapshot){
-          if(!snapshot.hasData){
-            return Center(
-              child: SpinKitCubeGrid(
+         switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return new Center(child: Text("Connection Not Found"),);
+            case ConnectionState.waiting:
+              return Center(
+                child:SpinKitCubeGrid(
                   size: 55.0,
                   
                   itemBuilder: (context,index){
@@ -52,16 +72,18 @@ class CastDetail extends StatelessWidget {
                     );
                   },
                 )
-            );
-          }
-          else if(snapshot.hasError){
-            return Center(child: Text("Some error occured"),);
-          }
+              );
+
+            default:
+              if(snapshot.hasError){
+                return new Center(child: Text("Error : ${snapshot.error}"),);
+
+              }
             casting = snapshot.data;
             return new Stack(
               fit: StackFit.expand,
                 children: <Widget>[
-                  new FadeInImage.memoryNetwork(image:image_url + casting['profile_path'],fit: BoxFit.cover,
+                  new FadeInImage.memoryNetwork(image:_imageURL + casting['profile_path'],fit: BoxFit.cover,
                   alignment: Alignment.center,
                   placeholder: kTransparentImage,
                   ),
@@ -110,7 +132,7 @@ class CastDetail extends StatelessWidget {
                                         
                                       ),
                                       child: ClipOval(
-                                        child: FadeInImage.memoryNetwork(image: image_url+casting['profile_path'],placeholder: kTransparentImage,fit: BoxFit.cover,alignment: Alignment.center,),
+                                        child: FadeInImage.memoryNetwork(image: _imageURL+casting['profile_path'],placeholder: kTransparentImage,fit: BoxFit.cover,alignment: Alignment.center,),
                                       ),
                                     ),
                                   ),
@@ -270,7 +292,8 @@ class CastDetail extends StatelessWidget {
                   )
                 ],
             );
-        },
+        }
+        }
       ),
     );
   }

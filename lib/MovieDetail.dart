@@ -1,5 +1,5 @@
 
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'package:http/http.dart' as http;
@@ -32,13 +32,13 @@ Future<Map> getMovieDetail(var id) async{
   
 }
 List<Widget> _getStars(double number){
-  double new_number = number/2;
-  int flr = new_number.toInt();
+  double _newNumber = number/2;
+  int flr = _newNumber.toInt();
   List<Widget> icons= new List();
   for(int i=0;i<flr;i++){
       icons.add(Icon(Icons.star,color: Colors.white,),);
   }
-  double half = new_number-flr;
+  double half = _newNumber-flr;
   if(half>0.4){
     icons.add(Icon(Icons.star_half,color: Colors.white,),);
   }
@@ -49,12 +49,23 @@ List<Widget> _getStars(double number){
 //   const url = "https://"
 // }
 
-class MovieDetail extends StatelessWidget {
-  final movie_id;
+class MovieDetail extends StatefulWidget {
+  final _movieID;
+
+  MovieDetail(this._movieID);
+
+  @override
+  MovieDetailState createState() {
+    return new MovieDetailState();
+  }
+}
+
+class MovieDetailState extends State<MovieDetail> {
   var movie;
-  var rand= Random();
-  final image_url = 'https://image.tmdb.org/t/p/w500';
-  MovieDetail(this.movie_id);
+  Future<Map> _getDetails;
+
+  final _imageURL = 'https://image.tmdb.org/t/p/w500';
+
   String getGenres(var genre){
     String answer = "";
     
@@ -70,6 +81,7 @@ class MovieDetail extends StatelessWidget {
       return "No Genre Found";
     }
   }
+
   _launchURLTrailer(var videos) async{
     
     if(videos.length!=0){
@@ -91,6 +103,12 @@ class MovieDetail extends StatelessWidget {
     }
     
   }
+  @override
+    void initState() {
+      
+      super.initState();
+      _getDetails = getMovieDetail(widget._movieID);
+    }
   @override
   Widget build(BuildContext context) {
     // SystemChrome.setEnabledSystemUIOverlays([]);
@@ -114,9 +132,12 @@ class MovieDetail extends StatelessWidget {
         
       ),
       body: new FutureBuilder(
-        future: getMovieDetail(movie_id),
+        future: _getDetails,
         builder: (context,snapshot){
-          if(!snapshot.hasData){
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return new Center(child: Text("Connection Not Found"),);
+            case ConnectionState.waiting:
               return Center(
                 child:SpinKitCubeGrid(
                   size: 55.0,
@@ -130,15 +151,17 @@ class MovieDetail extends StatelessWidget {
                   },
                 )
               );
-          }
-           else if(snapshot.hasError){
-            return Center(child: Text("Some error occured"),);
-          }
+
+            default:
+              if(snapshot.hasError){
+                return new Center(child: Text("Error : ${snapshot.error}"),);
+
+              }
           movie = snapshot.data;
           return new Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          new FadeInImage.memoryNetwork(image:image_url + movie['poster_path'],fit: BoxFit.cover,
+          new FadeInImage.memoryNetwork(image:_imageURL + movie['poster_path'],fit: BoxFit.cover,
                   alignment: Alignment.center,
                   placeholder: kTransparentImage,
                   ),
@@ -178,7 +201,7 @@ class MovieDetail extends StatelessWidget {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(14.0),
-                        child: new FadeInImage.memoryNetwork(image:image_url + movie['poster_path'],fit: BoxFit.cover,
+                        child: new FadeInImage.memoryNetwork(image:_imageURL + movie['poster_path'],fit: BoxFit.cover,
                   alignment: Alignment.center,
                   placeholder: kTransparentImage,
                   ),
@@ -365,7 +388,8 @@ class MovieDetail extends StatelessWidget {
           )
         ],
       );
-        },
+        }
+        }
       )
     );
   }

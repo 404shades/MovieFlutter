@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'dart:ui' as ui;
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'dart:async';
@@ -13,7 +13,7 @@ import 'package:movie_griller/cast_cell.dart';
 import 'package:movie_griller/similar_movie_cell.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:math' as math;
+
 
 Future<Map> getTvDetails(var id) async{
   var url = 'https://api.themoviedb.org/3/tv/$id?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&language=en-US&append_to_response=images,credits,similar,videos';
@@ -27,13 +27,13 @@ Future<Map> getTvDetails(var id) async{
   
 }
 List<Widget> _getStars(double number){
-  double new_number = number/2;
-  int flr = new_number.toInt();
+  double _newNumber = number/2;
+  int flr = _newNumber.toInt();
   List<Widget> icons= new List();
   for(int i=0;i<flr;i++){
       icons.add(Icon(Icons.star,color: Colors.white,),);
   }
-  double half = new_number-flr;
+  double half = _newNumber-flr;
   if(half>0.4){
     icons.add(Icon(Icons.star_half,color: Colors.white,),);
   }
@@ -41,9 +41,9 @@ List<Widget> _getStars(double number){
 
 }
 class TVDetail extends StatefulWidget {
-  final tv_id;
+  final tvID;
 
-  TVDetail({this.tv_id});
+  TVDetail({this.tvID});
 
   @override
   TVDetailState createState() {
@@ -52,10 +52,10 @@ class TVDetail extends StatefulWidget {
 }
 
 class TVDetailState extends State<TVDetail> {
-  var tv_show;
+  var _tvShow;
   Future<Map> _getDetails;
 
-  final image_url = 'https://image.tmdb.org/t/p/w500';
+  final _imageURL = 'https://image.tmdb.org/t/p/w500';
   
 
 
@@ -99,8 +99,9 @@ class TVDetailState extends State<TVDetail> {
 
   @override
     void initState() {
-      _getDetails = getTvDetails(widget.tv_id);
+      
       super.initState();
+      _getDetails = getTvDetails(widget.tvID);
     }
 
   @override
@@ -109,8 +110,8 @@ class TVDetailState extends State<TVDetail> {
        floatingActionButton: FloatingActionButton.extended(
         icon: Icon(FontAwesomeIcons.youtube),
         onPressed: (){
-          if(tv_show!=null){
-            _launchURLTrailer(tv_show['videos']['results']);
+          if(_tvShow!=null){
+            _launchURLTrailer(_tvShow['videos']['results']);
           }
           else{
             return null;
@@ -153,12 +154,12 @@ class TVDetailState extends State<TVDetail> {
               }
               
           
-          tv_show = snapshot.data;
-          List<Widget> ic = _getStars(tv_show['vote_average']?.toDouble()??0);
+          _tvShow = snapshot.data;
+          List<Widget> ic = _getStars(_tvShow['vote_average']?.toDouble()??0);
           return new Stack(
             fit:StackFit.expand,
             children: <Widget>[
-              new FadeInImage.memoryNetwork(image:image_url + tv_show['poster_path'],fit: BoxFit.cover,
+              new FadeInImage.memoryNetwork(image:_imageURL + _tvShow['poster_path'],fit: BoxFit.cover,
                   alignment: Alignment.center,
                   placeholder: kTransparentImage,
                   ),
@@ -195,7 +196,7 @@ class TVDetailState extends State<TVDetail> {
                               ],
                               
                             ),
-                            child: ClipRRect(borderRadius: BorderRadius.circular(14.0), child: new FadeInImage.memoryNetwork(image:image_url + tv_show['poster_path'],fit: BoxFit.cover,
+                            child: ClipRRect(borderRadius: BorderRadius.circular(14.0), child: new FadeInImage.memoryNetwork(image:_imageURL + _tvShow['poster_path'],fit: BoxFit.cover,
                   alignment: Alignment.center,
                   placeholder: kTransparentImage,
                   ),)
@@ -238,7 +239,7 @@ class TVDetailState extends State<TVDetail> {
                                               padding: const EdgeInsets.only(right: 4.0),
                                               
                                             ),
-                                            new Text("${tv_show['vote_average'].toString()}/10",style: TextStyle(color: Colors.white,
+                                            new Text("${_tvShow['vote_average'].toString()}/10",style: TextStyle(color: Colors.white,
                                             fontFamily: 'google',
                                             fontWeight: FontWeight.bold),)
                                           ],
@@ -250,12 +251,12 @@ class TVDetailState extends State<TVDetail> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.max,
                                       children: <Widget>[
-                                        Text(tv_show['first_air_date'].toString(),style: TextStyle(
+                                        Text(_tvShow['first_air_date'].toString(),style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: 'google',
                                           fontWeight: FontWeight.bold
                                         ),),
-                                        Text(getGenres(tv_show['genres']),style: TextStyle(
+                                        Text(getGenres(_tvShow['genres']),style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: 'google',
                                           fontWeight: FontWeight.bold
@@ -270,7 +271,7 @@ class TVDetailState extends State<TVDetail> {
                         ),
                       ),
                       new SizedBox(height:18.0),
-                      new Text(tv_show['name'],style: TextStyle(color: Colors.white,
+                      new Text(_tvShow['name'],style: TextStyle(color: Colors.white,
                       fontFamily: 'google',
                       fontWeight: FontWeight.w800,
                       fontSize: 26.0
@@ -287,7 +288,7 @@ class TVDetailState extends State<TVDetail> {
                       borderRadius: BorderRadius.circular(14.0)
                     ),
                   ),
-                  new Text(tv_show['overview'],style: TextStyle(
+                  new Text(_tvShow['overview'],style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'google',
                     fontSize: 16.0
@@ -317,12 +318,12 @@ class TVDetailState extends State<TVDetail> {
                       Expanded(
                         child: ListView.builder(
                           physics: BouncingScrollPhysics(),
-                          itemCount: tv_show['credits']['cast']?.length ??0,
+                          itemCount: _tvShow['credits']['cast']?.length ??0,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context,i){
                             return Container(
                               padding: const EdgeInsets.only(right: 12.0),
-                              child: CastCell(tv_show['credits']['cast'][i]),
+                              child: CastCell(_tvShow['credits']['cast'][i]),
                             );
                           },
                         ),
@@ -355,12 +356,12 @@ class TVDetailState extends State<TVDetail> {
                         new Expanded(
                           child: new ListView.builder(
                             physics: BouncingScrollPhysics(),
-                            itemCount: tv_show['similar']['results']?.length?? 0,
+                            itemCount: _tvShow['similar']['results']?.length?? 0,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context,i){
                               return Container(
                                 padding: const EdgeInsets.only(right: 12.0),
-                                child: new SimilarCell(tv_show['similar']['results'][i],'television'),
+                                child: new SimilarCell(_tvShow['similar']['results'][i],'television'),
                               );
                             },
                           ),

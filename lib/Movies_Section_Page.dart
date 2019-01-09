@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -8,12 +7,12 @@ import 'package:movie_griller/Gradients.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_griller/TV_Section_Page.dart';
 import 'package:movie_griller/TopRatedMoviesCell.dart';
-import 'package:movie_griller/Trailers.dart';
+
 
 const SCALE_FRACTION = 0.7;
 const FULL_SCALE = 1.0;
 const PAGER_HEIGHT = 250.0;
-Future<Map> getNowPlayingMovies() async{
+Future<Map> getPopularMovies() async{
   var url = 'https://api.themoviedb.org/3/movie/popular?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f';
   http.Response response = await http.get(url);
   if(response.statusCode==200){
@@ -56,10 +55,14 @@ AnimationController _animationController;
 var movies;
 var upcoming;
 var now;
+Future<Map> _getPopular;
+Future<Map> _getUpcoming;
+Future<Map> _getNow;
 @override
   void initState() {
     
     super.initState();
+
     _animationController = AnimationController(vsync: this,duration: Duration(milliseconds: 1000));
     animation = Tween<double>(begin: 180.0,end: -7.0).animate(CurvedAnimation(curve: Curves.bounceInOut,parent: _animationController));
     _animationController.forward();
@@ -68,6 +71,9 @@ var now;
         _animationController.dispose();
       }
     });
+    _getNow = getNowPlaying();
+    _getPopular = getPopularMovies();
+    _getUpcoming = getUpcomingMovies();
   }
   @override
     void dispose() {
@@ -184,25 +190,31 @@ var now;
                    SizedBox(height: 18.0,),
                    new Expanded(
                      child: FutureBuilder(
-                       future: getNowPlayingMovies(),
+                       future: _getPopular,
                         builder: (context,snapshot){
-                          if(!snapshot.hasData){
-                            return Center(child: SpinKitThreeBounce(
-                              size: 24.0,
-                                    itemBuilder: (_,index){
-                                      
-                                      return DecoratedBox(
-                                        decoration: BoxDecoration(
-                                          gradient: blackBlueGradient,
-                                          shape:BoxShape.circle,
-                                        ),
-                                      );
-                                    },
-                                  ));
-                          }
-                           else if(snapshot.hasError){
-                        return Center(child: Text("Some error occured"),);
-                        }
+                          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return new Center(child: Text("Connection Not Found"),);
+            case ConnectionState.waiting:
+              return Center(
+                child:SpinKitThreeBounce(
+                            size: 24.0,
+                            itemBuilder: (_,index){
+                                return DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    gradient: blackBlueGradient,
+                                    shape: BoxShape.circle
+                                  ),
+                                );
+                            },
+                          )
+              );
+
+            default:
+              if(snapshot.hasError){
+                return new Center(child: Text("Error : ${snapshot.error}"),);
+
+              }
                           movies=snapshot.data['results'];
                           return ListView.builder(
                             physics: BouncingScrollPhysics(),
@@ -215,7 +227,8 @@ var now;
                               );
                             },
                           );
-                        },
+                        }
+                        }
                      ),
                    )
                 ],
@@ -235,25 +248,31 @@ var now;
                    SizedBox(height: 18.0,),
                    new Expanded(
                      child: FutureBuilder(
-                       future: getUpcomingMovies(),
+                       future: _getUpcoming,
                         builder: (context,snapshot){
-                          if(!snapshot.hasData){
-                            return Center(child: SpinKitThreeBounce(
-                              size: 24.0,
-                                    itemBuilder: (_,index){
-                                      
-                                      return DecoratedBox(
-                                        decoration: BoxDecoration(
-                                          gradient: blackBlueGradient,
-                                          shape:BoxShape.circle,
-                                        ),
-                                      );
-                                    },
-                                  ));
-                          }
-                           else if(snapshot.hasError){
-                      return Center(child: Text("Some error occured"),);
-                      }
+                         switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return new Center(child: Text("Connection Not Found"),);
+            case ConnectionState.waiting:
+              return Center(
+                child:SpinKitThreeBounce(
+                            size: 24.0,
+                            itemBuilder: (_,index){
+                                return DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    gradient: blackBlueGradient,
+                                    shape: BoxShape.circle
+                                  ),
+                                );
+                            },
+                          )
+              );
+
+            default:
+              if(snapshot.hasError){
+                return new Center(child: Text("Error : ${snapshot.error}"),);
+
+              }
                           upcoming=snapshot.data['results'];
                           return ListView.builder(
                             physics: BouncingScrollPhysics(),
@@ -266,7 +285,8 @@ var now;
                               );
                             },
                           );
-                        },
+                        }
+                        }
                      ),
                    )
                 ],
@@ -286,25 +306,31 @@ var now;
                    SizedBox(height: 18.0,),
                    new Expanded(
                      child: FutureBuilder(
-                       future: getNowPlaying(),
+                       future: _getNow,
                         builder: (context,snapshot){
-                          if(!snapshot.hasData){
-                            return Center(child: SpinKitThreeBounce(
-                              size: 24.0,
-                                    itemBuilder: (_,index){
-                                      
-                                      return DecoratedBox(
-                                        decoration: BoxDecoration(
-                                          gradient: blackBlueGradient,
-                                          shape:BoxShape.circle,
-                                        ),
-                                      );
-                                    },
-                                  ));
-                          }
-                           else if(snapshot.hasError){
-            return Center(child: Text("Some error occured"),);
-          }
+                          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return new Center(child: Text("Connection Not Found"),);
+            case ConnectionState.waiting:
+              return Center(
+                child:SpinKitThreeBounce(
+                            size: 24.0,
+                            itemBuilder: (_,index){
+                                return DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    gradient: blackBlueGradient,
+                                    shape: BoxShape.circle
+                                  ),
+                                );
+                            },
+                          )
+              );
+
+            default:
+              if(snapshot.hasError){
+                return new Center(child: Text("Error : ${snapshot.error}"),);
+
+              }
                           now=snapshot.data['results'];
                           return ListView.builder(
                             physics: BouncingScrollPhysics(),
@@ -317,7 +343,8 @@ var now;
                               );
                             },
                           );
-                        },
+                        }
+                        }
                      ),
                    )
                 ],

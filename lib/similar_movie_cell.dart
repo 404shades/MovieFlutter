@@ -3,22 +3,22 @@ import 'package:movie_griller/MovieDetail.dart';
 import 'package:movie_griller/tv_detail.dart';
 import 'package:transparent_image/transparent_image.dart';
 class SimilarCell extends StatelessWidget {
-  final similar_movies;
+  final similarMovies;
   final type;
-  final image_url = 'https://image.tmdb.org/t/p/w500';
-  SimilarCell(this.similar_movies,this.type);
+  final _imageURL = 'https://image.tmdb.org/t/p/w500';
+  SimilarCell(this.similarMovies,this.type);
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        if(similar_movies['poster_path']!=null){
+        if(similarMovies['poster_path']!=null){
         Navigator.push(context, MaterialPageRoute(
           
           builder: (context){
             if(type=='movie'){
-            return new MovieDetail(similar_movies['id']);
+            return new MovieDetail(similarMovies['id']);
             }
-            return new TVDetail(tv_id:similar_movies['id']);
+            return new TVDetail(tvID:similarMovies['id']);
           }
         ));
         }
@@ -49,7 +49,7 @@ class SimilarCell extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(6.0),
-                child: FadeInImage.memoryNetwork(image:similar_movies['poster_path']!=null? image_url+similar_movies['poster_path']:'https://image.freepik.com/free-vector/404-error-concept-with-camel-and-cactus_23-2147736339.jpg',placeholder: kTransparentImage,fit: BoxFit.cover,alignment: Alignment.center,),
+                child: FadeInImage.memoryNetwork(image:similarMovies['poster_path']!=null? _imageURL+similarMovies['poster_path']:'https://image.freepik.com/free-vector/404-error-concept-with-camel-and-cactus_23-2147736339.jpg',placeholder: kTransparentImage,fit: BoxFit.cover,alignment: Alignment.center,),
               ),
             ),
             // new Positioned(

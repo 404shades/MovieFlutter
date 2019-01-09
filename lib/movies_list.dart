@@ -5,7 +5,7 @@ import 'package:movie_griller/MovieDetail.dart';
 
 class TopRatedMovieCell extends StatelessWidget {
 
-  final image_url = 'https://image.tmdb.org/t/p/w500/';
+  
   final movie;
   final i;
   TopRatedMovieCell(this.movie,this.i);

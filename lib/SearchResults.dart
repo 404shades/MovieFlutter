@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:movie_griller/CastDetail.dart';
-import 'dart:ui' as ui;
+
 
 import 'package:movie_griller/MovieDetail.dart';
 import 'package:movie_griller/tv_detail.dart';
 import 'package:transparent_image/transparent_image.dart';
 class SearchResults extends StatelessWidget {
-  final image_url =   'https://image.tmdb.org/t/p/w500';
-  final poster_image;
+  final _imageURL =   'https://image.tmdb.org/t/p/w500';
+  final posterImage;
   final id;
   final title;
   final type;
-  SearchResults({this.poster_image,this.title,this.type,this.id});
+  SearchResults({this.posterImage,this.title,this.type,this.id});
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        if(poster_image!=null){
+        if(posterImage!=null){
        Navigator.push(context, MaterialPageRoute(
          builder: (context){
            if(type=='movie'){
@@ -26,7 +26,7 @@ class SearchResults extends StatelessWidget {
              return new CastDetail(id);
            }
            else{
-             return new TVDetail(tv_id: id,);
+             return new TVDetail(tvID: id,);
            }
          }
        ));
@@ -57,10 +57,10 @@ class SearchResults extends StatelessWidget {
             
 
           ],
-          color: poster_image==null?Colors.black:null
+          color: posterImage==null?Colors.black:null
   
         ),
-        child: poster_image==null?new Center(
+        child: posterImage==null?new Center(
           child: new Text(title.toString()[0],style: TextStyle(
             fontSize: 58.0,
             fontFamily: 'google',
@@ -68,7 +68,7 @@ class SearchResults extends StatelessWidget {
           ),),
         ):ClipRRect(
           borderRadius: BorderRadius.circular(8.0),
-          child: FadeInImage.memoryNetwork(image:image_url+poster_image,fit: BoxFit.cover,
+          child: FadeInImage.memoryNetwork(image:_imageURL+posterImage,fit: BoxFit.cover,
           alignment: Alignment.center,placeholder: kTransparentImage,),
         ),
       ),

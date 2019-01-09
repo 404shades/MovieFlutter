@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movie_griller/GenreMovies.dart';
 import 'package:movie_griller/Gradients.dart';
-import 'dart:ui' as ui;
+
 
 import 'package:movie_griller/Movies_Section_Page.dart';
-import 'package:movie_griller/main.dart';
 class TVSectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

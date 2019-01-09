@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_griller/CastDetail.dart';
 import 'package:transparent_image/transparent_image.dart';
 class CastCell extends StatelessWidget {
-  final image_url = 'https://image.tmdb.org/t/p/w500';
+  final _imageURL = 'https://image.tmdb.org/t/p/w500';
   final cast;
   CastCell(this.cast);
   @override
@@ -10,8 +10,8 @@ class CastCell extends StatelessWidget {
    
     String profilePath = cast['profile_path'];
     return InkWell(
-      splashColor: Colors.black,
-      
+      splashColor: Colors.white,
+      radius: 90.0,
       onTap: (){
         if(profilePath!=null){
         Navigator.push(context, MaterialPageRoute(builder: (context){
@@ -57,7 +57,7 @@ class CastCell extends StatelessWidget {
           ):ClipOval(
             
 
-            child: FadeInImage.memoryNetwork(image:image_url+profilePath,placeholder: kTransparentImage,fit: BoxFit.cover,)
+            child: FadeInImage.memoryNetwork(image:_imageURL+profilePath,placeholder: kTransparentImage,fit: BoxFit.cover,)
           ),
         ),
       ),

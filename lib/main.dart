@@ -109,11 +109,16 @@ class FrontScreen extends StatefulWidget {
 }
 
 class _FrontScreenState extends State<FrontScreen> {
-  var movies;
-  var top_rated_movies;
-  var top_rated_tv_shows;
-  var now_playing;
-  var airToday;
+  var _movies;
+  var _topRatedMovies;
+  var _topRatedTvShows;
+  var _nowPlaying;
+  var _airToday;
+  Future<Map> _getMovies;
+  Future<Map> _getTopMovies;
+  Future<Map> _getTopTv;
+  Future<Map> _getNow;
+  Future<Map> _getAir;
   PageController _controller = PageController();
   TextEditingController textEditingController = TextEditingController();
 
@@ -153,6 +158,17 @@ class _FrontScreenState extends State<FrontScreen> {
     );
   }                            
   
+  @override
+    void initState() {
+      
+      super.initState();
+      _getMovies = getJson();
+      _getAir = getTVAiringToday();
+      _getNow = getNowPlayingMovies();
+      _getTopMovies = getTopRatedMovies();
+      _getTopTv = getTopRatedTVShows();
+    }
+
   @override
   Widget build(BuildContext context) {
     
@@ -288,42 +304,49 @@ class _FrontScreenState extends State<FrontScreen> {
                                 height: 13.0,
                               ),
                               new FutureBuilder<Map>(
-                                future: getJson(),
+                                future: _getMovies,
                                 builder: (context,snapshot){
-                                  if(!snapshot.hasData){
-                                    return Center(child: SpinKitThreeBounce(
-                                      size: 24.0,
-                                      itemBuilder: (_,index){
-                                        
-                                        return DecoratedBox(
-                                          decoration: BoxDecoration(
-                                            gradient: blackBlueGradient,
-                                            shape:BoxShape.circle
-                                          ),
-                                        );
-                                      },
-                                    ));
-                                  }
-                                   else if(snapshot.hasError){
-              return Center(child: Text("Some error occured"),);
-            }
-                                  movies = snapshot.data;
+                                  switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        return new Center(child: Text("Connection Not Found"),);
+                      case ConnectionState.waiting:
+                        return Center(
+                          child:SpinKitThreeBounce(
+                            size: 24.0,
+                            itemBuilder: (_,index){
+                                return DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    gradient: blackBlueGradient,
+                                    shape: BoxShape.circle
+                                  ),
+                                );
+                            },
+                          )
+              );
+
+            default:
+              if(snapshot.hasError){
+                return new Center(child: Text("Error : ${snapshot.error}"),);
+
+              }
+                                  _movies = snapshot.data;
                                   return new Expanded(
 
                                 child: new ListView.builder(
                                   physics: BouncingScrollPhysics(),
                                   scrollDirection: Axis.horizontal,
-                                  itemCount: movies['results']?.length??0,
+                                  itemCount: _movies['results']?.length??0,
                                   // shrinkWrap: true,
                                   itemBuilder: (context,i){
                                     return new Container(
                                       padding: const EdgeInsets.only(right: 12.0,bottom: 13.0),
-                                      child: new TopRatedMovieCell(movies['results'],i)
+                                      child: new TopRatedMovieCell(_movies['results'],i)
                                     );
                                   },
                                 ),
                               );
-                                },
+                                }
+                                }
                               )
                             ],
                           )
@@ -359,41 +382,46 @@ class _FrontScreenState extends State<FrontScreen> {
                     ),
                       new Expanded(
                         child: new FutureBuilder(
-                          future: getTopRatedMovies(),
+                          future: _getTopMovies,
                           builder: (context,snapshot){
-                            if(!snapshot.hasData){
-                              return Center(
-                                child: SpinKitThreeBounce(
-                                size: 24.0,
-                                      itemBuilder: (_,index){
-                                        
-                                        return DecoratedBox(
-                                          decoration: BoxDecoration(
-                                            gradient: blackBlueGradient,
-                                            shape:BoxShape.circle,
-                                          ),
-                                        );
-                                      },
-                                    )
-                              );
-                            }
-                             else if(snapshot.hasError){
-              return Center(child: Text("Some error occured"),);
-            }
-                            top_rated_movies = snapshot.data;
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.none:
+                                return new Center(child: Text("Connection Not Found"),);
+                              case ConnectionState.waiting:
+                                return Center(
+                                  child:SpinKitThreeBounce(
+                            size: 24.0,
+                            itemBuilder: (_,index){
+                                return DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    gradient: blackBlueGradient,
+                                    shape: BoxShape.circle
+                                  ),
+                                );
+                            },
+                          )
+              );
+
+            default:
+              if(snapshot.hasError){
+                return new Center(child: Text("Error : ${snapshot.error}"),);
+
+              }
+                            _topRatedMovies = snapshot.data;
                             
                             return new ListView.builder(
                               scrollDirection: Axis.horizontal,
                               physics: BouncingScrollPhysics(),
-                              itemCount: top_rated_movies['results']?.length??0,
+                              itemCount: _topRatedMovies['results']?.length??0,
                               itemBuilder: (context,i){
                                 return Container(
                                   padding: const EdgeInsets.only(right: 17.0),
-                                  child: new TopRatedMovieCellHome(top_rated_movies['results'][i])
+                                  child: new TopRatedMovieCellHome(_topRatedMovies['results'][i])
                                 );
                               },
                             );
-                          },
+                          }
+                          }
                         ),
                       )
                     ],
@@ -434,30 +462,36 @@ class _FrontScreenState extends State<FrontScreen> {
                     ),
                     new Expanded(
                       child: new FutureBuilder(
-                        future: getNowPlayingMovies(),
+                        future: _getNow,
                         builder: (context,snapshot){
-                          if(!snapshot.hasData){
-                            return new Center(child: SpinKitThreeBounce(
-                                size: 24.0,
-                                      itemBuilder: (_,index){
-                                        
-                                        return DecoratedBox(
-                                          decoration: BoxDecoration(
-                                            gradient: blackBlueGradient,
-                                            shape:BoxShape.circle,
-                                          ),
-                                        );
-                                      },
-                                    ));
-                          }
-                           else if(snapshot.hasError){
-              return Center(child: Text("Some error occured"),);
-            }
-                          now_playing = snapshot.data['results'];
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.none:
+                              return new Center(child: Text("Connection Not Found"),);
+                            case ConnectionState.waiting:
+                              return Center(
+                                    child:SpinKitThreeBounce(
+                            size: 24.0,
+                            itemBuilder: (_,index){
+                                return DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    gradient: blackBlueGradient,
+                                    shape: BoxShape.circle
+                                  ),
+                                );
+                            },
+                          )
+              );
+
+            default:
+              if(snapshot.hasError){
+                return new Center(child: Text("Error : ${snapshot.error}"),);
+
+              }
+                          _nowPlaying = snapshot.data['results'];
                           return new PageView.builder(
                             controller: _controller,
                             physics: BouncingScrollPhysics(),
-                        itemCount: now_playing?.length??0,
+                        itemCount: _nowPlaying?.length??0,
                         itemBuilder: (context,index){
                           var profilePath;
                           var backdropPath;
@@ -465,38 +499,38 @@ class _FrontScreenState extends State<FrontScreen> {
                           var ratings;
                           var releaseDate;
                           var id;
-                          if(now_playing[index].containsKey("title")){
-                              profilePath = now_playing[index]['poster_path'];
-                              backdropPath = now_playing[index]['backdrop_path'];
-                              title = now_playing[index]['title'];
-                              ratings = now_playing[index]['vote_average'];
-                              releaseDate = now_playing[index]['release_date'];
-                              id = now_playing[index]['id'];
-                              return NowPlayingCell(poster_path: profilePath,backdrop_path: backdropPath,name: title
-                              ,id: id,ratings: ratings,release_date: releaseDate,media_type: 'movie',
+                          if(_nowPlaying[index].containsKey("title")){
+                              profilePath = _nowPlaying[index]['poster_path'];
+                              backdropPath = _nowPlaying[index]['backdrop_path'];
+                              title = _nowPlaying[index]['title'];
+                              ratings = _nowPlaying[index]['vote_average'];
+                              releaseDate = _nowPlaying[index]['release_date'];
+                              id = _nowPlaying[index]['id'];
+                              return NowPlayingCell(posterPath: profilePath,backdropPath: backdropPath,name: title
+                              ,id: id,ratings: ratings,releaseDate: releaseDate,mediaType: 'movie',
                               );
                           }
-                          else if(now_playing[index].containsKey("name")){
-                            if(now_playing[index].containsKey("profile_path")){
-                              profilePath = now_playing[index]['profile_path'];
+                          else if(_nowPlaying[index].containsKey("name")){
+                            if(_nowPlaying[index].containsKey("profile_path")){
+                              profilePath = _nowPlaying[index]['profile_path'];
                               backdropPath= "";
-                              title = now_playing[index]['name'];
-                              ratings = now_playing[index]['popularity'];
-                              releaseDate = now_playing[index]['date_of_birth'];
-                              id = now_playing[index]['id'];
-                              return NowPlayingCell(poster_path: profilePath,backdrop_path: backdropPath,
-                              name: title,ratings: ratings,release_date: releaseDate,id: id,media_type: 'person',
+                              title = _nowPlaying[index]['name'];
+                              ratings = _nowPlaying[index]['popularity'];
+                              releaseDate = _nowPlaying[index]['date_of_birth'];
+                              id = _nowPlaying[index]['id'];
+                              return NowPlayingCell(posterPath: profilePath,backdropPath: backdropPath,
+                              name: title,ratings: ratings,releaseDate: releaseDate,id: id,mediaType: 'person',
                               );
                             }
                             else{
-                            profilePath = now_playing[index]['poster_path'];
-                            backdropPath = now_playing[index]['backdrop_path'];
-                            title = now_playing[index]['name'];
-                            ratings = now_playing[index]['vote_average'];
-                            releaseDate = now_playing[index]['first_air_date'];
-                            id = now_playing[index]['id'];
-                            return NowPlayingCell(poster_path: profilePath,backdrop_path: backdropPath,
-                            name: title,id: id,ratings: ratings,release_date: releaseDate,media_type: 'tv',
+                            profilePath = _nowPlaying[index]['poster_path'];
+                            backdropPath = _nowPlaying[index]['backdrop_path'];
+                            title = _nowPlaying[index]['name'];
+                            ratings = _nowPlaying[index]['vote_average'];
+                            releaseDate = _nowPlaying[index]['first_air_date'];
+                            id = _nowPlaying[index]['id'];
+                            return NowPlayingCell(posterPath: profilePath,backdropPath: backdropPath,
+                            name: title,id: id,ratings: ratings,releaseDate: releaseDate,mediaType: 'tv',
                             );
                             }
                           }
@@ -504,6 +538,7 @@ class _FrontScreenState extends State<FrontScreen> {
                           
                         },
                       );
+                        }
                         },
                       )
                     )
@@ -537,40 +572,45 @@ class _FrontScreenState extends State<FrontScreen> {
                     ),
                       new Expanded(
                         child: new FutureBuilder(
-                          future: getTopRatedTVShows(),
+                          future: _getTopTv,
                           builder: (context,snapshot){
-                            if(!snapshot.hasData){
-                              return Center(
-                              child: SpinKitThreeBounce(
-                                size: 24.0,
-                                      itemBuilder: (_,index){
-                                        
-                                        return DecoratedBox(
-                                          decoration: BoxDecoration(
-                                            gradient: blackBlueGradient,
-                                            shape:BoxShape.circle,
-                                          ),
-                                        );
-                                      },
-                                    )
-                              );
-                            }
-                             else if(snapshot.hasError){
-              return Center(child: Text("Some error occured"),);
-            }
-                            top_rated_tv_shows = snapshot.data;
+                            switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return new Center(child: Text("Connection Not Found"),);
+            case ConnectionState.waiting:
+              return Center(
+                child:SpinKitThreeBounce(
+                            size: 24.0,
+                            itemBuilder: (_,index){
+                                return DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    gradient: blackBlueGradient,
+                                    shape: BoxShape.circle
+                                  ),
+                                );
+                            },
+                          )
+              );
+
+            default:
+              if(snapshot.hasError){
+                return new Center(child: Text("Error : ${snapshot.error}"),);
+
+              }
+                            _topRatedTvShows = snapshot.data;
                             
                             return new ListView.builder(
                               physics: BouncingScrollPhysics(),
                               scrollDirection: Axis.horizontal,
-                              itemCount: top_rated_tv_shows['results']?.length??0,
+                              itemCount: _topRatedTvShows['results']?.length??0,
                               itemBuilder: (context,i){
                                 return Container(
                                   padding: const EdgeInsets.only(right: 17.0),
-                                  child: new TopRatedTvShowCell(top_rated_tv_shows['results'][i])
+                                  child: new TopRatedTvShowCell(_topRatedTvShows['results'][i])
                                 );
                               },
                             );
+                          }
                           },
                         ),
                       )
@@ -605,41 +645,46 @@ class _FrontScreenState extends State<FrontScreen> {
                     ),
                       new Expanded(
                         child: new FutureBuilder(
-                          future: getTVAiringToday(),
+                          future: _getAir,
                           builder: (context,snapshot){
-                            if(!snapshot.hasData){
-                              return Center(
-                              child: SpinKitThreeBounce(
-                                size: 24.0,
-                                      itemBuilder: (_,index){
-                                        
-                                        return DecoratedBox(
-                                          decoration: BoxDecoration(
-                                            gradient: blackBlueGradient,
-                                            shape:BoxShape.circle,
-                                          ),
-                                        );
-                                      },
-                                    )
-                              );
-                            }
-                             else if(snapshot.hasError){
-              return Center(child: Text("Some error occured"),);
-            }
-                            airToday = snapshot.data;
+                            switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return new Center(child: Text("Connection Not Found"),);
+            case ConnectionState.waiting:
+              return Center(
+                child:SpinKitThreeBounce(
+                            size: 24.0,
+                            itemBuilder: (_,index){
+                                return DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    gradient: blackBlueGradient,
+                                    shape: BoxShape.circle
+                                  ),
+                                );
+                            },
+                          )
+              );
+
+            default:
+              if(snapshot.hasError){
+                return new Center(child: Text("Error : ${snapshot.error}"),);
+
+              }
+                            _airToday = snapshot.data;
                             
                             return new ListView.builder(
                               physics: BouncingScrollPhysics(),
                               scrollDirection: Axis.horizontal,
-                              itemCount: airToday['results']?.length??0,
+                              itemCount: _airToday['results']?.length??0,
                               itemBuilder: (context,i){
                                 return Container(
                                   padding: const EdgeInsets.only(right: 17.0),
-                                  child: new TopRatedTvShowCell(airToday['results'][i])
+                                  child: new TopRatedTvShowCell(_airToday['results'][i])
                                 );
                               },
                             );
-                          },
+                          }
+                          }
                         ),
                       )
                     ],
@@ -743,7 +788,7 @@ class MovieSearch extends SearchDelegate<String>{
             
             var id = searchResults[index]['id'];
             
-            return SearchResults(poster_image: _profilePath,title: title,type: mediaType,id: id,);
+            return SearchResults(posterImage: _profilePath,title: title,type: mediaType,id: id,);
           },
         );
             },

@@ -7,31 +7,31 @@ import 'dart:ui' as ui;
 
 import 'package:movie_griller/tv_detail.dart';
 class NowPlayingCell extends StatelessWidget {
-  final poster_path;
-  final backdrop_path;
-  final release_date;
+  final posterPath;
+  final backdropPath;
+  final releaseDate;
   final ratings;
   final id;
   final name;
-  final media_type;
-  final image_url = 'https://image.tmdb.org/t/p/w500';
+  final mediaType;
+  final _imageURL = 'https://image.tmdb.org/t/p/w500';
 
-  NowPlayingCell({this.poster_path,this.backdrop_path,this.release_date,this.ratings,this.id,this.name,this.media_type});
+  NowPlayingCell({this.posterPath,this.backdropPath,this.releaseDate,this.ratings,this.id,this.name,this.mediaType});
   @override
   Widget build(BuildContext context) {
     return InkWell(
       
       onTap: (){
-        if(poster_path!=null){
+        if(posterPath!=null){
         Navigator.push(context, MaterialPageRoute(
           
           builder: (context){
 
-            if(media_type=='movie'){
+            if(mediaType=='movie'){
               return MovieDetail(id);
             }
-            else if(media_type=='tv'){
-              return TVDetail(tv_id: id,);
+            else if(mediaType=='tv'){
+              return TVDetail(tvID: id,);
             }
             else{
               return CastDetail(id);
@@ -58,14 +58,14 @@ class NowPlayingCell extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: <Widget>[
-             backdrop_path.toString().isNotEmpty?
+             backdropPath.toString().isNotEmpty?
               new Container(
                 
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(0.0),
                   
                 ),
-                child: CachedNetworkImage(imageUrl: image_url+backdrop_path,fit: BoxFit.cover,alignment: Alignment.center,),
+                child: CachedNetworkImage(imageUrl: _imageURL+backdropPath,fit: BoxFit.cover,alignment: Alignment.center,),
               ):new Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(0.0),
@@ -115,7 +115,7 @@ class NowPlayingCell extends StatelessWidget {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(14.0),
-                        child: CachedNetworkImage(imageUrl: poster_path!=null?image_url+poster_path:'https://image.freepik.com/free-vector/404-error-concept-with-camel-and-cactus_23-2147736339.jpg',fit: BoxFit.cover,),
+                        child: CachedNetworkImage(imageUrl: posterPath!=null?_imageURL+posterPath:'https://image.freepik.com/free-vector/404-error-concept-with-camel-and-cactus_23-2147736339.jpg',fit: BoxFit.cover,),
                       ),
                     ),
                   ),
@@ -191,7 +191,7 @@ class NowPlayingCell extends StatelessWidget {
                                         )
                                       ]
                                     ),
-                                    child:Text(release_date.toString(),style: TextStyle(
+                                    child:Text(releaseDate.toString(),style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: 'google',
                                       fontWeight: FontWeight.bold

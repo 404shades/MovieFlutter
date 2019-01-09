@@ -22,13 +22,36 @@ Future<Map> getGenreTV(var id) async{
    return Future.error("Failed to establish connection");
   }
 }
-class GenreMovies extends StatelessWidget {
+class GenreMovies extends StatefulWidget {
   final genreId;
-  var  _genreResults;
   final genretype;
   final title;
   final image;
   GenreMovies({this.genreId,this.genretype,this.title,this.image});
+
+  @override
+  GenreMoviesState createState() {
+    return new GenreMoviesState();
+  }
+}
+
+class GenreMoviesState extends State<GenreMovies> {
+  var  _genreResults;
+  Future<Map> _getMovie;
+  Future<Map> _getTV;
+
+  @override
+    void initState() {
+      
+      super.initState();
+      if(widget.genretype=='movie'){
+      _getMovie = getGenreMovies(widget.genreId);
+      }
+      else{
+      _getTV = getGenreTV(widget.genreId);
+      }
+    }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +70,7 @@ class GenreMovies extends StatelessWidget {
                   Padding(padding: EdgeInsets.only(left: 10.0)),
                   IconButton(icon: Icon(FontAwesomeIcons.arrowLeft),onPressed: ()=>Navigator.pop(context),),
                   Expanded(
-                                    child: Text(title,style: TextStyle(
+                                    child: Text(widget.title,style: TextStyle(
                         fontFamily: 'google',
                         fontSize: 37.0,
                         color: Colors.blueGrey.shade800,
@@ -56,16 +79,21 @@ class GenreMovies extends StatelessWidget {
 
                       ),),
                   ),
-                    genretype=='movie'? Container(height: 50.0,width:50.0,child: Hero(tag:title,child: Image.asset("assets/images/$image.png",))):Container(),
+                    widget.genretype=='movie'? Container(height: 50.0,width:50.0,child: Hero(tag:widget.title,child: Image.asset("assets/images/${widget.image}.png",))):Container(),
                     Padding(padding: const EdgeInsets.only(right: 10.0),)
                 ],
               ),
             ),
             FutureBuilder(
-              future: genretype=='movie'?getGenreMovies(genreId):getGenreTV(genreId),
+              future: widget.genretype=='movie'?_getMovie:_getTV,
               builder: (context,snapshot){
-                if(!snapshot.hasData){
-                  return Container(height: MediaQuery.of(context).size.height,child: Center(child: SpinKitCircle(
+               switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return new Center(child: Text("Connection Not Found"),);
+            case ConnectionState.waiting:
+              return Container(
+                height: MediaQuery.of(context).size.height,child: Center(
+                  child: SpinKitCircle(
                     size: 60.0,
                     itemBuilder: (context,index){
                       return DecoratedBox(
@@ -75,11 +103,15 @@ class GenreMovies extends StatelessWidget {
                         ),
                       );
                     },
-                  )));
-                }
-                 else if(snapshot.hasError){
-            return Center(child: Text("Some error occured"),);
-          }
+                  ),
+                ),
+              );
+
+            default:
+              if(snapshot.hasError){
+                return new Center(child: Text("Error : ${snapshot.error}"),);
+
+              }
                 _genreResults = snapshot.data['results'];
                 return Container(
                   height: MediaQuery.of(context).size.height,
@@ -96,25 +128,26 @@ class GenreMovies extends StatelessWidget {
                         ),
                         itemCount: _genreResults==null?0:_genreResults.length,
                         itemBuilder: (context,index){
-                         var mediaType = genretype;
-                         var profile_path;
+                         var mediaType = widget.genretype;
+                         var _profilePath;
                         var title;
                         var id = _genreResults[index]['id'];
                         if(mediaType=='tv'){
-                          profile_path = _genreResults[index]['poster_path'];
+                          _profilePath = _genreResults[index]['poster_path'];
               title = _genreResults[index]['name'];
             }
             else if(mediaType=='movie'){
-              profile_path = _genreResults[index]['poster_path'];
+              _profilePath = _genreResults[index]['poster_path'];
               title = _genreResults[index]['title'];
             }
-                          return SearchResults(id: id,poster_image: profile_path,title: title,type: mediaType,);
+                          return SearchResults(id: id,posterImage: _profilePath,title: title,type: mediaType,);
                         },
                       );
                     },
                   ),
                 );
-              },
+              }
+              }
             )
           ],
         ),
