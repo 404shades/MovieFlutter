@@ -84,7 +84,7 @@ class GenreMovies extends StatelessWidget {
                     builder: (context,orientation){
                       return GridView.builder(
                         physics: BouncingScrollPhysics(),
-                        padding: EdgeInsets.only(top: 2.0,right: 5.0,bottom: 110.0),
+                        padding: EdgeInsets.only(top: 2.0,right: 5.0,bottom: 150.0),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: orientation==Orientation.landscape?5:3,
                           childAspectRatio: 0.50

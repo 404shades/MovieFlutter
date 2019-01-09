@@ -75,7 +75,7 @@ class SearchResults extends StatelessWidget {
               child: new Container(
           margin: const EdgeInsets.only(left:8.0),
           alignment: Alignment.center,
-          height: 35.0,
+          
           
           child: new Text(title,style: TextStyle(fontFamily: 'google',fontWeight: FontWeight.w400),maxLines: 2,overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,),
         ),

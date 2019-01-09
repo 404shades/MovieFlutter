@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_griller/MovieDetail.dart';
 class TopRatedMovieCellHome extends StatelessWidget {
@@ -29,7 +30,7 @@ class TopRatedMovieCellHome extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14.0),
             image: DecorationImage(
-              image:top_rated_cell['poster_path']!=null?NetworkImage(image_url + top_rated_cell['poster_path']):NetworkImage('https://image.freepik.com/free-vector/404-error-concept-with-camel-and-cactus_23-2147736339.jpg'),
+              image:top_rated_cell['poster_path']!=null?CachedNetworkImageProvider(image_url + top_rated_cell['poster_path']):CachedNetworkImageProvider('https://image.freepik.com/free-vector/404-error-concept-with-camel-and-cactus_23-2147736339.jpg'),
               fit: BoxFit.cover
             ),
             boxShadow: [

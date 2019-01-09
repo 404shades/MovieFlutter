@@ -40,12 +40,17 @@ class TVDetail extends StatelessWidget {
   String getGenres(var genre){
     String answer = "";
     
-    int le = min(genre.length,2);
+    int le = min(genre.length,2); 
+    if(genre.length>0){
     for(int i=0;i<le;i++){
         answer = answer + genre[i]['name']+ "|";
     }
     answer = answer.substring(0,answer.length-1);
     return answer;
+    }
+    else{
+      return "No Genre Found";
+    }
   }
 
   _launchURLTrailer(var videos) async{
@@ -56,7 +61,7 @@ class TVDetail extends StatelessWidget {
         if(videos[i]['type']=='Trailer'){
           key = videos[i]['key'];
           break;
-        }
+        } 
         continue;
       }
       String url = "https://www.youtube.com/watch?v=$key";
@@ -202,7 +207,7 @@ class TVDetail extends StatelessWidget {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.max,
                                       children: <Widget>[
-                                        Text(tv_show['first_air_date'],style: TextStyle(
+                                        Text(tv_show['first_air_date'].toString(),style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: 'google',
                                           fontWeight: FontWeight.bold

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_griller/CastDetail.dart';
 import 'package:movie_griller/Gradients.dart';
@@ -62,7 +63,7 @@ class NowPlayingCell extends StatelessWidget {
                 
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(0.0),
-                  image: DecorationImage(image: NetworkImage(image_url+backdrop_path),fit:BoxFit.cover)
+                  image: DecorationImage(image: CachedNetworkImageProvider(image_url+backdrop_path),fit:BoxFit.cover)
                 ),
               ):new Container(
                 decoration: BoxDecoration(
@@ -103,7 +104,7 @@ class NowPlayingCell extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14.0),
                         image: DecorationImage(
-                          image: poster_path!=null?NetworkImage(image_url + poster_path):NetworkImage('https://image.freepik.com/free-vector/404-error-concept-with-camel-and-cactus_23-2147736339.jpg'),
+                          image: poster_path!=null?CachedNetworkImageProvider(image_url + poster_path):CachedNetworkImageProvider('https://image.freepik.com/free-vector/404-error-concept-with-camel-and-cactus_23-2147736339.jpg'),
                           fit: BoxFit.cover
                         ),
                         boxShadow: [

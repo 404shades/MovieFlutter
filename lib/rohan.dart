@@ -64,7 +64,7 @@ class UserDeveloper extends StatelessWidget {
       body: Stack(
         fit:StackFit.expand,
         children: <Widget>[
-          new Image.asset('assets/images/user.jpg',fit: BoxFit.cover,alignment: Alignment.center,),
+          new FadeInImage(image:AssetImage('assets/images/user.jpg'),fit: BoxFit.cover,alignment: Alignment.center,placeholder: NetworkImage("url"),),
           new BackdropFilter(
             filter: ui.ImageFilter.blur(sigmaX: 5.0,sigmaY: 5.0),
             child: Container(
@@ -159,7 +159,7 @@ class UserDeveloper extends StatelessWidget {
                   ),
                   
                   // new SizedBox(height: 18.0,),
-                  new Text("A code lover, with an undying passion for Development. Contributed to various live projects. Knowledgeable about Git Version Control, Mobile Applications, Web Development and Machine Learning. Proficient in programming with a clear grasp of OOPS fundamentals. Excellent collaboration and communication skills. Team Player with a can-do attitude, phenomenal management skills, and a stronguser focus. Adept at conveying complex technical information to lay audiences in a simple and clear manner.",style: TextStyle(
+                  new Text("A code lover, with an undying passion for Development. Contributed to various live projects. Knowledgeable about Git Version Control, Mobile Applications, Web Development and Machine Learning. Proficient in programming with a clear grasp of OOPS fundamentals. Excellent collaboration and communication skills. Team Player with a can-do attitude, phenomenal management skills, and a strong user focus. Adept at conveying complex technical information to lay audiences in a simple and clear manner.",style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'google',
                     fontSize: 16.0,

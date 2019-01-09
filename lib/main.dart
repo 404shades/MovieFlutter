@@ -81,13 +81,16 @@ class _FrontScreenState extends State<FrontScreen> {
   var top_rated_movies;
   var top_rated_tv_shows;
   var now_playing;
+  var airToday;
   PageController _controller = PageController();
   TextEditingController textEditingController = TextEditingController();
 
 
   Future<bool> _onBackPress(){
+
     return showCupertinoModalPopup(
       context: context,
+
       builder: (context)=>new CupertinoActionSheet(
         title: Text("Do you want to close the app ?"),
         cancelButton: CupertinoActionSheetAction(
@@ -100,11 +103,14 @@ class _FrontScreenState extends State<FrontScreen> {
         actions: <Widget>[
             CupertinoActionSheetAction(child: Text("Review now on playstore"),onPressed: (){
               
+              Navigator.pop(context);
               LaunchReview.launch();
             }),
-            CupertinoActionSheetAction(child: Text("Connect with the developer"),onPressed: ()=>Navigator.of(context).push(CupertinoPageRoute(
+            CupertinoActionSheetAction(child: Text("Connect with the developer"),onPressed: (){
+              Navigator.pop(context);
+              Navigator.of(context).push(CupertinoPageRoute(
               maintainState: true,builder: (context)=>new UserDeveloper()
-            )),)
+            ));},)
 
         ],  
       )
@@ -584,16 +590,16 @@ class _FrontScreenState extends State<FrontScreen> {
                              else if(snapshot.hasError){
               return Center(child: Text("Some error occured"),);
             }
-                            top_rated_tv_shows = snapshot.data;
+                            airToday = snapshot.data;
                             
                             return new ListView.builder(
                               physics: BouncingScrollPhysics(),
                               scrollDirection: Axis.horizontal,
-                              itemCount: top_rated_tv_shows['results']?.length??0,
+                              itemCount: airToday['results']?.length??0,
                               itemBuilder: (context,i){
                                 return Container(
                                   padding: const EdgeInsets.only(right: 17.0),
-                                  child: new TopRatedTvShowCell(top_rated_tv_shows['results'][i])
+                                  child: new TopRatedTvShowCell(airToday['results'][i])
                                 );
                               },
                             );

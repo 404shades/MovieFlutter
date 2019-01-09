@@ -115,6 +115,14 @@ class TVGenre extends StatelessWidget {
               gradient: gradient,
               borderRadius: BorderRadius.circular(16.0),
             ),),
+             new Positioned(bottom: 10.0,left: 20.0,child: Text(
+                title,style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 45.0,
+                  fontFamily: 'google',
+                  fontWeight: FontWeight.bold
+                ),
+              ),),
             Positioned(
               right: 0.0,
               bottom: 0.0,
@@ -134,14 +142,7 @@ class TVGenre extends StatelessWidget {
             //   ),
             // )
             // ,
-            new Positioned(bottom: 10.0,left: 20.0,child: Text(
-                title,style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 45.0,
-                  fontFamily: 'google',
-                  fontWeight: FontWeight.bold
-                ),
-              ),),
+           
            
           ],
         ),

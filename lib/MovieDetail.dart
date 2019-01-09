@@ -52,11 +52,16 @@ class MovieDetail extends StatelessWidget {
     String answer = "";
     
     int le = min(genre.length,2);
+    if(genre.length>0){
     for(int i=0;i<le;i++){
         answer = answer + genre[i]['name']+ "|";
     }
     answer = answer.substring(0,answer.length-1);
     return answer;
+    }
+    else{
+      return "No Genre Found";
+    }
   }
   _launchURLTrailer(var videos) async{
     
@@ -214,7 +219,7 @@ class MovieDetail extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                new Text(movie['release_date'],
+                                new Text(movie['release_date'].toString(),
                             style: TextStyle(color: Colors.white,
                             fontFamily: 'google',
                             fontWeight: FontWeight.bold
