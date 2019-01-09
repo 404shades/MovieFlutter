@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 
 import 'package:movie_griller/MovieDetail.dart';
 import 'package:movie_griller/tv_detail.dart';
+import 'package:transparent_image/transparent_image.dart';
 class SearchResults extends StatelessWidget {
   final image_url =   'https://image.tmdb.org/t/p/w500';
   final poster_image;
@@ -46,10 +47,7 @@ class SearchResults extends StatelessWidget {
         
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
-           image: poster_image!=null?DecorationImage(
-            image: NetworkImage(image_url+poster_image),
-            fit: BoxFit.cover
-          ):null,
+           
           boxShadow: [
             BoxShadow(
               color: Colors.black45,
@@ -68,7 +66,11 @@ class SearchResults extends StatelessWidget {
             fontFamily: 'google',
             color: Colors.white
           ),),
-        ):null,
+        ):ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+          child: FadeInImage.memoryNetwork(image:image_url+poster_image,fit: BoxFit.cover,
+          alignment: Alignment.center,placeholder: kTransparentImage,),
+        ),
       ),
       ),
       Flexible(

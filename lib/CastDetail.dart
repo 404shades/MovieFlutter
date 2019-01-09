@@ -13,6 +13,7 @@ import 'dart:convert';
 
 import 'package:movie_griller/images_cast.dart';
 import 'package:movie_griller/similar_movie_cell.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 Future<Map> getCastDetails(var id) async{
   var url = 'https://api.themoviedb.org/3/person/$id?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&append_to_response=images,combined_credits';
@@ -55,9 +56,9 @@ class CastDetail extends StatelessWidget {
             return new Stack(
               fit: StackFit.expand,
                 children: <Widget>[
-                  new Image.network(image_url + casting['profile_path'],fit: BoxFit.cover,
+                  new FadeInImage.memoryNetwork(image:image_url + casting['profile_path'],fit: BoxFit.cover,
                   alignment: Alignment.center,
-                  
+                  placeholder: kTransparentImage,
                   ),
                   new BackdropFilter(
                     filter: new ui.ImageFilter.blur(sigmaX: 7.0,sigmaY: 7.0),
@@ -101,12 +102,10 @@ class CastDetail extends StatelessWidget {
                                       
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                          image: NetworkImage(image_url+casting['profile_path']),
-                                          fit: BoxFit.cover,
-                                          alignment: Alignment.center,
-                                          
-                                        )
+                                        
+                                      ),
+                                      child: ClipOval(
+                                        child: FadeInImage.memoryNetwork(image: image_url+casting['profile_path'],placeholder: kTransparentImage,fit: BoxFit.cover,alignment: Alignment.center,),
                                       ),
                                     ),
                                   ),

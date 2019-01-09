@@ -25,6 +25,8 @@ dependencies:
   url_launcher: ^4.0.3
   cached_network_image: ^0.5.1
   launch_review:
+  share:
+  transparent_image: ^0.1.0
 
 dev_dependencies:
   flutter_test:

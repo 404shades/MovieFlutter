@@ -29,10 +29,7 @@ class TopRatedMovieCellHome extends StatelessWidget {
           width: 130.0,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14.0),
-            image: DecorationImage(
-              image:top_rated_cell['poster_path']!=null?CachedNetworkImageProvider(image_url + top_rated_cell['poster_path']):CachedNetworkImageProvider('https://image.freepik.com/free-vector/404-error-concept-with-camel-and-cactus_23-2147736339.jpg'),
-              fit: BoxFit.cover
-            ),
+            
             boxShadow: [
               BoxShadow(
                 color: Colors.black87,
@@ -41,7 +38,12 @@ class TopRatedMovieCellHome extends StatelessWidget {
               )
             ]
           ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(14.0),
+          child: CachedNetworkImage(imageUrl: top_rated_cell['poster_path']!=null?image_url+top_rated_cell['poster_path']:'https://image.freepik.com/free-vector/404-error-concept-with-camel-and-cactus_23-2147736339.jpg',fit: BoxFit.cover,alignment: Alignment.center,),
         ),
+        ),
+  
       ),
       Flexible(
               child: new Container(

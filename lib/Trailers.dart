@@ -63,8 +63,9 @@ class NowPlayingCell extends StatelessWidget {
                 
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(0.0),
-                  image: DecorationImage(image: CachedNetworkImageProvider(image_url+backdrop_path),fit:BoxFit.cover)
+                  
                 ),
+                child: CachedNetworkImage(imageUrl: image_url+backdrop_path,fit: BoxFit.cover,alignment: Alignment.center,),
               ):new Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(0.0),
@@ -103,10 +104,7 @@ class NowPlayingCell extends StatelessWidget {
                       width: 165.0,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14.0),
-                        image: DecorationImage(
-                          image: poster_path!=null?CachedNetworkImageProvider(image_url + poster_path):CachedNetworkImageProvider('https://image.freepik.com/free-vector/404-error-concept-with-camel-and-cactus_23-2147736339.jpg'),
-                          fit: BoxFit.cover
-                        ),
+                        
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black87,
@@ -114,6 +112,10 @@ class NowPlayingCell extends StatelessWidget {
                             offset: Offset(2.0, 3.0)
                           )
                         ]
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(14.0),
+                        child: CachedNetworkImage(imageUrl: poster_path!=null?image_url+poster_path:'https://image.freepik.com/free-vector/404-error-concept-with-camel-and-cactus_23-2147736339.jpg',fit: BoxFit.cover,),
                       ),
                     ),
                   ),

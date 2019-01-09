@@ -29,15 +29,7 @@ class TopRatedMovieCell extends StatelessWidget {
       decoration: new BoxDecoration(
         borderRadius: BorderRadius.circular(14.0),
         
-        image: new DecorationImage(
-          image: new CachedNetworkImageProvider(
-              movie[i]['backdrop_path']!=null?'https://image.tmdb.org/t/p/w500' + movie[i]['backdrop_path'].toString()
-              :'https://www.solodev.com/core/fileparse.php/131/urlt/pixar-404.JPG',
-              
-          ),
-          fit: BoxFit.cover,
-          
-        ),
+       
         boxShadow: [
           new BoxShadow(
             color: Colors.black,
@@ -45,6 +37,11 @@ class TopRatedMovieCell extends StatelessWidget {
             offset: new Offset(2.0, 3.0)
           )
         ]
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(14.0),
+        child: CachedNetworkImage(imageUrl: movie[i]['backdrop_path']!=null?'https://image.tmdb.org/t/p/w500' + movie[i]['backdrop_path'].toString()
+              :'https://www.solodev.com/core/fileparse.php/131/urlt/pixar-404.JPG',fit: BoxFit.cover,alignment: Alignment.center,),
       ),
     ),
     );

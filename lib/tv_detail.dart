@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'dart:ui' as ui;
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'dart:async';
@@ -121,7 +122,7 @@ class TVDetail extends StatelessWidget {
           return new Stack(
             fit:StackFit.expand,
             children: <Widget>[
-              new Image.network(image_url+tv_show['poster_path'],fit: BoxFit.cover,),
+              CachedNetworkImage(imageUrl: image_url+tv_show['poster_path'],fit: BoxFit.cover,alignment: Alignment.center,),
               new BackdropFilter(
                 filter: new ui.ImageFilter.blur(sigmaX: 7.0,sigmaY: 7.0),
                 child: Container(
@@ -145,17 +146,17 @@ class TVDetail extends StatelessWidget {
                             Container(width: 400.0,height: 400.0,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(14.0),
-                              image: DecorationImage(image: NetworkImage(
-                                image_url+tv_show['poster_path']
-                              ),fit: BoxFit.cover),
+                              
                               boxShadow: [
                                 new BoxShadow(
                                   color: Colors.black,
                                   blurRadius: 20.0,
                                   offset: Offset(0.0, 14.0)
                                 )
-                              ]
+                              ],
+                              
                             ),
+                            child: CachedNetworkImage(imageUrl: image_url+tv_show['poster_path'],fit: BoxFit.cover,alignment: Alignment.center,),
                             ),
                             Positioned(
                               left: 0.0,

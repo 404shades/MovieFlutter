@@ -64,7 +64,7 @@ class UserDeveloper extends StatelessWidget {
       body: Stack(
         fit:StackFit.expand,
         children: <Widget>[
-          new FadeInImage(image:AssetImage('assets/images/user.jpg'),fit: BoxFit.cover,alignment: Alignment.center,placeholder: NetworkImage("url"),),
+          new Image.asset('assets/images/user.jpg',fit: BoxFit.cover,alignment: Alignment.center,),
           new BackdropFilter(
             filter: ui.ImageFilter.blur(sigmaX: 5.0,sigmaY: 5.0),
             child: Container(

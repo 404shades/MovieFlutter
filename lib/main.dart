@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie_griller/Gradients.dart';
 import 'dart:async';
+import 'package:share/share.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:movie_griller/Movies_Section_Page.dart';
@@ -92,25 +93,29 @@ class _FrontScreenState extends State<FrontScreen> {
       context: context,
 
       builder: (context)=>new CupertinoActionSheet(
-        title: Text("Do you want to close the app ?"),
+        title: Text("Do you wish to close the app ?"),
         cancelButton: CupertinoActionSheetAction(
           child: const Text("Close"),
           isDefaultAction: true,
           onPressed: ()=>Navigator.of(context).pop(true),
 
         ),
-        message: Text("Please review the app on playstore"),
+        message: Text("Have you reviewed the app on Playstore yet ?"),
         actions: <Widget>[
-            CupertinoActionSheetAction(child: Text("Review now on playstore"),onPressed: (){
+            CupertinoActionSheetAction(child: Text("Review now on Playstore"),onPressed: (){
               
               Navigator.pop(context);
               LaunchReview.launch();
             }),
-            CupertinoActionSheetAction(child: Text("Connect with the developer"),onPressed: (){
+            CupertinoActionSheetAction(child: Text("Connect with the Developer"),onPressed: (){
               Navigator.pop(context);
               Navigator.of(context).push(CupertinoPageRoute(
               maintainState: true,builder: (context)=>new UserDeveloper()
-            ));},)
+            ));},),
+            CupertinoActionSheetAction(
+              child: Text("Share the App"),
+              onPressed:()=>Share.share("Hey! Check out this app on Playstore. Movienator is a Movie and TV Shows Database app. If you love the app please review the app on playstore and share it with your friends. https://play.google.com/store/apps/details?id=com.example.moviegriller")
+            )
 
         ],  
       )

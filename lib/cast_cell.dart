@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_griller/CastDetail.dart';
+import 'package:transparent_image/transparent_image.dart';
 class CastCell extends StatelessWidget {
   final image_url = 'https://image.tmdb.org/t/p/w500';
   final cast;
@@ -35,11 +36,6 @@ class CastCell extends StatelessWidget {
           decoration: profilePath!=null?BoxDecoration(
             shape: BoxShape.circle,
 
-            image: DecorationImage(
-              image: NetworkImage(image_url+profilePath),
-              fit: BoxFit.cover,
-              
-            ),
             
             
             border: Border.all(color: Colors.white),
@@ -58,7 +54,11 @@ class CastCell extends StatelessWidget {
           ),
           ),
           
-          ):null,
+          ):ClipOval(
+            
+
+            child: FadeInImage.memoryNetwork(image:image_url+profilePath,placeholder: kTransparentImage,fit: BoxFit.cover,)
+          ),
         ),
       ),
       new Container(

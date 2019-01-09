@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_griller/MovieDetail.dart';
 import 'package:movie_griller/tv_detail.dart';
+import 'package:transparent_image/transparent_image.dart';
 class SimilarCell extends StatelessWidget {
   final similar_movies;
   final type;
@@ -35,19 +36,20 @@ class SimilarCell extends StatelessWidget {
               width: 130.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6.0),
-                image: DecorationImage(
-                  image: similar_movies['poster_path']!=null?NetworkImage(image_url+similar_movies['poster_path'])
-                                :NetworkImage('https://image.freepik.com/free-vector/404-error-concept-with-camel-and-cactus_23-2147736339.jpg'),
-                  fit: BoxFit.cover
-                ),
+               
                 boxShadow: [
                 new BoxShadow(
                   color: Colors.black,
                   blurRadius: 2.0,
                   offset: Offset(1.0, 3.0)
-                )
+                ),
+                
               ]
 
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(6.0),
+                child: FadeInImage.memoryNetwork(image:similar_movies['poster_path']!=null? image_url+similar_movies['poster_path']:'https://image.freepik.com/free-vector/404-error-concept-with-camel-and-cactus_23-2147736339.jpg',placeholder: kTransparentImage,fit: BoxFit.cover,alignment: Alignment.center,),
               ),
             ),
             // new Positioned(

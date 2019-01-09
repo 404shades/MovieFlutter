@@ -1,4 +1,5 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'package:http/http.dart' as http;
@@ -12,6 +13,7 @@ import 'package:movie_griller/Gradients.dart';
 
 import 'package:movie_griller/cast_cell.dart';
 import 'package:movie_griller/similar_movie_cell.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
@@ -131,7 +133,7 @@ class MovieDetail extends StatelessWidget {
           return new Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          new Image.network(image_url + movie['poster_path'],fit: BoxFit.cover,),
+          new CachedNetworkImage(imageUrl: image_url+movie['poster_path'],fit: BoxFit.cover,alignment: Alignment.center,),
           new BackdropFilter(
             filter: new ui.ImageFilter.blur(sigmaX: 5.0,sigmaY: 5.0),
             child: Container(
@@ -156,20 +158,19 @@ class MovieDetail extends StatelessWidget {
                       height: 400.0,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14.0),
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            image_url + movie['poster_path'],
-                            
-                          ),
-                          fit: BoxFit.cover,
-                        ),
+                        
                         boxShadow: [
                           new BoxShadow(
                             color: Colors.black,
                             blurRadius: 20.0,
                             offset: new Offset(0.0, 14.0)
                           )
-                        ]
+                        ],
+                        
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(14.0),
+                        child: new CachedNetworkImage(imageUrl: image_url+movie['poster_path'],fit: BoxFit.cover,alignment: Alignment.center,)
                       ),
                     ),
                     
