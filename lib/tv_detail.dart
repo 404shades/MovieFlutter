@@ -11,13 +11,20 @@ import 'package:http/http.dart' as http;
 import 'package:movie_griller/Gradients.dart';
 import 'package:movie_griller/cast_cell.dart';
 import 'package:movie_griller/similar_movie_cell.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:math' as math;
 
 Future<Map> getTvDetails(var id) async{
   var url = 'https://api.themoviedb.org/3/tv/$id?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&language=en-US&append_to_response=images,credits,similar,videos';
   http.Response response = await http.get(url);
-  return json.decode(response.body);
+  if(response.statusCode==200){
+    return json.decode(response.body);
+  }
+  else{
+    return new Future.error("error");
+  }
+  
 }
 List<Widget> _getStars(double number){
   double new_number = number/2;
@@ -33,11 +40,25 @@ List<Widget> _getStars(double number){
   return icons;
 
 }
-class TVDetail extends StatelessWidget {
+class TVDetail extends StatefulWidget {
   final tv_id;
-  var tv_show;
-  final image_url = 'https://image.tmdb.org/t/p/w500';
+
   TVDetail({this.tv_id});
+
+  @override
+  TVDetailState createState() {
+    return new TVDetailState();
+  }
+}
+
+class TVDetailState extends State<TVDetail> {
+  var tv_show;
+  Future<Map> _getDetails;
+
+  final image_url = 'https://image.tmdb.org/t/p/w500';
+  
+
+
   String getGenres(var genre){
     String answer = "";
     
@@ -75,7 +96,13 @@ class TVDetail extends StatelessWidget {
     }
     
   }
-  
+
+  @override
+    void initState() {
+      _getDetails = getTvDetails(widget.tv_id);
+      super.initState();
+    }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,11 +125,15 @@ class TVDetail extends StatelessWidget {
         
       ),
       body: FutureBuilder(
-        future: getTvDetails(tv_id),
+        future: _getDetails,
         builder: (context,snapshot){
-          if(!snapshot.hasData){
-            return Center(
-              child: SpinKitCubeGrid(
+          
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return new Center(child: Text("Connection Not Found"),);
+            case ConnectionState.waiting:
+              return Center(
+                child:SpinKitCubeGrid(
                   size: 55.0,
                   
                   itemBuilder: (context,index){
@@ -112,17 +143,25 @@ class TVDetail extends StatelessWidget {
                           ),
                     );
                   },
-                )); 
-          }
-           else if(snapshot.hasError){
-            return Center(child: Text("Some error occured"),);
-          }
+                )
+              );
+
+            default:
+              if(snapshot.hasError){
+                return new Center(child: Text("Error : ${snapshot.error}"),);
+
+              }
+              
+          
           tv_show = snapshot.data;
           List<Widget> ic = _getStars(tv_show['vote_average']?.toDouble()??0);
           return new Stack(
             fit:StackFit.expand,
             children: <Widget>[
-              CachedNetworkImage(imageUrl: image_url+tv_show['poster_path'],fit: BoxFit.cover,alignment: Alignment.center,),
+              new FadeInImage.memoryNetwork(image:image_url + tv_show['poster_path'],fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                  placeholder: kTransparentImage,
+                  ),
               new BackdropFilter(
                 filter: new ui.ImageFilter.blur(sigmaX: 7.0,sigmaY: 7.0),
                 child: Container(
@@ -156,7 +195,10 @@ class TVDetail extends StatelessWidget {
                               ],
                               
                             ),
-                            child: CachedNetworkImage(imageUrl: image_url+tv_show['poster_path'],fit: BoxFit.cover,alignment: Alignment.center,),
+                            child: ClipRRect(borderRadius: BorderRadius.circular(14.0), child: new FadeInImage.memoryNetwork(image:image_url + tv_show['poster_path'],fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                  placeholder: kTransparentImage,
+                  ),)
                             ),
                             Positioned(
                               left: 0.0,
@@ -332,6 +374,7 @@ class TVDetail extends StatelessWidget {
               )
             ],
           );
+          }
         },
       )
     );

@@ -16,17 +16,32 @@ const PAGER_HEIGHT = 250.0;
 Future<Map> getNowPlayingMovies() async{
   var url = 'https://api.themoviedb.org/3/movie/popular?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f';
   http.Response response = await http.get(url);
-  return json.decode(response.body);
+  if(response.statusCode==200){
+    return json.decode(response.body);
+  }
+  else{
+    return Future.error("Failed to establish connection");
+  }
 }
 Future<Map> getUpcomingMovies() async{
   var url = 'https://api.themoviedb.org/3/movie/upcoming?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f';
   http.Response response = await http.get(url);
-  return json.decode(response.body);
+  if(response.statusCode==200){
+    return json.decode(response.body);
+  }
+  else{
+    return Future.error("Failed to establish connection");
+  }
 }
 Future<Map> getNowPlaying() async{
   var url = 'https://api.themoviedb.org/3/movie/now_playing?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f';
   http.Response response = await http.get(url);
-  return json.decode(response.body);
+  if(response.statusCode==200){
+    return json.decode(response.body);
+  }
+  else{
+    return Future.error("Failed to establish connection");
+  }
 }
 class MoviesSectionPage extends StatefulWidget{
   @override

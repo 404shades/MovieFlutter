@@ -18,7 +18,12 @@ import 'package:transparent_image/transparent_image.dart';
 Future<Map> getCastDetails(var id) async{
   var url = 'https://api.themoviedb.org/3/person/$id?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&append_to_response=images,combined_credits';
   http.Response response = await http.get(url);
-  return json.decode(response.body);
+ if(response.statusCode==200){
+    return json.decode(response.body);
+  }
+  else{
+   return Future.error("Failed to establish connection");
+  }
 }
 
 class CastDetail extends StatelessWidget {

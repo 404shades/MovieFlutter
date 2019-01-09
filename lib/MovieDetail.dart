@@ -21,7 +21,12 @@ Future<Map> getMovieDetail(var id) async{
   var url = "https://api.themoviedb.org/3/movie/$id?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&append_to_response=credits,similar,videos";
   http.Response response = await http.get(url);
   
-  return json.decode(response.body);
+ if(response.statusCode==200){
+    return json.decode(response.body);
+  }
+  else{
+    return Future.error("Failed to establish connection");
+  }
   
   
   
@@ -133,7 +138,10 @@ class MovieDetail extends StatelessWidget {
           return new Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          new CachedNetworkImage(imageUrl: image_url+movie['poster_path'],fit: BoxFit.cover,alignment: Alignment.center,),
+          new FadeInImage.memoryNetwork(image:image_url + movie['poster_path'],fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                  placeholder: kTransparentImage,
+                  ),
           new BackdropFilter(
             filter: new ui.ImageFilter.blur(sigmaX: 5.0,sigmaY: 5.0),
             child: Container(
@@ -170,7 +178,10 @@ class MovieDetail extends StatelessWidget {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(14.0),
-                        child: new CachedNetworkImage(imageUrl: image_url+movie['poster_path'],fit: BoxFit.cover,alignment: Alignment.center,)
+                        child: new FadeInImage.memoryNetwork(image:image_url + movie['poster_path'],fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                  placeholder: kTransparentImage,
+                  ),
                       ),
                     ),
                     

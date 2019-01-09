@@ -15,7 +15,12 @@ Future<Map> getGenreMovies(var id) async{
 Future<Map> getGenreTV(var id) async{
   var url = 'https://api.themoviedb.org/3/discover/tv?api_key=1a43f1f22e3cf15ce2cfd8ca5af13e6f&language=en-US&sort_by=popularity.desc&page=1&with_genres=$id&include_null_first_air_dates=false';
   http.Response response = await http.get(url);
-  return json.decode(response.body);
+  if(response.statusCode==200){
+    return json.decode(response.body);
+  }
+  else{
+   return Future.error("Failed to establish connection");
+  }
 }
 class GenreMovies extends StatelessWidget {
   final genreId;
